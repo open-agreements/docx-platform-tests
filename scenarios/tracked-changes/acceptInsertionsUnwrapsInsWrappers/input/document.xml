@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Kept text </w:t>
+      </w:r>
+      <w:ins w:id="1" w:author="Reviewer" w:date="2026-01-01T00:00:00Z">
+        <w:r>
+          <w:t>Inserted text</w:t>
+        </w:r>
+      </w:ins>
+    </w:p>
+  </w:body>
+</w:document>

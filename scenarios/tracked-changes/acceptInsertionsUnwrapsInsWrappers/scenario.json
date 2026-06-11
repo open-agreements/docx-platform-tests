@@ -1,0 +1,31 @@
+{
+  "dslVersion": "1.0",
+  "scenarioId": "acceptInsertionsUnwrapsInsWrappers",
+  "scenarioTitle": "Accepting insertions unwraps w:ins and keeps run content",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.13.5.18",
+    "clauseTitle": "ins (Inserted Run Content)"
+  },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "acceptAllTrackedChanges" },
+  "assertionList": [
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:ins",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "documentTextContainsAtOffset",
+      "expectedSubstring": "Kept text Inserted text",
+      "expectedOffset": 0
+    },
+    {
+      "assertionKind": "canonicalXmlEquals",
+      "expectedDocumentPath": "expected/document.xml"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+name: Run conformance suite
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekly: upstream library releases get re-tested without a push.
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  suite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: runner/package-lock.json
+
+      - name: Install runner
+        working-directory: runner
+        run: npm ci
+
+      - name: Verify fixture packages match XML fragments
+        working-directory: runner
+        run: npm run check-fixtures
+
+      - name: Install adapter dependencies
+        run: |
+          for adapter in adapters/*/install.sh; do
+            [ -f "$adapter" ] && bash "$adapter"
+          done
+          exit 0
+
+      - name: Run suite
+        working-directory: runner
+        run: npm run suite
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: results
+          path: results/latest.json
+
+      - name: Publish results to gh-pages
+        if: github.event_name != 'pull_request'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: results
+          destination_dir: results
+          keep_files: true

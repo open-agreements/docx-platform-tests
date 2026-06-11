@@ -1,0 +1,23 @@
+{
+  "name": "docx-platform-tests-runner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Neutral runner for the docx-platform-tests conformance suite",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "suite": "tsx src/run.ts",
+    "pack-fixtures": "tsx src/pack-fixtures.ts",
+    "check-fixtures": "tsx src/pack-fixtures.ts --check"
+  },
+  "dependencies": {
+    "@xmldom/xmldom": "^0.9.8",
+    "fflate": "^0.8.2",
+    "xpath": "^0.0.34"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
+  }
+}

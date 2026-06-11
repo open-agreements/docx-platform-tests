@@ -1,0 +1,36 @@
+{
+  "dslVersion": "1.0",
+  "scenarioId": "replaceFirstOccurrencePreservesOffsets",
+  "scenarioTitle": "Replacing the first occurrence places the new text at the matched offset",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.3.3.31",
+    "clauseTitle": "t (Text)"
+  },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "replaceFirstTextOccurrence",
+    "findText": "thirty",
+    "replaceText": "sixty"
+  },
+  "assertionList": [
+    {
+      "assertionKind": "documentTextContainsAtOffset",
+      "expectedSubstring": "sixty",
+      "expectedOffset": 15
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:t[contains(text(), 'thirty')]",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "documentTextContainsAtOffset",
+      "expectedSubstring": "Payment due in sixty days",
+      "expectedOffset": 0
+    }
+  ]
+}
