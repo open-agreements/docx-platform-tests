@@ -113,10 +113,16 @@ are **never** normalized.
 
 ### Assertion-strength rule
 
-Prefer the weakest assertion that captures the conformance claim. Use
-`canonicalXmlEquals` only when the cited clause pins the output structure,
-and always pair it with xpath or text-projection assertions so a
-structural-granularity disagreement is distinguishable from a semantic one.
+Prefer the weakest assertion that captures the conformance claim. As of
+DSL 1.1, `canonicalXmlEquals` is a **serialization-audit assertion, not a
+conformance assertion**: its failure alone grades a cell `pass-divergent`,
+never `fail` (see "Outcome grading"). Every structural fact the cited
+clause actually requires must therefore be expressed as a semantic
+assertion (`xpathQueryCount` / `xpathQueryExists` /
+`documentTextContainsAtOffset`) — a requirement carried only by
+`canonicalXmlEquals` cannot fail an implementation. Use it to pin the
+reference serialization for audit and regression visibility, always
+alongside the semantic assertions that carry the claim.
 
 ### Outcome grading (v1.1)
 
