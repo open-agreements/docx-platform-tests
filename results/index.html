@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>docx-platform-tests — cross-implementation results matrix</title>
+<meta name="description" content="WordprocessingML conformance results across implementations: every scenario asserts behavior derivable from a cited ECMA-376 clause and runs unchanged against each registered adapter.">
+<link rel="canonical" href="https://open-agreements.github.io/docx-platform-tests/results/">
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 2rem auto; max-width: 60rem; padding: 0 1rem; color: #1a1a1a; }
+  table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; }
+  th, td { border: 1px solid #d9d9d9; padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
+  thead th { background: #f6f6f4; }
+  .cell-pass { background: #e8f5e9; }
+  .cell-fail, .cell-error, .cell-protocol-mismatch { background: #fdecea; }
+  .cell-unsupported { background: #f4f1ea; color: #6b6357; }
+  .citation { color: #6b6357; }
+  footer { margin-top: 2rem; font-size: 0.85rem; color: #6b6357; }
+</style>
+</head>
+<body>
+<h1>docx-platform-tests results</h1>
+<p>Cross-implementation conformance results for WordprocessingML (<code>.docx</code>), in the
+<a href="https://github.com/web-platform-tests/wpt">web-platform-tests</a> tradition. Each scenario
+asserts behavior derivable from the cited ECMA-376 clause — not from any one library — and runs
+unchanged against every registered adapter. <strong>Unsupported</strong> means the adapter declined
+the operation honestly (the NOTRUN analog): a gap in the matrix is information about the library,
+not a failure of the suite.</p>
+<table>
+<thead><tr><th scope="col">Scenario</th><th scope="col">safe-docx<br><small>0.10.0+git.8a748ffd31c1</small></th><th scope="col">python-docx<br><small>1.2.0</small></th></tr></thead>
+<tbody>
+<tr>
+      <th scope="row"><code>acceptDeletionsRemovesDelContent</code><br><small>Accepting deletions removes w:del wrappers and their content</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.13.5.14 (del (Deleted Run Content))</small></th><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>python-docx has no tracked-changes (revision) API</small></td></tr>
+<tr>
+      <th scope="row"><code>acceptInsertionsUnwrapsInsWrappers</code><br><small>Accepting insertions unwraps w:ins and keeps run content</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.13.5.18 (ins (Inserted Run Content))</small></th><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>python-docx has no tracked-changes (revision) API</small></td></tr>
+<tr>
+      <th scope="row"><code>replaceFirstOccurrencePreservesOffsets</code><br><small>Replacing the first occurrence places the new text at the matched offset</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.3.3.31 (t (Text))</small></th><td class="cell-pass">Pass</td><td class="cell-pass">Pass</td></tr>
+</tbody>
+</table>
+<p>Data: <a href="./latest.json">results/latest.json</a> · Suite, scenario DSL, and adapter protocol:
+<a href="https://github.com/open-agreements/docx-platform-tests">open-agreements/docx-platform-tests</a> (BSD-3-Clause)
+· Narrative comparisons: <a href="https://usejunior.com/engineering/safe-docx/cross-implementation">usejunior.com</a></p>
+<footer>Run 2026-06-11T05:20:37.950Z · DSL 1.0 · adapter protocol v1.
+To add an implementation, see <a href="https://github.com/open-agreements/docx-platform-tests/blob/main/docs/adapter-protocol.md">docs/adapter-protocol.md</a>.</footer>
+</body>
+</html>
