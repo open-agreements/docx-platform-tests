@@ -1,11 +1,11 @@
 {
-  "runTimestamp": "2026-06-11T06:55:59.307Z",
+  "runTimestamp": "2026-06-11T07:29:32.953Z",
   "dslVersion": "1.1",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.11.0+git.2f448801fa12"
+      "adapterVersion": "0.11.0+git.fef2ba5f1c36"
     },
     {
       "adapterName": "python-docx",
@@ -136,6 +136,140 @@
               "assertionKind": "canonicalXmlEquals",
               "passed": false,
               "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Inserted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 wp14 w15\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pStyle\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"Normal\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bidi\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}jc\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"left\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Inserted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"nextPage\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgNumType\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}fmt\",\n         \"decimal\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}formProt\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"false\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}textDirection\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"lrTb\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}docGrid\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}charSpace\",\n         \"4096\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}linePitch\",\n         \"100\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n         \"default\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scenarioId": "rejectDeletionsRestoresDelContent",
+      "scenarioTitle": "Rejecting deletions restores w:delText content to body text",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.13.5.14",
+        "clauseTitle": "del (Deleted Run Content)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text Deleted text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": true,
+              "detail": "canonical forms are identical"
+            }
+          ]
+        },
+        "python-docx": {
+          "status": "unsupported",
+          "reason": "python-docx has no tracked-changes (revision) API"
+        },
+        "libreoffice": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text Deleted text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Deleted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 wp14 w15\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pStyle\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"Normal\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bidi\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}jc\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"left\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Deleted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"nextPage\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgNumType\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}fmt\",\n         \"decimal\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}formProt\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"false\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}textDirection\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"lrTb\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}docGrid\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}charSpace\",\n         \"4096\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}linePitch\",\n         \"100\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n         \"default\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scenarioId": "rejectInsertionsRemovesInsContent",
+      "scenarioTitle": "Rejecting insertions removes w:ins wrappers and their run content",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.13.5.18",
+        "clauseTitle": "ins (Inserted Run Content)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(text(), 'Inserted text')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": true,
+              "detail": "canonical forms are identical"
+            }
+          ]
+        },
+        "python-docx": {
+          "status": "unsupported",
+          "reason": "python-docx has no tracked-changes (revision) API"
+        },
+        "libreoffice": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(text(), 'Inserted text')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 wp14 w15\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pStyle\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"Normal\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bidi\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}jc\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"left\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"nextPage\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgNumType\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}fmt\",\n         \"decimal\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}formProt\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"false\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}textDirection\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"lrTb\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}docGrid\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}charSpace\",\n         \"4096\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}linePitch\",\n         \"100\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n         \"default\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
             }
           ]
         }
