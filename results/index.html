@@ -12,6 +12,7 @@
   th, td { border: 1px solid #d9d9d9; padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
   thead th { background: #f6f6f4; }
   .cell-pass { background: #e8f5e9; }
+  .cell-pass-divergent { background: #f3f8e2; }
   .cell-fail, .cell-error, .cell-protocol-mismatch { background: #fdecea; }
   .cell-unsupported { background: #f4f1ea; color: #6b6357; }
   .citation { color: #6b6357; }
@@ -25,14 +26,18 @@
 asserts behavior derivable from the cited ECMA-376 clause — not from any one library — and runs
 unchanged against every registered adapter. <strong>Unsupported</strong> means the adapter declined
 the operation honestly (the NOTRUN analog): a gap in the matrix is information about the library,
-not a failure of the suite.</p>
+not a failure of the suite. <strong>Pass (divergent serialization)</strong> means every assertion
+derived from the cited clause passed, but the saved document did not match the reference
+serialization's canonical XML — typically an implementation materializing formatting defaults on
+save. That is legal WordprocessingML serialization freedom, not a conformance failure; the
+per-assertion breakdown in <a href="./latest.json">latest.json</a> carries the detail.</p>
 <table>
-<thead><tr><th scope="col">Scenario</th><th scope="col">safe-docx<br><small>0.10.0+git.53dda380b8ea</small></th><th scope="col">python-docx<br><small>1.2.0</small></th><th scope="col">libreoffice<br><small>LibreOffice 24.2.7.2 420(Build:2)</small></th></tr></thead>
+<thead><tr><th scope="col">Scenario</th><th scope="col">safe-docx<br><small>0.11.0+git.2f448801fa12</small></th><th scope="col">python-docx<br><small>1.2.0</small></th><th scope="col">libreoffice<br><small>LibreOffice 24.2.7.2 420(Build:2)</small></th></tr></thead>
 <tbody>
 <tr>
-      <th scope="row"><code>acceptDeletionsRemovesDelContent</code><br><small>Accepting deletions removes w:del wrappers and their content</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.13.5.14 (del (Deleted Run Content))</small></th><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>python-docx has no tracked-changes (revision) API</small></td><td class="cell-fail">Fail</td></tr>
+      <th scope="row"><code>acceptDeletionsRemovesDelContent</code><br><small>Accepting deletions removes w:del wrappers and their content</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.13.5.14 (del (Deleted Run Content))</small></th><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>python-docx has no tracked-changes (revision) API</small></td><td class="cell-pass-divergent">Pass (divergent serialization)</td></tr>
 <tr>
-      <th scope="row"><code>acceptInsertionsUnwrapsInsWrappers</code><br><small>Accepting insertions unwraps w:ins and keeps run content</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.13.5.18 (ins (Inserted Run Content))</small></th><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>python-docx has no tracked-changes (revision) API</small></td><td class="cell-fail">Fail</td></tr>
+      <th scope="row"><code>acceptInsertionsUnwrapsInsWrappers</code><br><small>Accepting insertions unwraps w:ins and keeps run content</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.13.5.18 (ins (Inserted Run Content))</small></th><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>python-docx has no tracked-changes (revision) API</small></td><td class="cell-pass-divergent">Pass (divergent serialization)</td></tr>
 <tr>
       <th scope="row"><code>replaceFirstOccurrencePreservesOffsets</code><br><small>Replacing the first occurrence places the new text at the matched offset</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.3.3.31 (t (Text))</small></th><td class="cell-pass">Pass</td><td class="cell-pass">Pass</td><td class="cell-pass">Pass</td></tr>
 </tbody>
@@ -40,7 +45,7 @@ not a failure of the suite.</p>
 <p>Data: <a href="./latest.json">results/latest.json</a> · Suite, scenario DSL, and adapter protocol:
 <a href="https://github.com/open-agreements/docx-platform-tests">open-agreements/docx-platform-tests</a> (Apache-2.0)
 · Narrative comparisons: <a href="https://usejunior.com/engineering/safe-docx/cross-implementation">usejunior.com</a></p>
-<footer>Run 2026-06-11T06:39:56.112Z · DSL 1.0 · adapter protocol v1.
+<footer>Run 2026-06-11T06:55:59.307Z · DSL 1.1 · adapter protocol v1.
 To add an implementation, see <a href="https://github.com/open-agreements/docx-platform-tests/blob/main/docs/adapter-protocol.md">docs/adapter-protocol.md</a>.</footer>
 </body>
 </html>

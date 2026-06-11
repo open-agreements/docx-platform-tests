@@ -1,11 +1,11 @@
 {
-  "runTimestamp": "2026-06-11T06:39:56.112Z",
-  "dslVersion": "1.0",
+  "runTimestamp": "2026-06-11T06:55:59.307Z",
+  "dslVersion": "1.1",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.10.0+git.53dda380b8ea"
+      "adapterVersion": "0.11.0+git.2f448801fa12"
     },
     {
       "adapterName": "python-docx",
@@ -58,7 +58,7 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "fail",
+          "status": "pass-divergent",
           "assertionResults": [
             {
               "assertionKind": "xpathQueryCount",
@@ -120,7 +120,7 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "fail",
+          "status": "pass-divergent",
           "assertionResults": [
             {
               "assertionKind": "xpathQueryCount",
