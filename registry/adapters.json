@@ -10,6 +10,11 @@
       "adapterName": "python-docx",
       "adapterCommand": ["adapters/python-docx/.venv/bin/python", "adapters/python-docx/run_adapter.py"],
       "adapterVersionCommand": ["adapters/python-docx/.venv/bin/python", "-c", "import docx; print(docx.__version__)"]
+    },
+    {
+      "adapterName": "libreoffice",
+      "adapterCommand": ["python3", "adapters/libreoffice/run_adapter.py"],
+      "adapterVersionCommand": ["bash", "-lc", "soffice --version"]
     }
   ]
 }
