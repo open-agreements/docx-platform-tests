@@ -1,0 +1,40 @@
+{
+  "dslVersion": "1.0",
+  "scenarioId": "rejectFormattingChangeRestoresPriorRunProperties",
+  "scenarioTitle": "Rejecting formatting changes restores prior run properties",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.13.5.31",
+    "clauseTitle": "rPrChange (Revision Information for Run Properties)"
+  },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "rejectAllTrackedChanges" },
+  "assertionList": [
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:rPrChange",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:r/w:rPr/w:b",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "xpathQueryExists",
+      "xpathExpression": "//w:r/w:rPr/w:i"
+    },
+    {
+      "assertionKind": "documentTextContainsAtOffset",
+      "expectedSubstring": "Styled text",
+      "expectedOffset": 0
+    },
+    {
+      "assertionKind": "canonicalXmlEquals",
+      "expectedDocumentPath": "expected/document.xml"
+    }
+  ]
+}
