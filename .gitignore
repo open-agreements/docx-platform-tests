@@ -2,6 +2,7 @@ node_modules/
 *.log
 .DS_Store
 adapters/safe-docx/build/
+adapters/safe-docx/build-info.json
 adapters/safe-docx/node_modules/
 adapters/safe-docx/package.json
 adapters/safe-docx/package-lock.json
