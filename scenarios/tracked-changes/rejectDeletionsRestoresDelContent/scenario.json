@@ -1,0 +1,36 @@
+{
+  "dslVersion": "1.0",
+  "scenarioId": "rejectDeletionsRestoresDelContent",
+  "scenarioTitle": "Rejecting deletions restores w:delText content to body text",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.13.5.14",
+    "clauseTitle": "del (Deleted Run Content)"
+  },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "rejectAllTrackedChanges" },
+  "assertionList": [
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:del",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:delText",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "documentTextContainsAtOffset",
+      "expectedSubstring": "Kept text Deleted text",
+      "expectedOffset": 0
+    },
+    {
+      "assertionKind": "canonicalXmlEquals",
+      "expectedDocumentPath": "expected/document.xml"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Kept text </w:t>
+      </w:r>
+      <w:del w:id="2" w:author="Reviewer" w:date="2026-01-01T00:00:00Z">
+        <w:r>
+          <w:delText>Deleted text</w:delText>
+        </w:r>
+      </w:del>
+    </w:p>
+  </w:body>
+</w:document>
