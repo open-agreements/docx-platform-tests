@@ -8,9 +8,14 @@ Wraps the `safe-docx-conformance-adapter` bin shipped by
 implements adapter protocol v1 natively and this directory only installs it
 (`install.sh`). No adapter-side algorithms.
 
-**Install source:** a pinned-SHA source build (`safe-docx.pin.json`) until
-the bin lands in a published npm release; then this switches to the public
-registry (issue #3).
+**Install source:** a source build from the tip of safe-docx `main`
+(`safe-docx.pin.json`, `trackingBranchName`), so library changes are
+re-tested by the suite without waiting for an npm release (supersedes the
+npm switch planned in issue #3). `install.sh` resolves the branch to a
+concrete commit and records it in `build-info.json`; the matrix reports the
+adapter version as `<package version>+git.<commit>`. To reproduce a past
+matrix, set `pinnedCommitSha` in `safe-docx.pin.json` — it takes precedence
+over the tracking branch.
 
 **Maintenance policy:** maintained by the safe-docx project; safe-docx's own
 CI runs this suite as a self-check, so breakage surfaces there first.

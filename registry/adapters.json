@@ -4,7 +4,7 @@
     {
       "adapterName": "safe-docx",
       "adapterCommand": ["adapters/safe-docx/node_modules/.bin/safe-docx-conformance-adapter"],
-      "adapterVersionCommand": ["node", "-p", "require('./adapters/safe-docx/node_modules/@usejunior/docx-core/package.json').version"]
+      "adapterVersionCommand": ["node", "-p", "const b = require('./adapters/safe-docx/build-info.json'); b.packageVersion + '+git.' + b.sourceCommitSha.slice(0, 12)"]
     },
     {
       "adapterName": "python-docx",

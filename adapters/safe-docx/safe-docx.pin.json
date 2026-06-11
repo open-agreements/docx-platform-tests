@@ -1,5 +1,5 @@
 {
   "repository": "https://github.com/UseJunior/safe-docx",
-  "commitSha": "d2ee1f0ecb90140055fca5522aafe3eff4da4ce1",
-  "note": "Pinned-SHA source build until a safe-docx release publishes the safe-docx-conformance-adapter bin to npm (issue #3)."
+  "trackingBranchName": "main",
+  "note": "Source-built from the tip of the tracking branch on every suite run so safe-docx changes are re-tested without an npm release; install.sh resolves the branch to a commit and records it in build-info.json. To reproduce a past matrix, set pinnedCommitSha (takes precedence over trackingBranchName)."
 }
