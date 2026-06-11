@@ -32,12 +32,14 @@ jobs:
         working-directory: runner
         run: npm run check-fixtures
 
+      # An install failure fails CI; runtime library breakage instead surfaces
+      # as error cells in the published matrix.
       - name: Install adapter dependencies
         run: |
+          set -euo pipefail
           for adapter in adapters/*/install.sh; do
-            [ -f "$adapter" ] && bash "$adapter"
+            if [ -f "$adapter" ]; then bash "$adapter"; fi
           done
-          exit 0
 
       - name: Run suite
         working-directory: runner
