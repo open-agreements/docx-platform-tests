@@ -1,0 +1,32 @@
+{
+  "dslVersion": "1.0",
+  "scenarioId": "rejectInsertedParagraphMarkMergesParagraphs",
+  "scenarioTitle": "Rejecting an inserted paragraph mark removes the mark and merges the paragraph with the following paragraph",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.13.5.20",
+    "clauseTitle": "ins (Inserted Paragraph)"
+  },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "rejectAllTrackedChanges" },
+  "assertionList": [
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:pPr/w:rPr/w:ins",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "documentTextContainsAtOffset",
+      "expectedSubstring": "First half second half",
+      "expectedOffset": 0
+    }
+  ]
+}
