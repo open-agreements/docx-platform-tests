@@ -7,6 +7,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "suite": "tsx src/run.ts",
+    "typecheck": "tsc --noEmit",
+    "sanity": "tsx src/__sanity.ts",
     "pack-fixtures": "tsx src/pack-fixtures.ts",
     "check-fixtures": "tsx src/pack-fixtures.ts --check",
     "render-matrix": "tsx src/render-matrix.ts"
