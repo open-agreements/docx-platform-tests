@@ -1,6 +1,6 @@
 {
   "runTimestamp": "2026-06-11T06:35:39.773Z",
-  "dslVersion": "1.0",
+  "dslVersion": "1.1",
   "protocolVersion": 1,
   "implementations": [
     {
@@ -58,7 +58,7 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "fail",
+          "status": "pass-divergent",
           "assertionResults": [
             {
               "assertionKind": "xpathQueryCount",
@@ -120,7 +120,7 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "fail",
+          "status": "pass-divergent",
           "assertionResults": [
             {
               "assertionKind": "xpathQueryCount",

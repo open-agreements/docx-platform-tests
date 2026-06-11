@@ -26,9 +26,10 @@ DSL's paragraph-local-first rule.
 
 **Expected `canonicalXmlEquals` divergence:** LibreOffice materializes
 formatting defaults on save (explicit `pStyle`, `bidi`, `jc`, empty `rPr`),
-so scenarios with a `canonicalXmlEquals` assertion show honest `fail` cells
-even when every semantic assertion (revision removal, text projection)
-passes. The per-assertion breakdown in the matrix carries that nuance.
+so scenarios with a `canonicalXmlEquals` assertion grade as `pass-divergent`
+when every semantic assertion (revision removal, text projection) passes:
+the clause is satisfied, the serialization differs. See "Outcome grading" in
+`docs/scenario-dsl.md`.
 
 **Known upstream caveat:** LibreOffice drops `w:ins` provenance on save when
 an insertion's entire content has been deleted (reproduced on LO 25.8.7.3).

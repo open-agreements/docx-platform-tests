@@ -54,6 +54,7 @@ export interface AdapterRegistry {
 
 export type OutcomeStatus =
   | 'pass'
+  | 'pass-divergent'
   | 'fail'
   | 'unsupported'
   | 'error'

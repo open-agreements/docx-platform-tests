@@ -9,6 +9,7 @@ import type { ResultsDocument } from './types.js';
 
 const STATUS_LABEL: Record<string, string> = {
   pass: 'Pass',
+  'pass-divergent': 'Pass (divergent serialization)',
   fail: 'Fail',
   unsupported: 'Unsupported',
   error: 'Error',
@@ -66,6 +67,7 @@ const html = `<!doctype html>
   th, td { border: 1px solid #d9d9d9; padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
   thead th { background: #f6f6f4; }
   .cell-pass { background: #e8f5e9; }
+  .cell-pass-divergent { background: #f3f8e2; }
   .cell-fail, .cell-error, .cell-protocol-mismatch { background: #fdecea; }
   .cell-unsupported { background: #f4f1ea; color: #6b6357; }
   .citation { color: #6b6357; }
@@ -79,7 +81,11 @@ const html = `<!doctype html>
 asserts behavior derivable from the cited ECMA-376 clause — not from any one library — and runs
 unchanged against every registered adapter. <strong>Unsupported</strong> means the adapter declined
 the operation honestly (the NOTRUN analog): a gap in the matrix is information about the library,
-not a failure of the suite.</p>
+not a failure of the suite. <strong>Pass (divergent serialization)</strong> means every assertion
+derived from the cited clause passed, but the saved document did not match the reference
+serialization's canonical XML — typically an implementation materializing formatting defaults on
+save. That is legal WordprocessingML serialization freedom, not a conformance failure; the
+per-assertion breakdown in <a href="./latest.json">latest.json</a> carries the detail.</p>
 <table>
 <thead><tr><th scope="col">Scenario</th>${headerCells}</tr></thead>
 <tbody>
