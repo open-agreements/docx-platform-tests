@@ -8,7 +8,7 @@ import {
   mkdirSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { extractDocumentXml } from './docx.js';
 import { evaluateAssertion } from './assertions.js';
 import { loadAllScenarios, REPO_ROOT } from './scenarios.js';
@@ -96,9 +96,19 @@ function runScenario(
   }
 }
 
-const registry = JSON.parse(
-  readFileSync(join(REPO_ROOT, 'registry', 'adapters.json'), 'utf8')
-) as AdapterRegistry;
+// --registry / --results let an embedder (e.g. an implementation's own
+// self-check test) run the real runner against a temporary registry without
+// mutating the checkout.
+function argValue(flag: string): string | undefined {
+  const idx = process.argv.indexOf(flag);
+  return idx !== -1 ? process.argv[idx + 1] : undefined;
+}
+const registryPath =
+  argValue('--registry') ?? join(REPO_ROOT, 'registry', 'adapters.json');
+const resultsPath =
+  argValue('--results') ?? join(REPO_ROOT, 'results', 'latest.json');
+
+const registry = JSON.parse(readFileSync(registryPath, 'utf8')) as AdapterRegistry;
 const scenarios = loadAllScenarios();
 
 const results: ResultsDocument = {
@@ -134,12 +144,8 @@ for (const adapter of registry.adapters) {
   }
 }
 
-const resultsDir = join(REPO_ROOT, 'results');
-mkdirSync(resultsDir, { recursive: true });
-writeFileSync(
-  join(resultsDir, 'latest.json'),
-  JSON.stringify(results, null, 2) + '\n'
-);
+mkdirSync(dirname(resultsPath), { recursive: true });
+writeFileSync(resultsPath, JSON.stringify(results, null, 2) + '\n');
 console.log(
-  `\nwrote results/latest.json (${registry.adapters.length} adapter(s), ${scenarios.length} scenario(s))`
+  `\nwrote ${resultsPath} (${registry.adapters.length} adapter(s), ${scenarios.length} scenario(s))`
 );
