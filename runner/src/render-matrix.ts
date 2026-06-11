@@ -87,7 +87,7 @@ ${rows}
 </tbody>
 </table>
 <p>Data: <a href="./latest.json">results/latest.json</a> · Suite, scenario DSL, and adapter protocol:
-<a href="https://github.com/open-agreements/docx-platform-tests">open-agreements/docx-platform-tests</a> (BSD-3-Clause)
+<a href="https://github.com/open-agreements/docx-platform-tests">open-agreements/docx-platform-tests</a> (Apache-2.0)
 · Narrative comparisons: <a href="https://usejunior.com/engineering/safe-docx/cross-implementation">usejunior.com</a></p>
 <footer>Run ${esc(results.runTimestamp)} · DSL ${esc(results.dslVersion)} · adapter protocol v${results.protocolVersion}.
 To add an implementation, see <a href="https://github.com/open-agreements/docx-platform-tests/blob/main/docs/adapter-protocol.md">docs/adapter-protocol.md</a>.</footer>
