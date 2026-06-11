@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: runner/package-lock.json
+
+      - name: Install runner
+        working-directory: runner
+        run: npm ci
+
+      - name: Typecheck
+        working-directory: runner
+        run: npm run typecheck
+
+  sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: runner/package-lock.json
+
+      - name: Install runner
+        working-directory: runner
+        run: npm ci
+
+      - name: Assertion-engine sanity checks
+        working-directory: runner
+        run: npm run sanity
