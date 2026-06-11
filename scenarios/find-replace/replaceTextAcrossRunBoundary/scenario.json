@@ -1,0 +1,44 @@
+{
+  "dslVersion": "1.0",
+  "scenarioId": "replaceTextAcrossRunBoundary",
+  "scenarioTitle": "Replacing text spanning a run boundary preserves surrounding run formatting",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.3.3.31",
+    "clauseTitle": "t (Text)"
+  },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "replaceFirstTextOccurrence",
+    "findText": "target",
+    "replaceText": "clause"
+  },
+  "assertionList": [
+    {
+      "assertionKind": "documentTextContainsAtOffset",
+      "expectedSubstring": "clause",
+      "expectedOffset": 6
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:p[contains(., 'target')]",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "documentTextContainsAtOffset",
+      "expectedSubstring": "Alpha-clause-tail",
+      "expectedOffset": 0
+    },
+    {
+      "assertionKind": "xpathQueryExists",
+      "xpathExpression": "//w:r[w:rPr/w:b and w:t[contains(text(), 'Alpha-')]]"
+    },
+    {
+      "assertionKind": "xpathQueryExists",
+      "xpathExpression": "//w:r[w:rPr/w:i and w:t[contains(text(), '-tail')]]"
+    }
+  ]
+}
