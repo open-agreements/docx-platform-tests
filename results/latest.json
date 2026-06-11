@@ -1,0 +1,44 @@
+{
+  "runTimestamp": "2026-06-11T00:35:41.551Z",
+  "dslVersion": "1.0",
+  "protocolVersion": 1,
+  "implementations": [],
+  "results": [
+    {
+      "scenarioId": "acceptDeletionsRemovesDelContent",
+      "scenarioTitle": "Accepting deletions removes w:del wrappers and their content",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.13.5.14",
+        "clauseTitle": "del (Deleted Run Content)"
+      },
+      "outcomes": {}
+    },
+    {
+      "scenarioId": "acceptInsertionsUnwrapsInsWrappers",
+      "scenarioTitle": "Accepting insertions unwraps w:ins and keeps run content",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.13.5.18",
+        "clauseTitle": "ins (Inserted Run Content)"
+      },
+      "outcomes": {}
+    },
+    {
+      "scenarioId": "replaceFirstOccurrencePreservesOffsets",
+      "scenarioTitle": "Replacing the first occurrence places the new text at the matched offset",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.3.3.31",
+        "clauseTitle": "t (Text)"
+      },
+      "outcomes": {}
+    }
+  ]
+}
