@@ -15,6 +15,11 @@
       "adapterName": "libreoffice",
       "adapterCommand": ["python3", "adapters/libreoffice/run_adapter.py"],
       "adapterVersionCommand": ["soffice", "--version"]
+    },
+    {
+      "adapterName": "openxml-sdk",
+      "adapterCommand": ["bash", "adapters/openxml-sdk/run-adapter.sh"],
+      "adapterVersionCommand": ["bash", "adapters/openxml-sdk/run-adapter.sh", "--print-library-version"]
     }
   ]
 }
