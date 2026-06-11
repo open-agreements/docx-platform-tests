@@ -64,5 +64,5 @@ spec, record it in the scenario's `wordBehaviorNote`. See
 
 ## License
 
-[BSD-3-Clause](LICENSE). ECMA-376 is cited by section number only; no spec
+[Apache-2.0](LICENSE). ECMA-376 is cited by section number only; no spec
 text is reproduced in this repository.

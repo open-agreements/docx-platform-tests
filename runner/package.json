@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "description": "Neutral runner for the docx-platform-tests conformance suite",
-  "license": "BSD-3-Clause",
+  "license": "Apache-2.0",
   "scripts": {
     "suite": "tsx src/run.ts",
     "pack-fixtures": "tsx src/pack-fixtures.ts",
