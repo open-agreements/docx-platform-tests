@@ -30,17 +30,17 @@
     },
     {
       "assertionKind": "xpathQueryCount",
-      "xpathExpression": "//w:t[.='Start ']",
+      "xpathExpression": "//w:t[contains(., 'Start')]",
       "expectedCount": 0
     },
     {
       "assertionKind": "xpathQueryCount",
-      "xpathExpression": "//w:t[.='remove-me']",
+      "xpathExpression": "//w:t[contains(., 'remove-me')]",
       "expectedCount": 0
     },
     {
       "assertionKind": "xpathQueryCount",
-      "xpathExpression": "//w:t[.='end']",
+      "xpathExpression": "//w:t[contains(., 'end')]",
       "expectedCount": 0
     },
     {

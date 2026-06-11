@@ -30,7 +30,7 @@
     },
     {
       "assertionKind": "xpathQueryCount",
-      "xpathExpression": "//w:t[.='remove-me']",
+      "xpathExpression": "//w:t[contains(., 'remove-me')]",
       "expectedCount": 0
     },
     {
