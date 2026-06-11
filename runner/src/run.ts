@@ -87,8 +87,19 @@ function runScenario(
     const assertionResults = scenario.manifest.assertionList.map((assertion) =>
       evaluateAssertion(assertion, outputXml, scenario.scenarioDir)
     );
+    // Outcome grading (docs/scenario-dsl.md): the conformance claim is
+    // carried by the semantic assertions; canonicalXmlEquals pins
+    // serialization granularity. An implementation that satisfies the cited
+    // clause but normalizes formatting on save is exercising serialization
+    // freedom, not failing the clause — grade it pass-divergent, not fail.
+    const semanticFailed = assertionResults.some(
+      (r) => r.assertionKind !== 'canonicalXmlEquals' && !r.passed
+    );
+    const canonicalFailed = assertionResults.some(
+      (r) => r.assertionKind === 'canonicalXmlEquals' && !r.passed
+    );
     return {
-      status: assertionResults.every((r) => r.passed) ? 'pass' : 'fail',
+      status: semanticFailed ? 'fail' : canonicalFailed ? 'pass-divergent' : 'pass',
       assertionResults,
     };
   } finally {
@@ -113,7 +124,7 @@ const scenarios = loadAllScenarios();
 
 const results: ResultsDocument = {
   runTimestamp: new Date().toISOString(),
-  dslVersion: '1.0',
+  dslVersion: '1.1',
   protocolVersion: PROTOCOL_VERSION,
   implementations: registry.adapters.map((adapter) => ({
     adapterName: adapter.adapterName,

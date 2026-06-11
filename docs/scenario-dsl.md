@@ -1,4 +1,9 @@
-# Scenario DSL, version 1.0
+# Scenario DSL, version 1.1
+
+Changes in 1.1: outcome grading distinguishes serialization divergence from
+conformance failure (the `pass-divergent` status — see "Outcome grading").
+The scenario manifest format is unchanged; manifests declaring
+`"dslVersion": "1.0"` remain valid.
 
 A scenario is a directory under `scenarios/<group>/<scenarioId>/` containing:
 
@@ -112,3 +117,25 @@ Prefer the weakest assertion that captures the conformance claim. Use
 `canonicalXmlEquals` only when the cited clause pins the output structure,
 and always pair it with xpath or text-projection assertions so a
 structural-granularity disagreement is distinguishable from a semantic one.
+
+### Outcome grading (v1.1)
+
+A scenario cell is graded from the per-assertion results:
+
+| Status | Condition |
+| --- | --- |
+| `pass` | every assertion passed |
+| `pass-divergent` | every assertion **except** `canonicalXmlEquals` passed |
+| `fail` | any non-`canonicalXmlEquals` assertion failed |
+
+The conformance claim is carried by the semantic assertions (xpath and
+text-projection); `canonicalXmlEquals` pins serialization granularity beyond
+what the cited clause requires. WordprocessingML grants implementations real
+serialization freedom — materializing formatting defaults (`pStyle`, `jc`,
+empty `rPr`), regenerating section properties — that canonicalization
+deliberately does not paper over. An implementation that satisfies the cited
+clause but exercises that freedom on save is not failing the clause, and
+labeling it `fail` would misreport the comparison; `pass-divergent` records
+both facts. The per-assertion breakdown remains in `results/latest.json`, so
+a `pass-divergent` cell is always auditable down to the differing canonical
+forms.
