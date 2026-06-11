@@ -7,3 +7,7 @@ adapters/safe-docx/node_modules/
 adapters/safe-docx/package.json
 adapters/safe-docx/package-lock.json
 adapters/python-docx/.venv/
+adapters/openxml-sdk/.dotnet/
+adapters/openxml-sdk/build/
+adapters/openxml-sdk/src/bin/
+adapters/openxml-sdk/src/obj/
