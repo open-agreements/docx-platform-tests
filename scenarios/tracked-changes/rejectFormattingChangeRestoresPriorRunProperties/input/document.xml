@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>
+    <w:p>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+          <w:i/>
+          <w:rPrChange w:id="4" w:author="Reviewer" w:date="2026-01-01T00:00:00Z">
+            <w:rPr>
+              <w:i/>
+            </w:rPr>
+          </w:rPrChange>
+        </w:rPr>
+        <w:t>Styled text</w:t>
+      </w:r>
+    </w:p>
+  </w:body>
+</w:document>
