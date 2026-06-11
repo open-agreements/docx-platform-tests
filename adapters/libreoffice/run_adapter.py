@@ -15,6 +15,7 @@ import socket
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from pathlib import Path
 
@@ -28,6 +29,11 @@ DOCX_FILTER_NAME = "MS Word 2007 XML"
 CONNECT_TIMEOUT_SECONDS = 20.0
 OPERATION_TIMEOUT_SECONDS = 60
 SHUTDOWN_TIMEOUT_SECONDS = 5.0
+# SIGALRM only interrupts the main thread between Python bytecodes, so a
+# pyuno call blocked in native code can sail past OPERATION_TIMEOUT_SECONDS.
+# The watchdog thread is the hard backstop: it reaps soffice and exits the
+# whole process. Ordering: 60s alarm < 90s watchdog < the runner's 120s kill.
+WATCHDOG_TIMEOUT_SECONDS = 90
 
 
 def find_free_port() -> int:
@@ -121,6 +127,23 @@ def run_supported_operation(args, operation: dict) -> int:
     process = None
     document = None
 
+    def watchdog_fired() -> None:
+        sys.stderr.write(
+            f"libreoffice adapter watchdog: still running after "
+            f"{WATCHDOG_TIMEOUT_SECONDS}s; killing soffice and exiting\n"
+        )
+        sys.stderr.flush()
+        if process is not None:
+            try:
+                process.kill()
+            except Exception:
+                pass
+        os._exit(1)
+
+    watchdog = threading.Timer(WATCHDOG_TIMEOUT_SECONDS, watchdog_fired)
+    watchdog.daemon = True
+    watchdog.start()
+
     try:
         process = subprocess.Popen(
             [
@@ -157,6 +180,11 @@ def run_supported_operation(args, operation: dict) -> int:
         print(f"libreoffice adapter error: {exc}", file=sys.stderr)
         return 1
     finally:
+        # Disarm the alarm for the duration of cleanup: a handler raising
+        # mid-cleanup would abandon the soffice reap below. The watchdog stays
+        # armed until cleanup finishes, as the backstop for a wedged cleanup.
+        signal.alarm(0)
+        signal.signal(signal.SIGALRM, signal.SIG_IGN)
         if document is not None:
             try:
                 document.close(False)
@@ -173,20 +201,13 @@ def run_supported_operation(args, operation: dict) -> int:
                 process.kill()
                 process.wait(timeout=SHUTDOWN_TIMEOUT_SECONDS)
         shutil.rmtree(work_dir, ignore_errors=True)
+        watchdog.cancel()
 
 
 def operation_timeout(_signum, _frame):
     raise TimeoutError(
         f"LibreOffice operation exceeded {OPERATION_TIMEOUT_SECONDS} seconds"
     )
-
-
-def termination_requested(signum, _frame):
-    # Turn the runner's kill into an exception so the finally block still
-    # reaps soffice. Best-effort: a handler cannot run while pyuno is blocked
-    # inside a native call; the SIGALRM bound (below the runner's timeout)
-    # exists so the adapter normally times itself out first.
-    raise TimeoutError(f"terminated by signal {signum}")
 
 
 def main() -> int:
@@ -212,9 +233,12 @@ def main() -> int:
         print(f"libreoffice adapter does not implement operation '{name}'")
         return 2
 
+    # No SIGTERM/SIGINT handlers on purpose: the runner's spawnSync sends
+    # SIGTERM once on timeout and then waits for exit, so a Python handler
+    # pending behind a blocked native pyuno call would make the adapter
+    # ignore the kill and hang the whole suite. Default disposition (die
+    # immediately) is the safe behavior; the watchdog reaps soffice.
     previous_handler = signal.signal(signal.SIGALRM, operation_timeout)
-    signal.signal(signal.SIGTERM, termination_requested)
-    signal.signal(signal.SIGINT, termination_requested)
     signal.alarm(OPERATION_TIMEOUT_SECONDS)
     try:
         return run_supported_operation(args, operation)
