@@ -14,7 +14,7 @@
     {
       "adapterName": "libreoffice",
       "adapterCommand": ["python3", "adapters/libreoffice/run_adapter.py"],
-      "adapterVersionCommand": ["bash", "-lc", "soffice --version"]
+      "adapterVersionCommand": ["soffice", "--version"]
     }
   ]
 }

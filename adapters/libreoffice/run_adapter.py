@@ -132,9 +132,10 @@ def run_supported_operation(args, operation: dict) -> int:
                 f"-env:UserInstallation={Path(profile_dir).resolve().as_uri()}",
                 f"--accept=socket,host=localhost,port={port};urp;StarOffice.ComponentContext",
             ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
+            # DEVNULL, not PIPE: nobody reads these until shutdown, and a
+            # noisy soffice crash could fill the pipe and deadlock the adapter.
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
         )
 
         remote_context = connect_to_soffice(uno, port, process)
@@ -164,16 +165,13 @@ def run_supported_operation(args, operation: dict) -> int:
                     document.dispose()
                 except Exception:
                     pass
-        if process is not None:
-            if process.poll() is None:
-                process.terminate()
-                try:
-                    process.communicate(timeout=SHUTDOWN_TIMEOUT_SECONDS)
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    process.communicate(timeout=SHUTDOWN_TIMEOUT_SECONDS)
-            else:
-                process.communicate(timeout=SHUTDOWN_TIMEOUT_SECONDS)
+        if process is not None and process.poll() is None:
+            process.terminate()
+            try:
+                process.wait(timeout=SHUTDOWN_TIMEOUT_SECONDS)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait(timeout=SHUTDOWN_TIMEOUT_SECONDS)
         shutil.rmtree(work_dir, ignore_errors=True)
 
 
@@ -181,6 +179,14 @@ def operation_timeout(_signum, _frame):
     raise TimeoutError(
         f"LibreOffice operation exceeded {OPERATION_TIMEOUT_SECONDS} seconds"
     )
+
+
+def termination_requested(signum, _frame):
+    # Turn the runner's kill into an exception so the finally block still
+    # reaps soffice. Best-effort: a handler cannot run while pyuno is blocked
+    # inside a native call; the SIGALRM bound (below the runner's timeout)
+    # exists so the adapter normally times itself out first.
+    raise TimeoutError(f"terminated by signal {signum}")
 
 
 def main() -> int:
@@ -207,6 +213,8 @@ def main() -> int:
         return 2
 
     previous_handler = signal.signal(signal.SIGALRM, operation_timeout)
+    signal.signal(signal.SIGTERM, termination_requested)
+    signal.signal(signal.SIGINT, termination_requested)
     signal.alarm(OPERATION_TIMEOUT_SECONDS)
     try:
         return run_supported_operation(args, operation)
