@@ -24,6 +24,12 @@ rather than an adapter-computed rewrite. Since cross-paragraph matches are out
 of scope, that first match is in the first matching paragraph and honors the
 DSL's paragraph-local-first rule.
 
+**Expected `canonicalXmlEquals` divergence:** LibreOffice materializes
+formatting defaults on save (explicit `pStyle`, `bidi`, `jc`, empty `rPr`),
+so scenarios with a `canonicalXmlEquals` assertion show honest `fail` cells
+even when every semantic assertion (revision removal, text projection)
+passes. The per-assertion breakdown in the matrix carries that nuance.
+
 **Known upstream caveat:** LibreOffice drops `w:ins` provenance on save when
 an insertion's entire content has been deleted (reproduced on LO 25.8.7.3).
 Scenarios touching nested del-in-ins would show honest `fail` cells — known
