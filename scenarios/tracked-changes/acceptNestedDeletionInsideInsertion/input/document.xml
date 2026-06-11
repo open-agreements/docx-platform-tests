@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>
+    <w:p>
+      <w:r>
+        <w:t xml:space="preserve">Anchor </w:t>
+      </w:r>
+      <w:ins w:id="1" w:author="Author A" w:date="2026-01-01T00:00:00Z">
+        <w:r>
+          <w:t xml:space="preserve">Start </w:t>
+        </w:r>
+        <w:del w:id="2" w:author="Author B" w:date="2026-01-02T00:00:00Z">
+          <w:r>
+            <w:delText>remove-me</w:delText>
+          </w:r>
+        </w:del>
+        <w:r>
+          <w:t>end</w:t>
+        </w:r>
+      </w:ins>
+    </w:p>
+  </w:body>
+</w:document>
