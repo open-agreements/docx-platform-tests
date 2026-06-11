@@ -1,4 +1,15 @@
 {
   "protocolVersion": 1,
-  "adapters": []
+  "adapters": [
+    {
+      "adapterName": "safe-docx",
+      "adapterCommand": ["adapters/safe-docx/node_modules/.bin/safe-docx-conformance-adapter"],
+      "adapterVersionCommand": ["node", "-p", "require('./adapters/safe-docx/node_modules/@usejunior/docx-core/package.json').version"]
+    },
+    {
+      "adapterName": "python-docx",
+      "adapterCommand": ["adapters/python-docx/.venv/bin/python", "adapters/python-docx/run_adapter.py"],
+      "adapterVersionCommand": ["adapters/python-docx/.venv/bin/python", "-c", "import docx; print(docx.__version__)"]
+    }
+  ]
 }

@@ -1,0 +1,5 @@
+{
+  "repository": "https://github.com/UseJunior/safe-docx",
+  "commitSha": "d2ee1f0ecb90140055fca5522aafe3eff4da4ce1",
+  "note": "Pinned-SHA source build until a safe-docx release publishes the safe-docx-conformance-adapter bin to npm (issue #3)."
+}
