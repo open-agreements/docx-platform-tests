@@ -1,5 +1,6 @@
 {
   "repository": "https://github.com/UseJunior/safe-docx",
   "trackingBranchName": "main",
-  "note": "Source-built from the tip of the tracking branch on every suite run so safe-docx changes are re-tested without an npm release; install.sh resolves the branch to a commit and records it in build-info.json. To reproduce a past matrix, set pinnedCommitSha (takes precedence over trackingBranchName)."
+  "pullRequestPinnedCommitSha": "51742f0b60b38b9afa6533b9f4a08e62ca08f1be",
+  "note": "Source-built from the tip of the tracking branch for scheduled/main runs so safe-docx changes are re-tested without an npm release; pull_request suite runs use pullRequestPinnedCommitSha so required checks are hermetic. install.sh records the concrete commit in build-info.json. To reproduce a past matrix for every event, set pinnedCommitSha (takes precedence over both trackingBranchName and pullRequestPinnedCommitSha)."
 }

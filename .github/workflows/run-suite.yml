@@ -35,6 +35,8 @@ jobs:
       # An install failure fails CI; runtime library breakage instead surfaces
       # as error cells in the published matrix.
       - name: Install adapter dependencies
+        env:
+          SAFE_DOCX_REF_MODE: ${{ github.event_name == 'pull_request' && 'pull-request-pinned' || 'tracking' }}
         run: |
           set -euo pipefail
           for adapter in adapters/*/install.sh; do

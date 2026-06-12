@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Builds @usejunior/docx-core from safe-docx source and installs the packed
 # tarball locally, exposing node_modules/.bin/safe-docx-conformance-adapter.
-# The source commit comes from safe-docx.pin.json: pinnedCommitSha if set
-# (reproducing a past matrix), otherwise the tip of trackingBranchName —
-# resolved to a concrete commit here and recorded in build-info.json so
-# results stay attributable. A fork reproduces this build from the public
-# repository alone.
+# The source commit comes from safe-docx.pin.json. pinnedCommitSha, when set,
+# reproduces a past matrix for every event. Otherwise PR checks can opt into
+# pullRequestPinnedCommitSha via SAFE_DOCX_REF_MODE=pull-request-pinned, while
+# scheduled/main runs keep resolving trackingBranchName to the current tip.
+# The concrete commit is recorded in build-info.json so results stay
+# attributable. A fork reproduces this build from the public repository alone.
 #
 # Set SAFE_DOCX_SRC to an existing safe-docx checkout to pack from it instead
 # of cloning (local development convenience; CI always clones).
@@ -19,10 +20,22 @@ else
   REPO_URL=$(node -p "require('./safe-docx.pin.json').repository")
   SHA=$(node -p "require('./safe-docx.pin.json').pinnedCommitSha ?? ''")
   if [ -z "$SHA" ]; then
-    BRANCH=$(node -p "require('./safe-docx.pin.json').trackingBranchName")
-    SHA=$(git ls-remote "$REPO_URL" "refs/heads/$BRANCH" | cut -f1)
-    if [ -z "$SHA" ]; then
-      echo "could not resolve branch $BRANCH on $REPO_URL" >&2
+    REF_MODE="${SAFE_DOCX_REF_MODE:-tracking}"
+    if [ "$REF_MODE" = "pull-request-pinned" ]; then
+      SHA=$(node -p "require('./safe-docx.pin.json').pullRequestPinnedCommitSha ?? ''")
+      if [ -z "$SHA" ]; then
+        echo "SAFE_DOCX_REF_MODE=pull-request-pinned requires pullRequestPinnedCommitSha in safe-docx.pin.json" >&2
+        exit 1
+      fi
+    elif [ "$REF_MODE" = "tracking" ]; then
+      BRANCH=$(node -p "require('./safe-docx.pin.json').trackingBranchName")
+      SHA=$(git ls-remote "$REPO_URL" "refs/heads/$BRANCH" | cut -f1)
+      if [ -z "$SHA" ]; then
+        echo "could not resolve branch $BRANCH on $REPO_URL" >&2
+        exit 1
+      fi
+    else
+      echo "unsupported SAFE_DOCX_REF_MODE '$REF_MODE' (expected 'tracking' or 'pull-request-pinned')" >&2
       exit 1
     fi
   fi
