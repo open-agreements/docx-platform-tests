@@ -27,6 +27,11 @@ with no tracked-changes API reports `unsupported` (exit code 2) for those
 scenarios rather than failing, and the matrix shows the gap. That asymmetry
 is information, not noise.
 
+The `superdoc-sdk` adapter exercises SuperDoc's headless Document API for
+tracked-change accept/reject and find-replace coverage. It is optional like
+the other adapters, but note that its upstream `@superdoc-dev/sdk` package is
+published as AGPL-3.0.
+
 The same honesty cuts the other way: an implementation that satisfies the
 cited clause but serializes differently — materializing formatting defaults
 on save, say — is graded `pass-divergent`, not `fail`. `canonicalXmlEquals`

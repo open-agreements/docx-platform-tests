@@ -1,0 +1,15 @@
+{
+  "name": "docx-platform-tests-superdoc-sdk-adapter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "adapter": "node run_adapter.mjs"
+  },
+  "dependencies": {
+    "@superdoc-dev/sdk": "1.16.1",
+    "@xmldom/xmldom": "^0.9.10",
+    "fflate": "^0.8.2"
+  }
+}
