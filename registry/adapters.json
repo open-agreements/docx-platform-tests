@@ -20,6 +20,11 @@
       "adapterName": "openxml-sdk",
       "adapterCommand": ["bash", "adapters/openxml-sdk/run-adapter.sh"],
       "adapterVersionCommand": ["bash", "adapters/openxml-sdk/run-adapter.sh", "--print-library-version"]
+    },
+    {
+      "adapterName": "dolanmiu-docx",
+      "adapterCommand": ["node", "adapters/dolanmiu-docx/run_adapter.mjs"],
+      "adapterVersionCommand": ["node", "-p", "require('./adapters/dolanmiu-docx/node_modules/docx/package.json').version"]
     }
   ]
 }
