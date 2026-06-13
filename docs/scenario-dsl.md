@@ -96,10 +96,18 @@ assertion failing never masks a lenient one passing.
 | `xpathQueryExists` | `xpathExpression` | the raw output DOM (sugar for count ≥ 1) |
 | `documentTextContainsAtOffset` | `expectedSubstring`, `expectedOffset` | the body text projection (below) |
 | `canonicalXmlEquals` | `expectedDocumentPath` | the canonicalized output vs the canonicalized expected document |
-| `schemaValidAgainstWml` | — | **defined but deferred**: the runner reports `unimplemented-assertion`. Kept in the DSL so scenarios can already declare it; runner support requires an XSD validator decision. |
+| `schemaValidAgainstWml` | — | the output `word/document.xml` validated with `xmllint --schema` against `DPT_WML_SCHEMA_PATH` |
 
 XPath expressions are evaluated with the prefix `w:` bound to
 `http://schemas.openxmlformats.org/wordprocessingml/2006/main`.
+
+`schemaValidAgainstWml` is an optional-tool assertion. The runner invokes
+`xmllint --noout --schema "$DPT_WML_SCHEMA_PATH" <document.xml>` and expects
+the schema path to be a WordprocessingML XSD entry point with imports
+resolvable relative to that file. Set `DPT_XMLLINT_BIN` to override the
+binary name/path. If a scenario declares this assertion without
+`DPT_WML_SCHEMA_PATH`, the assertion fails with a setup diagnostic rather
+than silently passing.
 
 ### Body text projection
 
