@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "runTimestamp": "2026-06-13T00:34:13.173Z",
+  "runTimestamp": "2026-06-13T06:30:37.775Z",
   "dslVersion": "1.2",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.11.0+git.51742f0b60b3"
+      "adapterVersion": "0.11.0+git.5210d6c4bcdc"
     },
     {
       "adapterName": "python-docx",
@@ -23,6 +23,10 @@
     {
       "adapterName": "dolanmiu-docx",
       "adapterVersion": "9.7.1"
+    },
+    {
+      "adapterName": "superdoc-sdk",
+      "adapterVersion": "1.16.1"
     }
   ],
   "results": [
@@ -88,6 +92,10 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "SuperDoc SDK does not expose paragraph-mark tracked changes through trackChanges.list"
         }
       }
     },
@@ -163,6 +171,31 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "superdoc-sdk": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -248,6 +281,36 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "superdoc-sdk": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:rPrChange matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:b matched 1 node(s); expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:i matched 1 node(s); expected at least 1"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Styled text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}b\",\n           \"attributes\": [],\n           \"children\": []\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}b\",\n           \"attributes\": [],\n           \"children\": []\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -313,6 +376,26 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "superdoc-sdk": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text Inserted text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Inserted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Inserted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -418,6 +501,46 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "superdoc-sdk": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'remove-me')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Anchor Start end' found at offset 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Start end' found at offset 7"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'end' found at offset 13"
+            }
+          ]
         }
       }
     },
@@ -493,6 +616,31 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "superdoc-sdk": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text Deleted text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Deleted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Deleted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -578,6 +726,36 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "superdoc-sdk": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:rPrChange matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:b matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:i matched 1 node(s); expected at least 1"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Styled text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -643,6 +821,10 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "SuperDoc SDK does not expose paragraph-mark tracked changes through trackChanges.list"
         }
       }
     },
@@ -718,6 +900,31 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "superdoc-sdk": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(text(), 'Inserted text')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -823,6 +1030,46 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "superdoc-sdk": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'Start')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'remove-me')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'end')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Anchor ' found at offset 0"
+            }
+          ]
         }
       }
     },
@@ -920,6 +1167,26 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx patchDocument targets explicit patch placeholders; protocol requires arbitrary paragraph-local literal search, which would be an adapter-side algorithm"
+        },
+        "superdoc-sdk": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'sixty' found at offset 15"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(text(), 'thirty')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Payment due in sixty days' found at offset 0"
+            }
+          ]
         }
       }
     },
@@ -985,6 +1252,26 @@
         "dolanmiu-docx": {
           "status": "unsupported",
           "reason": "dolanmiu/docx patchDocument targets explicit patch placeholders; protocol requires arbitrary paragraph-local literal search, which would be an adapter-side algorithm"
+        },
+        "superdoc-sdk": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'clause' found at offset 6"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:p[contains(., 'target')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Alpha-clause-tail' found at offset 0"
+            }
+          ]
         }
       }
     }
