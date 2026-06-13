@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "runTimestamp": "2026-06-13T00:23:56.911Z",
+  "runTimestamp": "2026-06-13T00:34:13.173Z",
   "dslVersion": "1.2",
   "protocolVersion": 1,
   "implementations": [
@@ -19,6 +19,10 @@
     {
       "adapterName": "openxml-sdk",
       "adapterVersion": "DocumentFormat.OpenXml 3.5.1"
+    },
+    {
+      "adapterName": "dolanmiu-docx",
+      "adapterVersion": "9.7.1"
     }
   ],
   "results": [
@@ -80,6 +84,10 @@
         "openxml-sdk": {
           "status": "unsupported",
           "reason": "the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -151,6 +159,10 @@
         "openxml-sdk": {
           "status": "unsupported",
           "reason": "the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -232,6 +244,10 @@
         "openxml-sdk": {
           "status": "unsupported",
           "reason": "the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -293,6 +309,10 @@
         "openxml-sdk": {
           "status": "unsupported",
           "reason": "the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -394,6 +414,10 @@
         "openxml-sdk": {
           "status": "unsupported",
           "reason": "the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -465,6 +489,10 @@
         "openxml-sdk": {
           "status": "unsupported",
           "reason": "the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -546,6 +574,10 @@
         "openxml-sdk": {
           "status": "unsupported",
           "reason": "the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -607,6 +639,10 @@
         "openxml-sdk": {
           "status": "unsupported",
           "reason": "the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -678,6 +714,10 @@
         "openxml-sdk": {
           "status": "unsupported",
           "reason": "the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -779,6 +819,10 @@
         "openxml-sdk": {
           "status": "unsupported",
           "reason": "the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -872,6 +916,10 @@
               "detail": "'Payment due in sixty days' found at offset 0"
             }
           ]
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx patchDocument targets explicit patch placeholders; protocol requires arbitrary paragraph-local literal search, which would be an adapter-side algorithm"
         }
       }
     },
@@ -933,6 +981,10 @@
         "openxml-sdk": {
           "status": "unsupported",
           "reason": "first occurrence spans w:t boundaries; the openxml-sdk adapter only performs intra-w:t replacement (glue, not algorithms)"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx patchDocument targets explicit patch placeholders; protocol requires arbitrary paragraph-local literal search, which would be an adapter-side algorithm"
         }
       }
     }
