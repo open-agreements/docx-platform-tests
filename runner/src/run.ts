@@ -12,6 +12,7 @@ import { dirname, join } from 'node:path';
 import { extractDocumentXml } from './docx.js';
 import { evaluateAssertion } from './assertions.js';
 import { loadAllScenarios, REPO_ROOT } from './scenarios.js';
+import { RESULTS_SCHEMA_VERSION } from './results-schema.js';
 import type {
   AdapterRegistration,
   AdapterRegistry,
@@ -123,6 +124,7 @@ const registry = JSON.parse(readFileSync(registryPath, 'utf8')) as AdapterRegist
 const scenarios = loadAllScenarios();
 
 const results: ResultsDocument = {
+  schemaVersion: RESULTS_SCHEMA_VERSION,
   runTimestamp: new Date().toISOString(),
   dslVersion: '1.1',
   protocolVersion: PROTOCOL_VERSION,

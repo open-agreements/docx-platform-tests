@@ -32,6 +32,10 @@ jobs:
         working-directory: runner
         run: npm run check-fixtures
 
+      - name: Verify committed results schema is current
+        working-directory: runner
+        run: npm run check-results-schema
+
       # An install failure fails CI; runtime library breakage instead surfaces
       # as error cells in the published matrix.
       - name: Install adapter dependencies
@@ -47,6 +51,10 @@ jobs:
         working-directory: runner
         run: npm run suite
 
+      - name: Validate results JSON
+        working-directory: runner
+        run: npm run validate-results
+
       - name: Render matrix view
         working-directory: runner
         run: npm run render-matrix
@@ -54,7 +62,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: results
-          path: results/latest.json
+          path: |
+            results/latest.json
+            results/results.schema.json
 
       - name: Publish results to gh-pages
         if: github.event_name != 'pull_request'
