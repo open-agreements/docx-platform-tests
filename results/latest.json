@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "runTimestamp": "2026-06-13T03:01:19.526Z",
+  "runTimestamp": "2026-06-13T06:42:08.150Z",
   "dslVersion": "1.2",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.11.0+git.51742f0b60b3"
+      "adapterVersion": "0.11.0+git.5210d6c4bcdc"
     },
     {
       "adapterName": "python-docx",
@@ -27,6 +27,10 @@
     {
       "adapterName": "superdoc-sdk",
       "adapterVersion": "1.16.1"
+    },
+    {
+      "adapterName": "docx-rs",
+      "adapterVersion": "docx-rs 0.4.20"
     }
   ],
   "results": [
@@ -67,7 +71,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -80,6 +84,10 @@
         "superdoc-sdk": {
           "status": "unsupported",
           "reason": "SuperDoc SDK does not expose paragraph-mark tracked changes through trackChanges.list"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -125,7 +133,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -159,6 +167,10 @@
               "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
             }
           ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -209,7 +221,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -248,6 +260,10 @@
               "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}b\",\n           \"attributes\": [],\n           \"children\": []\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}b\",\n           \"attributes\": [],\n           \"children\": []\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
             }
           ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -288,7 +304,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -317,6 +333,10 @@
               "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Inserted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Inserted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
             }
           ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -377,7 +397,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -426,6 +446,10 @@
               "detail": "'end' found at offset 13"
             }
           ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -471,7 +495,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -505,6 +529,10 @@
               "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Deleted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Deleted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
             }
           ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -555,7 +583,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -594,6 +622,10 @@
               "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
             }
           ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -634,7 +666,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -647,6 +679,10 @@
         "superdoc-sdk": {
           "status": "unsupported",
           "reason": "SuperDoc SDK does not expose paragraph-mark tracked changes through trackChanges.list"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -692,7 +728,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -726,6 +762,10 @@
               "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"00000001\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"720\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
             }
           ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -786,7 +826,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -835,6 +875,10 @@
               "detail": "'Anchor ' found at offset 0"
             }
           ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       }
     },
@@ -891,7 +935,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "pass",
@@ -936,6 +980,10 @@
               "detail": "'Payment due in sixty days' found at offset 0"
             }
           ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
         }
       }
     },
@@ -976,7 +1024,7 @@
         },
         "libreoffice": {
           "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-17-superdoc-sdk/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -1005,6 +1053,10 @@
               "detail": "'Alpha-clause-tail' found at offset 0"
             }
           ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
         }
       }
     }
