@@ -30,6 +30,11 @@
       "adapterName": "superdoc-sdk",
       "adapterCommand": ["node", "adapters/superdoc-sdk/run_adapter.mjs"],
       "adapterVersionCommand": ["node", "-p", "require('./adapters/superdoc-sdk/node_modules/@superdoc-dev/sdk/package.json').version"]
+    },
+    {
+      "adapterName": "docx-rs",
+      "adapterCommand": ["bash", "adapters/docx-rs/run-adapter.sh"],
+      "adapterVersionCommand": ["bash", "adapters/docx-rs/run-adapter.sh", "--print-library-version"]
     }
   ]
 }
