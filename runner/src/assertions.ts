@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { DOMParser } from '@xmldom/xmldom';
 import xpath from 'xpath';
 import { canonicalizeDocumentXml, WML_NS } from './canonicalize.js';
@@ -7,6 +8,8 @@ import type { AssertionResult, ScenarioAssertion } from './types.js';
 
 const XML_NS = 'http://www.w3.org/XML/1998/namespace';
 const selectWithW = xpath.useNamespaces({ w: WML_NS });
+const WML_SCHEMA_PATH_ENV = 'DPT_WML_SCHEMA_PATH';
+const XMLLINT_BIN_ENV = 'DPT_XMLLINT_BIN';
 
 function parseDom(documentXml: string): Document {
   return new DOMParser().parseFromString(documentXml, 'text/xml') as unknown as Document;
@@ -33,6 +36,40 @@ export function projectBodyText(documentXml: string): string {
     lines.push(line);
   }
   return lines.join('\n');
+}
+
+function validateAgainstWmlSchema(documentXml: string): AssertionResult {
+  const schemaPath = process.env[WML_SCHEMA_PATH_ENV];
+  if (!schemaPath) {
+    return {
+      assertionKind: 'schemaValidAgainstWml',
+      passed: false,
+      detail: `schema validation requires ${WML_SCHEMA_PATH_ENV} pointing to a WordprocessingML XSD entry point`,
+    };
+  }
+
+  const xmllint = process.env[XMLLINT_BIN_ENV] ?? 'xmllint';
+  const result = spawnSync(xmllint, ['--noout', '--schema', schemaPath, '-'], {
+    input: documentXml,
+    encoding: 'utf8',
+    timeout: 120_000,
+  });
+  if (result.error) {
+    return {
+      assertionKind: 'schemaValidAgainstWml',
+      passed: false,
+      detail: `${xmllint} failed to run: ${String(result.error)}`,
+    };
+  }
+  const output = `${result.stdout}${result.stderr}`.trim();
+  return {
+    assertionKind: 'schemaValidAgainstWml',
+    passed: result.status === 0,
+    detail:
+      result.status === 0
+        ? `valid against ${schemaPath}`
+        : `xmllint exit ${result.status}: ${output.slice(0, 2000) || 'no diagnostics'}`,
+  };
 }
 
 export function evaluateAssertion(
@@ -95,12 +132,7 @@ export function evaluateAssertion(
       };
     }
     case 'schemaValidAgainstWml': {
-      return {
-        assertionKind: assertion.assertionKind,
-        passed: false,
-        detail:
-          'unimplemented-assertion: schemaValidAgainstWml is defined by DSL 1.0 but runner support is deferred',
-      };
+      return validateAgainstWmlSchema(outputDocumentXml);
     }
     default:
       return {

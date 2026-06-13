@@ -17,7 +17,7 @@ WordprocessingML conformance only, currently:
 
 - tracked changes (`w:ins` / `w:del` accept and reject semantics),
 - find-replace over run text,
-- schema validity (assertion kind defined, runner support deferred — see
+- schema validity (optional `xmllint` + WML XSD tooling — see
   `docs/scenario-dsl.md`).
 
 SpreadsheetML and PresentationML are out of scope.
@@ -59,6 +59,11 @@ npm run check-fixtures   # verify input.docx packages match input/document.xml
 npm run suite            # run all registered adapters, write ../results/latest.json
 npm run validate-results # validate ../results/latest.json against the schema
 ```
+
+Scenarios that use `schemaValidAgainstWml` require `xmllint` and
+`DPT_WML_SCHEMA_PATH` pointing to a WordprocessingML XSD entry point whose
+imports are resolvable from that file. Set `DPT_XMLLINT_BIN` to override the
+`xmllint` binary name/path.
 
 ## Adding an implementation
 
