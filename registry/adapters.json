@@ -25,6 +25,11 @@
       "adapterName": "dolanmiu-docx",
       "adapterCommand": ["node", "adapters/dolanmiu-docx/run_adapter.mjs"],
       "adapterVersionCommand": ["node", "-p", "require('./adapters/dolanmiu-docx/node_modules/docx/package.json').version"]
+    },
+    {
+      "adapterName": "superdoc-sdk",
+      "adapterCommand": ["node", "adapters/superdoc-sdk/run_adapter.mjs"],
+      "adapterVersionCommand": ["node", "-p", "require('./adapters/superdoc-sdk/node_modules/@superdoc-dev/sdk/package.json').version"]
     }
   ]
 }
