@@ -73,6 +73,7 @@ export interface ScenarioOutcome {
 }
 
 export interface ResultsDocument {
+  schemaVersion: number;
   runTimestamp: string;
   dslVersion: string;
   protocolVersion: number;

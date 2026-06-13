@@ -34,6 +34,11 @@ pins serialization granularity beyond what the clause requires, and the suite
 does not claim a conformance failure where there is only serialization
 freedom. See "Outcome grading" in `docs/scenario-dsl.md`.
 
+Published results live at `results/latest.json` and include a top-level
+`schemaVersion`. The JSON contract is published alongside the data as
+`results/results.schema.json` (draft 2020-12), and CI validates every emitted
+results document against it before publishing.
+
 ## Layout
 
 ```
@@ -52,6 +57,7 @@ cd runner
 npm ci
 npm run check-fixtures   # verify input.docx packages match input/document.xml
 npm run suite            # run all registered adapters, write ../results/latest.json
+npm run validate-results # validate ../results/latest.json against the schema
 ```
 
 ## Adding an implementation

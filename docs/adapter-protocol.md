@@ -48,6 +48,14 @@ The declaration is documentation; at runtime the adapter's exit code is
 authoritative (an adapter may declare an operation and still exit 2 for a
 specific input it cannot handle).
 
+## Published results contract
+
+The runner writes `results/latest.json`, which is also published to GitHub
+Pages. Consumers should treat the top-level `schemaVersion` as the results
+format version and validate against `results/results.schema.json` (draft
+2020-12), published alongside the data. CI checks that the committed schema is
+current and validates every emitted `latest.json` before publication.
+
 ## Versioning
 
 The protocol version is asserted by the adapter, not negotiated. Breaking

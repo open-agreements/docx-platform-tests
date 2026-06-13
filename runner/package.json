@@ -11,10 +11,14 @@
     "sanity": "tsx src/__sanity.ts",
     "pack-fixtures": "tsx src/pack-fixtures.ts",
     "check-fixtures": "tsx src/pack-fixtures.ts --check",
+    "write-results-schema": "tsx src/write-results-schema.ts",
+    "check-results-schema": "tsx src/write-results-schema.ts --check",
+    "validate-results": "tsx src/validate-results.ts",
     "render-matrix": "tsx src/render-matrix.ts"
   },
   "dependencies": {
     "@xmldom/xmldom": "^0.9.8",
+    "ajv": "^8.17.1",
     "fflate": "^0.8.2",
     "xpath": "^0.0.34"
   },

@@ -92,10 +92,13 @@ per-assertion breakdown in <a href="./latest.json">latest.json</a> carries the d
 ${rows}
 </tbody>
 </table>
-<p>Data: <a href="./latest.json">results/latest.json</a> · Suite, scenario DSL, and adapter protocol:
+<p>Data: <a href="./latest.json">results/latest.json</a> · Schema:
+<a href="./results.schema.json">results/results.schema.json</a> · Suite, scenario DSL, and adapter protocol:
 <a href="https://github.com/open-agreements/docx-platform-tests">open-agreements/docx-platform-tests</a> (Apache-2.0)
 · Narrative comparisons: <a href="https://usejunior.com/engineering/safe-docx/cross-implementation">usejunior.com</a></p>
-<footer>Run ${esc(results.runTimestamp)} · DSL ${esc(results.dslVersion)} · adapter protocol v${results.protocolVersion}.
+<footer>Run ${esc(results.runTimestamp)} · results schema v${results.schemaVersion} · DSL ${esc(
+  results.dslVersion
+)} · adapter protocol v${results.protocolVersion}.
 To add an implementation, see <a href="https://github.com/open-agreements/docx-platform-tests/blob/main/docs/adapter-protocol.md">docs/adapter-protocol.md</a>.</footer>
 </body>
 </html>
