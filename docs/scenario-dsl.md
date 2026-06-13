@@ -1,9 +1,12 @@
-# Scenario DSL, version 1.1
+# Scenario DSL, version 1.2
+
+Changes in 1.2: composed scenarios can declare optional
+`secondarySpecCitations` alongside the mandatory primary `specCitation`.
 
 Changes in 1.1: outcome grading distinguishes serialization divergence from
 conformance failure (the `pass-divergent` status — see "Outcome grading").
-The scenario manifest format is unchanged; manifests declaring
-`"dslVersion": "1.0"` remain valid.
+Manifests declaring `"dslVersion": "1.0"` or `"dslVersion": "1.1"` remain
+valid.
 
 A scenario is a directory under `scenarios/<group>/<scenarioId>/` containing:
 
@@ -35,6 +38,15 @@ All keys are deliberately self-disambiguating (3–4-word camelCase).
     "section": "17.13.5.18",
     "clauseTitle": "ins (Inserted Run Content)"
   },
+  "secondarySpecCitations": [
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.13.5.14",
+      "clauseTitle": "del (Deleted Run Content)"
+    }
+  ],
   "wordBehaviorNote": null,
   "inputDocumentPath": "input.docx",
   "operationDescriptor": { "operationName": "acceptAllTrackedChanges" },
@@ -42,8 +54,14 @@ All keys are deliberately self-disambiguating (3–4-word camelCase).
 }
 ```
 
-- `specCitation` is mandatory. Every scenario must be defensible against the
-  cited ECMA-376 clause, not against any implementation.
+- `specCitation` is mandatory and is the primary clause the scenario is
+  organized around. Every scenario must be defensible against the cited
+  ECMA-376 clause, not against any implementation.
+- `secondarySpecCitations` is optional. Use it when a composed scenario's
+  assertions also derive from additional clauses (for example, nested
+  `w:del` content inside a `w:ins` wrapper). Single-clause scenarios omit it,
+  and the single-object `specCitation` form remains the DSL 1.x compatibility
+  surface.
 - `wordBehaviorNote` records cases where Microsoft Word's observed behavior
   deviates from a strict reading of the cited clause. When the two conflict,
   the suite treats documented Word behavior as canonical and the note says so

@@ -126,7 +126,7 @@ const scenarios = loadAllScenarios();
 const results: ResultsDocument = {
   schemaVersion: RESULTS_SCHEMA_VERSION,
   runTimestamp: new Date().toISOString(),
-  dslVersion: '1.1',
+  dslVersion: '1.2',
   protocolVersion: PROTOCOL_VERSION,
   implementations: registry.adapters.map((adapter) => ({
     adapterName: adapter.adapterName,

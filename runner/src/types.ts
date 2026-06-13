@@ -30,6 +30,7 @@ export interface ScenarioManifest {
   scenarioId: string;
   scenarioTitle: string;
   specCitation: SpecCitation;
+  secondarySpecCitations?: SpecCitation[];
   wordBehaviorNote: string | null;
   inputDocumentPath: string;
   operationDescriptor: OperationDescriptor;
