@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "runTimestamp": "2026-06-11T06:35:39.773Z",
-  "dslVersion": "1.1",
+  "dslVersion": "1.2",
   "protocolVersion": 1,
   "implementations": [
     {

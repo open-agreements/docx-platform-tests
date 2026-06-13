@@ -1,5 +1,5 @@
 {
-  "dslVersion": "1.0",
+  "dslVersion": "1.2",
   "scenarioId": "acceptNestedDeletionInsideInsertion",
   "scenarioTitle": "Accepting nested deletion inside insertion keeps surviving inserted text",
   "specCitation": {
@@ -9,6 +9,15 @@
     "section": "17.13.5.18",
     "clauseTitle": "ins (Inserted Run Content)"
   },
+  "secondarySpecCitations": [
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.13.5.14",
+      "clauseTitle": "del (Deleted Run Content)"
+    }
+  ],
   "wordBehaviorNote": null,
   "inputDocumentPath": "input.docx",
   "operationDescriptor": { "operationName": "acceptAllTrackedChanges" },
