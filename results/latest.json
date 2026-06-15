@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "runTimestamp": "2026-06-13T06:58:02.373Z",
+  "runTimestamp": "2026-06-15T12:44:33.591Z",
   "dslVersion": "1.2",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.11.0+git.5210d6c4bcdc"
+      "adapterVersion": "0.11.1+git.8a93e0985976"
     },
     {
       "adapterName": "python-docx",
@@ -46,7 +46,7 @@
       },
       "outcomes": {
         "safe-docx": {
-          "status": "fail",
+          "status": "pass",
           "assertionResults": [
             {
               "assertionKind": "xpathQueryCount",
@@ -60,8 +60,8 @@
             },
             {
               "assertionKind": "documentTextContainsAtOffset",
-              "passed": false,
-              "detail": "'First half second half' not found; expected offset 0. Projection: \"second half\""
+              "passed": true,
+              "detail": "'First half second half' found at offset 0"
             }
           ]
         },
@@ -803,7 +803,7 @@
       },
       "outcomes": {
         "safe-docx": {
-          "status": "fail",
+          "status": "pass",
           "assertionResults": [
             {
               "assertionKind": "xpathQueryCount",
@@ -817,8 +817,8 @@
             },
             {
               "assertionKind": "documentTextContainsAtOffset",
-              "passed": false,
-              "detail": "'First half second half' not found; expected offset 0. Projection: \"second half\""
+              "passed": true,
+              "detail": "'First half second half' found at offset 0"
             }
           ]
         },
