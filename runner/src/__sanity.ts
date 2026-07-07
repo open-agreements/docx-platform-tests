@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { evaluateAssertion, projectBodyText } from './assertions.js';
-import { packageFromParts } from './docx.js';
+import { packageFromParts, packDocx, packMinimalDocx, loadPackage } from './docx.js';
 import type { ScenarioAssertion, ScenarioManifest } from './types.js';
 
 let failed = false;
@@ -169,6 +169,88 @@ check(
       assertedPart: { partResolution: 'footerReference', footerReferenceType: 'default' },
     },
     wrongTypeHeader,
+    dir
+  ).passed
+);
+
+// --- Multi-part fixture packing (packDocx): pack -> load -> assert round-trip ---
+
+// No-siblings packDocx must be byte-identical to the historical 3-entry package.
+check(
+  'packDocx with no siblings equals packMinimalDocx byte-for-byte',
+  Buffer.from(packDocx(wrong)).equals(Buffer.from(packMinimalDocx(wrong)))
+);
+
+// A document that references a default header by the packer's stable rId (rId4),
+// packed with styles + comments + header-default sibling fragments.
+const multiPartDocumentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>
+  <w:p><w:pPr><w:pStyle w:val="Heading1"/></w:pPr><w:r><w:t>Titled</w:t></w:r></w:p>
+  <w:p><w:commentRangeStart w:id="0"/><w:r><w:t>Anchored</w:t></w:r><w:commentRangeEnd w:id="0"/><w:r><w:commentReference w:id="0"/></w:r></w:p>
+  <w:sectPr><w:headerReference w:type="default" r:id="rId4"/></w:sectPr>
+</w:body></w:document>`;
+const packedSiblings = new Map<string, string>([
+  [
+    'styles.xml',
+    `<?xml version="1.0"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/></w:style></w:styles>`,
+  ],
+  [
+    'comments.xml',
+    `<?xml version="1.0"?><w:comments xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:comment w:id="0" w:author="Reviewer" w:initials="R"><w:p><w:r><w:t>Please clarify</w:t></w:r></w:p></w:comment></w:comments>`,
+  ],
+  [
+    'header-default.xml',
+    `<?xml version="1.0"?><w:hdr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p><w:r><w:t>Confidential</w:t></w:r></w:p></w:hdr>`,
+  ],
+]);
+const packed = loadPackage(packDocx(multiPartDocumentXml, packedSiblings));
+
+// packDocx is deterministic: same inputs -> same bytes.
+check(
+  'packDocx is byte-deterministic across calls',
+  Buffer.from(packDocx(multiPartDocumentXml, packedSiblings)).equals(
+    Buffer.from(packDocx(multiPartDocumentXml, packedSiblings))
+  )
+);
+// Styles part resolved by relationship Type (packed sibling, not hardcoded path).
+check(
+  'packed styles part resolves by relationship type',
+  evaluateAssertion(
+    {
+      assertionKind: 'xpathQueryExists',
+      xpathExpression: "//w:style[@w:styleId='Heading1']",
+      assertedPart: { partResolution: 'relationshipFromMainPart', relationshipTypeUri: STYLES_TYPE },
+    },
+    packed,
+    dir
+  ).passed
+);
+// Comments part resolved by relationship Type.
+check(
+  'packed comments part resolves by relationship type',
+  evaluateAssertion(
+    {
+      assertionKind: 'xpathQueryExists',
+      xpathExpression: "//w:comment[@w:id='0']/w:p/w:r/w:t[normalize-space(.)='Please clarify']",
+      assertedPart: {
+        partResolution: 'relationshipFromMainPart',
+        relationshipTypeUri: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments',
+      },
+    },
+    packed,
+    dir
+  ).passed
+);
+// Header part resolved two-hop through the packer's stable rId4 wiring.
+check(
+  'packed header-default resolves two-hop via stable rId4',
+  evaluateAssertion(
+    {
+      assertionKind: 'xpathQueryExists',
+      xpathExpression: "//w:hdr/w:p/w:r/w:t[normalize-space(.)='Confidential']",
+      assertedPart: { partResolution: 'headerReference', headerReferenceType: 'default' },
+    },
+    packed,
     dir
   ).passed
 );

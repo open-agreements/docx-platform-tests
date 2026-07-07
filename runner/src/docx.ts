@@ -28,11 +28,11 @@ const PACKAGE_RELS_XML = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?
 // Fixed mtime keeps committed fixture packages stable across regenerations.
 const FIXED_MTIME = new Date('2026-01-01T00:00:00Z');
 
+function entry(text: string): [Uint8Array, { mtime: Date }] {
+  return [strToU8(text), { mtime: FIXED_MTIME }];
+}
+
 export function packMinimalDocx(documentXml: string): Uint8Array {
-  const entry = (text: string): [Uint8Array, { mtime: Date }] => [
-    strToU8(text),
-    { mtime: FIXED_MTIME },
-  ];
   return zipSync({
     '[Content_Types].xml': entry(CONTENT_TYPES_XML),
     '_rels/.rels': entry(PACKAGE_RELS_XML),
@@ -40,13 +40,113 @@ export function packMinimalDocx(documentXml: string): Uint8Array {
   });
 }
 
-export function extractDocumentXml(docxBytes: Uint8Array): string {
-  const entries = unzipSync(docxBytes);
-  const part = entries[MAIN_DOCUMENT_PART];
-  if (!part) {
-    throw new Error('package has no word/document.xml part');
+const WML_CONTENT_TYPE_BASE =
+  'application/vnd.openxmlformats-officedocument.wordprocessingml';
+
+/**
+ * The closed set of optional sibling fragments a scenario may pack alongside
+ * `input/document.xml`. Each slot has a STABLE relationship id (not renumbered
+ * by which other siblings are present) so a fixture author wiring a
+ * `sectPr/headerReference` can hardcode the id in `input/document.xml` and know
+ * the packer will emit the matching relationship. Styles/numbering/comments are
+ * linked purely by relationship Type — their id is never referenced from the
+ * body — but they get stable ids too for a self-documenting rels part.
+ */
+export interface FixturePartSlot {
+  fragmentFile: string;
+  partName: string;
+  relationshipId: string;
+  relationshipType: string;
+  contentType: string;
+}
+
+export const FIXTURE_PART_SLOTS: readonly FixturePartSlot[] = [
+  {
+    fragmentFile: 'styles.xml',
+    partName: 'word/styles.xml',
+    relationshipId: 'rId1',
+    relationshipType: `${OFFICE_REL_NS}/styles`,
+    contentType: `${WML_CONTENT_TYPE_BASE}.styles+xml`,
+  },
+  {
+    fragmentFile: 'numbering.xml',
+    partName: 'word/numbering.xml',
+    relationshipId: 'rId2',
+    relationshipType: `${OFFICE_REL_NS}/numbering`,
+    contentType: `${WML_CONTENT_TYPE_BASE}.numbering+xml`,
+  },
+  {
+    fragmentFile: 'comments.xml',
+    partName: 'word/comments.xml',
+    relationshipId: 'rId3',
+    relationshipType: `${OFFICE_REL_NS}/comments`,
+    contentType: `${WML_CONTENT_TYPE_BASE}.comments+xml`,
+  },
+  {
+    fragmentFile: 'header-default.xml',
+    partName: 'word/header-default.xml',
+    relationshipId: 'rId4',
+    relationshipType: HEADER_REL_TYPE,
+    contentType: `${WML_CONTENT_TYPE_BASE}.header+xml`,
+  },
+  {
+    fragmentFile: 'footer-default.xml',
+    partName: 'word/footer-default.xml',
+    relationshipId: 'rId5',
+    relationshipType: FOOTER_REL_TYPE,
+    contentType: `${WML_CONTENT_TYPE_BASE}.footer+xml`,
+  },
+];
+
+/**
+ * Pack a `.docx` from the main document plus an optional closed set of sibling
+ * fragments (keyed by their `input/<fragmentFile>` name). With no siblings the
+ * output is byte-identical to {@link packMinimalDocx} — the historical 3-entry
+ * package — so the existing committed fixtures never drift. When siblings are
+ * present, `[Content_Types].xml` gains one Override per part and a
+ * `word/_rels/document.xml.rels` is emitted with the slots' stable ids, in
+ * `FIXTURE_PART_SLOTS` order. Fully deterministic (fixed mtime, fixed order).
+ */
+export function packDocx(
+  documentXml: string,
+  siblings: ReadonlyMap<string, string> = new Map()
+): Uint8Array {
+  const activeSlots = FIXTURE_PART_SLOTS.filter((s) => siblings.has(s.fragmentFile));
+  if (activeSlots.length === 0) {
+    return packMinimalDocx(documentXml);
   }
-  return strFromU8(part);
+  const overrides = activeSlots
+    .map((s) => `  <Override PartName="/${s.partName}" ContentType="${s.contentType}"/>`)
+    .join('\n');
+  const contentTypesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+${overrides}
+</Types>
+`;
+  const relationships = activeSlots
+    .map((s) => {
+      const target = s.partName.replace(/^word\//, '');
+      return `  <Relationship Id="${s.relationshipId}" Type="${s.relationshipType}" Target="${target}"/>`;
+    })
+    .join('\n');
+  const documentRelsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+${relationships}
+</Relationships>
+`;
+  const files: Record<string, [Uint8Array, { mtime: Date }]> = {
+    '[Content_Types].xml': entry(contentTypesXml),
+    '_rels/.rels': entry(PACKAGE_RELS_XML),
+    'word/document.xml': entry(documentXml),
+    'word/_rels/document.xml.rels': entry(documentRelsXml),
+  };
+  for (const s of activeSlots) {
+    files[s.partName] = entry(siblings.get(s.fragmentFile)!);
+  }
+  return zipSync(files);
 }
 
 /**
