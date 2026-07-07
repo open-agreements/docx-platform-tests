@@ -9,7 +9,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { extractDocumentXml } from './docx.js';
+import { loadPackage } from './docx.js';
 import { evaluateAssertion } from './assertions.js';
 import { loadAllScenarios, REPO_ROOT } from './scenarios.js';
 import { RESULTS_SCHEMA_VERSION } from './results-schema.js';
@@ -22,6 +22,8 @@ import type {
 } from './types.js';
 
 const PROTOCOL_VERSION = 1;
+// The DSL revision this runner implements; see docs/scenario-dsl.md.
+const DSL_VERSION = '1.3';
 
 function adapterVersion(adapter: AdapterRegistration): string {
   if (!adapter.adapterVersionCommand?.length) return 'unknown';
@@ -84,9 +86,9 @@ function runScenario(
       return { status: 'error', reason: 'adapter exited 0 but wrote no output package' };
     }
 
-    const outputXml = extractDocumentXml(readFileSync(outputPath));
+    const outputPackage = loadPackage(readFileSync(outputPath));
     const assertionResults = scenario.manifest.assertionList.map((assertion) =>
-      evaluateAssertion(assertion, outputXml, scenario.scenarioDir)
+      evaluateAssertion(assertion, outputPackage, scenario.scenarioDir)
     );
     // Outcome grading (docs/scenario-dsl.md): the conformance claim is
     // carried by the semantic assertions; canonicalXmlEquals pins
@@ -126,7 +128,7 @@ const scenarios = loadAllScenarios();
 const results: ResultsDocument = {
   schemaVersion: RESULTS_SCHEMA_VERSION,
   runTimestamp: new Date().toISOString(),
-  dslVersion: '1.2',
+  dslVersion: DSL_VERSION,
   protocolVersion: PROTOCOL_VERSION,
   implementations: registry.adapters.map((adapter) => ({
     adapterName: adapter.adapterName,

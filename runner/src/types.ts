@@ -11,18 +11,38 @@ export interface OperationDescriptor {
   [parameter: string]: unknown;
 }
 
+/**
+ * Which package part an assertion is evaluated against. Absent means the main
+ * document part (word/document.xml) — every DSL <= 1.2 manifest omits it, so the
+ * default preserves their behavior exactly. Parts other than the main document
+ * are addressed by OPC relationship, never by hardcoded path, because part names
+ * (styles.xml, header1.xml vs header3.xml, …) are implementation-chosen.
+ */
+export type AssertedPart =
+  | { partResolution: 'mainDocumentPart' }
+  | { partResolution: 'relationshipFromMainPart'; relationshipTypeUri: string }
+  | { partResolution: 'headerReference'; headerReferenceType: string }
+  | { partResolution: 'footerReference'; footerReferenceType: string };
+
 export interface ScenarioAssertion {
   assertionKind:
     | 'xpathQueryCount'
     | 'xpathQueryExists'
     | 'documentTextContainsAtOffset'
     | 'canonicalXmlEquals'
-    | 'schemaValidAgainstWml';
+    | 'schemaValidAgainstWml'
+    | 'hyperlinkResolvesToExternalUrl';
   xpathExpression?: string;
   expectedCount?: number;
   expectedSubstring?: string;
   expectedOffset?: number;
   expectedDocumentPath?: string;
+  // hyperlinkResolvesToExternalUrl
+  hyperlinkDisplayText?: string;
+  expectedTargetUrl?: string;
+  // Part selector for xpathQueryCount / xpathQueryExists / schemaValidAgainstWml.
+  // documentTextContainsAtOffset and canonicalXmlEquals are always main-part.
+  assertedPart?: AssertedPart;
 }
 
 export interface ScenarioManifest {

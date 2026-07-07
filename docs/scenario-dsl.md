@@ -1,4 +1,12 @@
-# Scenario DSL, version 1.2
+# Scenario DSL, version 1.3
+
+Changes in 1.3: assertions may target a package part other than the main
+document via an optional `assertedPart` selector (resolved by OPC
+relationship, never by hardcoded part name); scenario XPath now binds the
+`r:` prefix in addition to `w:`; a new `hyperlinkResolvesToExternalUrl`
+assertion joins a hyperlink's display text to its relationship target. All
+DSL <= 1.2 manifests remain valid — `assertedPart` defaults to the main
+document part, reproducing prior behavior exactly.
 
 Changes in 1.2: composed scenarios can declare optional
 `secondarySpecCitations` alongside the mandatory primary `specCitation`.
@@ -97,9 +105,45 @@ assertion failing never masks a lenient one passing.
 | `documentTextContainsAtOffset` | `expectedSubstring`, `expectedOffset` | the body text projection (below) |
 | `canonicalXmlEquals` | `expectedDocumentPath` | the canonicalized output vs the canonicalized expected document |
 | `schemaValidAgainstWml` | — | the output `word/document.xml` validated with `xmllint --schema` against `DPT_WML_SCHEMA_PATH` |
+| `hyperlinkResolvesToExternalUrl` | `hyperlinkDisplayText`, `expectedTargetUrl` | a `w:hyperlink` whose display text equals `hyperlinkDisplayText` and whose `@r:id` resolves, in the main part's relationships, to an external target equal to `expectedTargetUrl` |
 
-XPath expressions are evaluated with the prefix `w:` bound to
-`http://schemas.openxmlformats.org/wordprocessingml/2006/main`.
+XPath expressions are evaluated with two bound prefixes: `w:` for
+`http://schemas.openxmlformats.org/wordprocessingml/2006/main` and `r:` for
+`http://schemas.openxmlformats.org/officeDocument/2006/relationships` (the
+namespace of `@r:id` on hyperlinks and header/footer references). Relationship
+ids, comment ids, and numbering ids are implementation-chosen, so assertions
+never hardcode them; where a claim spans two parts (a reference resolving to a
+target), a purpose-built assertion such as `hyperlinkResolvesToExternalUrl`
+performs the id join inside the runner.
+
+### Asserted part (`assertedPart`)
+
+`xpathQueryCount`, `xpathQueryExists`, and `schemaValidAgainstWml` accept an
+optional `assertedPart` selecting which package part to evaluate against.
+Omitting it (or `{"partResolution":"mainDocumentPart"}`) targets
+`word/document.xml`. `documentTextContainsAtOffset` and `canonicalXmlEquals`
+are always evaluated against the main document part.
+
+| `partResolution` | Extra fields | Resolves to |
+| --- | --- | --- |
+| `mainDocumentPart` | — | `word/document.xml` (the default) |
+| `relationshipFromMainPart` | `relationshipTypeUri` | the single part reached from `word/_rels/document.xml.rels` by relationship `Type` (styles, numbering, comments) |
+| `headerReference` | `headerReferenceType` | main-document `sectPr/headerReference[@w:type=…]` → its `@r:id` → relationship target |
+| `footerReference` | `footerReferenceType` | main-document `sectPr/footerReference[@w:type=…]` → its `@r:id` → relationship target |
+
+Part names (`styles.xml`, `header1.xml` vs `header3.xml`, …) are
+implementation-chosen, so resolution is always by relationship, never by path.
+Cardinality for `relationshipFromMainPart` is singleton-by-type: **zero**
+matches fails the assertion with a "no part with relationship type …"
+diagnostic (that failure is itself the conformance signal — e.g. "no comments
+part was written"), and **more than one** match fails with a diagnostic rather
+than guessing. `headerReference`/`footerReference` assume the document's single
+section and resolve the first matching reference in document order; the
+reference's `@r:id` must join to a relationship of the matching header/footer
+Type (a reference wired to, say, a styles relationship is malformed and does
+not resolve). A resolution failure is reported as an ordinary
+(non-`canonicalXmlEquals`) assertion failure, so it participates in grading
+like any semantic assertion.
 
 `schemaValidAgainstWml` is an optional-tool assertion. The runner invokes
 `xmllint --noout --schema "$DPT_WML_SCHEMA_PATH" <document.xml>` and expects
@@ -114,10 +158,16 @@ than silently passing.
 `documentTextContainsAtOffset` offsets are character offsets into this exact
 projection of the output document:
 
-1. take every `w:p` under `w:body` in document order;
+1. take every `w:p` under `w:body` in document order — this includes
+   paragraphs nested inside table cells (`w:tbl/w:tr/w:tc/w:p`), which appear
+   at their document-order position; anything outside `w:body` is excluded;
 2. within each paragraph, concatenate the text content of every `w:t`
    element in document order — `w:delText` is **excluded**;
 3. join paragraphs with a single `\n` (no trailing newline).
+
+Because empty and table-cell paragraphs contribute lines, prefer
+`xpathQueryCount`/`xpathQueryExists` scoped to `w:tbl/w:tr/w:tc` over
+`documentTextContainsAtOffset` when asserting table-cell content.
 
 ### Canonicalization (for `canonicalXmlEquals`)
 
