@@ -1,0 +1,14 @@
+{
+  "dslVersion": "1.5",
+  "scenarioId": "removeAllCommentsStripsAnchorsKeepsText",
+  "scenarioTitle": "Removing all comments strips comment anchors while keeping the commented text",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.13.4.5", "clauseTitle": "commentReference (Comment Content Reference Mark)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "removeAllComments" },
+  "assertionList": [
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:body/w:p//w:t[contains(., 'Keep the commented sentence intact.')]" },
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:commentRangeStart | //w:commentRangeEnd | //w:commentReference", "expectedCount": 0 },
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:t[contains(., 'Remove this comment only.')]", "expectedCount": 0 }
+  ]
+}

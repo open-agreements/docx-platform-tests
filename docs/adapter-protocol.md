@@ -15,9 +15,10 @@ document. The runner invokes it once per scenario:
   scenario's assertions or expected output — it must not be able to teach to
   the test.
 - `input.docx` is a complete WordprocessingML package.
-- On success the adapter writes a complete mutated package to the `--output`
-  path. Only `word/document.xml` is asserted on today, but the output must
-  be a loadable package.
+- On success the adapter writes a complete package to the `--output` path.
+  Assertions may inspect the main document part and related parts such as
+  styles, numbering, comments, headers, footers, and relationships, so the
+  output must be a loadable package with all required relationships intact.
 
 ## Exit codes
 

@@ -1,0 +1,15 @@
+{
+  "dslVersion": "1.4",
+  "scenarioId": "insertParagraphAfterAnchorShiftsSubsequent",
+  "scenarioTitle": "Inserting a paragraph after an anchor shifts the following paragraph later",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.1.22", "clauseTitle": "p (Paragraph)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "insertParagraphAfterAnchorText", "anchorText": "Anchor paragraph", "paragraphText": "Inserted middle paragraph" },
+  "assertionList": [
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:body/w:p[.//w:t]", "expectedCount": 3 },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:body/w:p[1]//w:t[contains(., 'Anchor paragraph')]" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:body/w:p[2]//w:t[contains(., 'Inserted middle paragraph')]" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:body/w:p[3]//w:t[contains(., 'Following paragraph')]" }
+  ]
+}

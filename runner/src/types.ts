@@ -31,7 +31,9 @@ export interface ScenarioAssertion {
     | 'documentTextContainsAtOffset'
     | 'canonicalXmlEquals'
     | 'schemaValidAgainstWml'
-    | 'hyperlinkResolvesToExternalUrl';
+    | 'hyperlinkResolvesToExternalUrl'
+    | 'commentExistsWithTextAndAnchor'
+    | 'paragraphNumberingResolvesToFormat';
   xpathExpression?: string;
   expectedCount?: number;
   expectedSubstring?: string;
@@ -40,6 +42,13 @@ export interface ScenarioAssertion {
   // hyperlinkResolvesToExternalUrl
   hyperlinkDisplayText?: string;
   expectedTargetUrl?: string;
+  // commentExistsWithTextAndAnchor
+  expectedCommentText?: string;
+  expectedAuthorName?: string;
+  expectedAnchorText?: string;
+  // paragraphNumberingResolvesToFormat
+  anchorText?: string;
+  expectedNumberFormat?: string;
   // Part selector for xpathQueryCount / xpathQueryExists / schemaValidAgainstWml.
   // documentTextContainsAtOffset and canonicalXmlEquals are always main-part.
   assertedPart?: AssertedPart;
@@ -100,6 +109,7 @@ export interface ResultsDocument {
   protocolVersion: number;
   implementations: Array<{ adapterName: string; adapterVersion: string }>;
   results: Array<{
+    scenarioGroup: string;
     scenarioId: string;
     scenarioTitle: string;
     specCitation: SpecCitation;

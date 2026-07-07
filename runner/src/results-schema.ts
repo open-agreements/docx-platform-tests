@@ -1,4 +1,4 @@
-export const RESULTS_SCHEMA_VERSION = 1;
+export const RESULTS_SCHEMA_VERSION = 2;
 
 export const RESULTS_SCHEMA = {
   $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -65,8 +65,9 @@ export const RESULTS_SCHEMA = {
     scenarioResult: {
       type: 'object',
       additionalProperties: false,
-      required: ['scenarioId', 'scenarioTitle', 'specCitation', 'outcomes'],
+      required: ['scenarioGroup', 'scenarioId', 'scenarioTitle', 'specCitation', 'outcomes'],
       properties: {
+        scenarioGroup: { type: 'string', minLength: 1 },
         scenarioId: { type: 'string', minLength: 1 },
         scenarioTitle: { type: 'string', minLength: 1 },
         specCitation: { $ref: '#/$defs/specCitation' },

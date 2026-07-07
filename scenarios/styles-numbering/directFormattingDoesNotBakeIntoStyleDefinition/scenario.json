@@ -1,0 +1,16 @@
+{
+  "dslVersion": "1.6",
+  "scenarioId": "directFormattingDoesNotBakeIntoStyleDefinition",
+  "scenarioTitle": "Direct run formatting does not bake formatting into the paragraph style definition",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.7.4.17", "clauseTitle": "style (Style Definition)" },
+  "secondarySpecCitations": [
+    { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.2.1", "clauseTitle": "b (Bold)" }
+  ],
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "formatFirstTextOccurrence", "findText": "these words", "runFormatting": { "bold": true } },
+  "assertionList": [
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:r[.//w:t[contains(., 'these words')]]/w:rPr/w:b" },
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:style[@w:styleId='BodyText']//w:b", "expectedCount": 0, "assertedPart": { "partResolution": "relationshipFromMainPart", "relationshipTypeUri": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" } }
+  ]
+}

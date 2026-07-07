@@ -36,21 +36,43 @@ const headerCells = results.implementations
   .join('');
 
 const rows = results.results
-  .map((scenario) => {
-    const citation = scenario.specCitation;
-    const cells = results.implementations
-      .map((impl) => {
-        const outcome = scenario.outcomes[impl.adapterName];
-        const status = outcome?.status ?? 'error';
-        const reason = outcome?.reason ? `<br><small>${esc(outcome.reason)}</small>` : '';
-        return `<td class="cell-${esc(status)}">${esc(STATUS_LABEL[status] ?? status)}${reason}</td>`;
-      })
-      .join('');
-    return `<tr>
+  .reduce(
+    (htmlRows, scenario, index) => {
+      const previous = results.results[index - 1];
+      if (!previous || previous.scenarioGroup !== scenario.scenarioGroup) {
+        const groupScenarios = results.results.filter(
+          (candidate) => candidate.scenarioGroup === scenario.scenarioGroup
+        );
+        const totals = results.implementations
+          .map((impl) => {
+            const passLike = groupScenarios.filter((candidate) => {
+              const status = candidate.outcomes[impl.adapterName]?.status;
+              return status === 'pass' || status === 'pass-divergent';
+            }).length;
+            return `${esc(impl.adapterName)} ${passLike}/${groupScenarios.length}`;
+          })
+          .join(' · ');
+        htmlRows.push(`<tr class="group-row"><th scope="rowgroup" colspan="${
+          results.implementations.length + 1
+        }">${esc(scenario.scenarioGroup)}<br><small>${totals}</small></th></tr>`);
+      }
+      const citation = scenario.specCitation;
+      const cells = results.implementations
+        .map((impl) => {
+          const outcome = scenario.outcomes[impl.adapterName];
+          const status = outcome?.status ?? 'error';
+          const reason = outcome?.reason ? `<br><small>${esc(outcome.reason)}</small>` : '';
+          return `<td class="cell-${esc(status)}">${esc(STATUS_LABEL[status] ?? status)}${reason}</td>`;
+        })
+        .join('');
+      htmlRows.push(`<tr>
       <th scope="row"><code>${esc(scenario.scenarioId)}</code><br><small>${esc(scenario.scenarioTitle)}</small><br><small class="citation">${esc(
         `${citation.standard} edition ${citation.edition}, Part ${citation.part} § ${citation.section} (${citation.clauseTitle})`
-      )}</small></th>${cells}</tr>`;
-  })
+      )}</small></th>${cells}</tr>`);
+      return htmlRows;
+    },
+    [] as string[]
+  )
   .join('\n');
 
 const html = `<!doctype html>
@@ -66,6 +88,7 @@ const html = `<!doctype html>
   table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; }
   th, td { border: 1px solid #d9d9d9; padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
   thead th { background: #f6f6f4; }
+  .group-row th { background: #ece8df; font-size: 1.05rem; }
   .cell-pass { background: #e8f5e9; }
   .cell-pass-divergent { background: #f3f8e2; }
   .cell-fail, .cell-error, .cell-protocol-mismatch { background: #fdecea; }

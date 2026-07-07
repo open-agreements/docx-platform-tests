@@ -1,4 +1,19 @@
-# Scenario DSL, version 1.3
+# Scenario DSL, version 1.6
+
+Changes in 1.6: styles and numbering operations are added, including
+`composeDocumentWithNumberedList`; `paragraphNumberingResolvesToFormat` joins
+main document paragraphs through effective numbering (direct paragraph
+`numPr`, or paragraph style inheritance through `styles.xml`) to
+`numbering.xml` and asserts the resolved `numFmt`.
+
+Changes in 1.5: comment operations are added; `commentExistsWithTextAndAnchor`
+joins a comments part entry to main-document comment anchors by id inside the
+runner, so scenario manifests never hardcode comment ids.
+
+Changes in 1.4: generation and table operations are added. The operation table
+now includes an `inputContract`: `replacesInput` operations compose a fresh
+document from the descriptor while still receiving a protocol input package;
+`preservesInput` operations mutate the supplied input document.
 
 Changes in 1.3: assertions may target a package part other than the main
 document via an optional `assertedPart` selector (resolved by OPC
@@ -117,13 +132,30 @@ All keys are deliberately self-disambiguating (3–4-word camelCase).
   the suite treats documented Word behavior as canonical and the note says so
   explicitly. `null` when no deviation is known.
 
-## Operations (v1.0 — closed enum)
+## Operations (v1.0-1.6 — closed enum)
 
-| `operationName` | Parameters | Meaning |
-| --- | --- | --- |
-| `acceptAllTrackedChanges` | — | Accept every tracked revision in the document. |
-| `rejectAllTrackedChanges` | — | Reject every tracked revision in the document. |
-| `replaceFirstTextOccurrence` | `findText`, `replaceText` | Replace the first occurrence of `findText`, scanning paragraphs in document order. |
+| `operationName` | Parameters | `inputContract` | Meaning |
+| --- | --- | --- | --- |
+| `acceptAllTrackedChanges` | — | `preservesInput` | Accept every tracked revision in the document. |
+| `rejectAllTrackedChanges` | — | `preservesInput` | Reject every tracked revision in the document. |
+| `replaceFirstTextOccurrence` | `findText`, `replaceText` | `preservesInput` | Replace the first occurrence of `findText`, scanning paragraphs in document order. |
+| `composeDocumentWithParagraphs` | `paragraphDescriptorList:[{paragraphText,runFormatting?:{bold?,italic?,fontSizeHalfPoints?}}]` | `replacesInput` | Compose a fresh document containing the requested paragraphs and optional direct run formatting. |
+| `composeDocumentWithTable` | `tableCellTextRows` | `replacesInput` | Compose a fresh document containing one table whose rows/cells match the text matrix. |
+| `composeDocumentWithHyperlink` | `hyperlinkDisplayText`, `hyperlinkTargetUrl` | `replacesInput` | Compose a fresh document containing an external hyperlink. |
+| `composeDocumentWithHeaderText` | `headerText`, `bodyText` | `replacesInput` | Compose a fresh document with body text and a default header part/reference. |
+| `composeDocumentWithNumberedList` | `listItemTexts`, `numberFormat`, `itemLevels?` | `replacesInput` | Compose a fresh document containing numbered-list paragraphs resolving to the requested number format. |
+| `appendParagraphWithText` | `paragraphText`, `runFormatting?` | `preservesInput` | Append a paragraph to the existing document. |
+| `insertParagraphAfterAnchorText` | `anchorText`, `paragraphText` | `preservesInput` | Insert a paragraph after the first paragraph containing the anchor text. |
+| `appendTableRow` | `tableIndex`, `cellTexts` | `preservesInput` | Append a row to the addressed table. |
+| `deleteTableRowAtIndex` | `tableIndex`, `rowIndex` | `preservesInput` | Delete the addressed table row. |
+| `setTableCellText` | `tableIndex`, `rowIndex`, `columnIndex`, `replacementCellText` | `preservesInput` | Replace the text content of the addressed table cell. |
+| `mergeTableCellsInRow` | `tableIndex`, `rowIndex`, `startColumnIndex`, `endColumnIndex` | `preservesInput` | Merge the addressed contiguous cells in one row. |
+| `addCommentOnFirstTextOccurrence` | `anchorText`, `commentText`, `commentAuthorName`, `commentAuthorInitials` | `preservesInput` | Add a comment anchored to the first occurrence of the anchor text. |
+| `removeAllComments` | — | `preservesInput` | Remove comments and comment anchors while retaining document text. |
+| `applyParagraphStyleToAnchor` | `anchorText`, `paragraphStyleId` | `preservesInput` | Apply a predefined paragraph style to the paragraph containing anchor text. |
+| `applyNumberingToAnchorParagraph` | `anchorText`, `numberingInstanceId`, `indentationLevel` | `preservesInput` | Apply a predefined numbering instance to the paragraph containing anchor text. |
+| `formatFirstTextOccurrence` | `findText`, `runFormatting` | `preservesInput` | Apply direct run formatting to the first text occurrence. |
+| `setDefaultFooterText` | `footerText` | `preservesInput` | Add or replace a default footer with the requested text. |
 
 `replaceFirstTextOccurrence` match scope is **paragraph-local**: the first
 paragraph (in document order) whose text contains `findText` is rewritten.
@@ -148,6 +180,8 @@ assertion failing never masks a lenient one passing.
 | `canonicalXmlEquals` | `expectedDocumentPath` | the canonicalized output vs the canonicalized expected document |
 | `schemaValidAgainstWml` | — | the output `word/document.xml` validated with `xmllint --schema` against `DPT_WML_SCHEMA_PATH` |
 | `hyperlinkResolvesToExternalUrl` | `hyperlinkDisplayText`, `expectedTargetUrl` | a `w:hyperlink` whose display text equals `hyperlinkDisplayText` and whose `@r:id` resolves, in the main part's relationships, to an external target equal to `expectedTargetUrl` |
+| `commentExistsWithTextAndAnchor` | `expectedCommentText`, `expectedAuthorName?`, `expectedAnchorText?` | the comments part resolved by relationship Type, joined by `w:id` to main-document `commentRangeStart`/`commentRangeEnd`/`commentReference` anchors |
+| `paragraphNumberingResolvesToFormat` | `anchorText`, `expectedNumberFormat` | the paragraph containing `anchorText`, resolving direct or style-inherited `numPr` through the numbering part to `numFmt` |
 
 XPath expressions are evaluated with two bound prefixes: `w:` for
 `http://schemas.openxmlformats.org/wordprocessingml/2006/main` and `r:` for
@@ -155,7 +189,8 @@ XPath expressions are evaluated with two bound prefixes: `w:` for
 namespace of `@r:id` on hyperlinks and header/footer references). Relationship
 ids, comment ids, and numbering ids are implementation-chosen, so assertions
 never hardcode them; where a claim spans two parts (a reference resolving to a
-target), a purpose-built assertion such as `hyperlinkResolvesToExternalUrl`
+target), a purpose-built assertion such as `hyperlinkResolvesToExternalUrl`,
+`commentExistsWithTextAndAnchor`, or `paragraphNumberingResolvesToFormat`
 performs the id join inside the runner.
 
 ### Asserted part (`assertedPart`)

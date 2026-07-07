@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "runTimestamp": "2026-07-06T11:04:32.667Z",
   "dslVersion": "1.2",
   "protocolVersion": 1,
@@ -105,7 +105,8 @@
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
-      }
+      },
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "acceptDeletionsRemovesDelContent",
@@ -209,7 +210,8 @@
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
-      }
+      },
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "acceptFormattingChangeKeepsNewRunProperties",
@@ -328,7 +330,8 @@
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
-      }
+      },
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "acceptInsertionsUnwrapsInsWrappers",
@@ -417,7 +420,8 @@
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
-      }
+      },
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "acceptNestedDeletionInsideInsertion",
@@ -566,7 +570,8 @@
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
-      }
+      },
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "rejectDeletionsRestoresDelContent",
@@ -670,7 +675,8 @@
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
-      }
+      },
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "rejectFormattingChangeRestoresPriorRunProperties",
@@ -789,7 +795,8 @@
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
-      }
+      },
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "rejectInsertedParagraphMarkMergesParagraphs",
@@ -862,7 +869,8 @@
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
-      }
+      },
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "rejectInsertionsRemovesInsContent",
@@ -966,7 +974,8 @@
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
-      }
+      },
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "rejectNestedDeletionInsideInsertion",
@@ -1115,7 +1124,8 @@
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
-      }
+      },
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "replaceFirstOccurrencePreservesOffsets",
@@ -1236,7 +1246,8 @@
           "status": "unsupported",
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
         }
-      }
+      },
+      "scenarioGroup": "find-replace"
     },
     {
       "scenarioId": "replaceTextAcrossRunBoundary",
@@ -1325,7 +1336,8 @@
           "status": "unsupported",
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
         }
-      }
+      },
+      "scenarioGroup": "find-replace"
     }
   ]
 }
