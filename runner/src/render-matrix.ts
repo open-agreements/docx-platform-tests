@@ -95,7 +95,7 @@ ${rows}
 <p>Data: <a href="./latest.json">results/latest.json</a> · Schema:
 <a href="./results.schema.json">results/results.schema.json</a> · Suite, scenario DSL, and adapter protocol:
 <a href="https://github.com/open-agreements/docx-platform-tests">open-agreements/docx-platform-tests</a> (Apache-2.0)
-· Narrative comparisons: <a href="https://usejunior.com/engineering/safe-docx/cross-implementation">usejunior.com</a></p>
+· Canonical live matrix: <a href="https://open-agreements.github.io/docx-platform-tests/results/">open-agreements.github.io</a></p>
 <footer>Run ${esc(results.runTimestamp)} · results schema v${results.schemaVersion} · DSL ${esc(
   results.dslVersion
 )} · adapter protocol v${results.protocolVersion}.

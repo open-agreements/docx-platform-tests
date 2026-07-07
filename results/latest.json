@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "runTimestamp": "2026-06-13T06:42:08.150Z",
+  "runTimestamp": "2026-07-06T11:04:32.667Z",
   "dslVersion": "1.2",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.11.0+git.5210d6c4bcdc"
+      "adapterVersion": "0.15.0+git.459051c072da"
     },
     {
       "adapterName": "python-docx",
@@ -14,7 +14,7 @@
     },
     {
       "adapterName": "libreoffice",
-      "adapterVersion": "LibreOffice 25.8.7.3 30742500f2d3eb4366ac312fa33d3dcabdb3eba5"
+      "adapterVersion": "LibreOffice 24.2.7.2 420(Build:2)"
     },
     {
       "adapterName": "openxml-sdk",
@@ -46,7 +46,7 @@
       },
       "outcomes": {
         "safe-docx": {
-          "status": "fail",
+          "status": "pass",
           "assertionResults": [
             {
               "assertionKind": "xpathQueryCount",
@@ -60,8 +60,8 @@
             },
             {
               "assertionKind": "documentTextContainsAtOffset",
-              "passed": false,
-              "detail": "'First half second half' not found; expected offset 0. Projection: \"second half\""
+              "passed": true,
+              "detail": "'First half second half' found at offset 0"
             }
           ]
         },
@@ -70,8 +70,24 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p matched 1 node(s); expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:pPr/w:rPr/w:del matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'First half second half' found at offset 0"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -132,8 +148,29 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 wp14 w15\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pStyle\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"Normal\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bidi\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}jc\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"left\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"nextPage\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgNumType\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}fmt\",\n         \"decimal\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}formProt\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"false\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}textDirection\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"lrTb\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}docGrid\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}charSpace\",\n         \"4096\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}linePitch\",\n         \"100\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n         \"default\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -220,8 +257,34 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:rPrChange matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:b matched 1 node(s); expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:i matched 1 node(s); expected at least 1"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Styled text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}b\",\n           \"attributes\": [],\n           \"children\": []\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 wp14 w15\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pStyle\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"Normal\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bidi\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}jc\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"left\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}b\",\n           \"attributes\": [],\n           \"children\": []\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"nextPage\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgNumType\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}fmt\",\n         \"decimal\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}formProt\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"false\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}textDirection\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"lrTb\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}docGrid\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}charSpace\",\n         \"4096\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}linePitch\",\n         \"100\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n         \"default\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -303,8 +366,24 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text Inserted text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Inserted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 wp14 w15\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pStyle\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"Normal\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bidi\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}jc\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"left\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Inserted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"nextPage\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgNumType\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}fmt\",\n         \"decimal\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}formProt\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"false\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}textDirection\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"lrTb\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}docGrid\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}charSpace\",\n         \"4096\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}linePitch\",\n         \"100\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n         \"default\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -396,8 +475,44 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'remove-me')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Anchor Start end' found at offset 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Start end' found at offset 7"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'end' found at offset 13"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -494,8 +609,29 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text Deleted text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Deleted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 wp14 w15\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pStyle\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"Normal\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bidi\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}jc\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"left\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Deleted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"nextPage\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgNumType\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}fmt\",\n         \"decimal\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}formProt\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"false\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}textDirection\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"lrTb\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}docGrid\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}charSpace\",\n         \"4096\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}linePitch\",\n         \"100\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n         \"default\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -582,8 +718,34 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:rPrChange matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:b matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:i matched 1 node(s); expected at least 1"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Styled text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 wp14 w15\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pStyle\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"Normal\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bidi\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}jc\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"left\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"nextPage\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgNumType\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}fmt\",\n         \"decimal\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}formProt\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"false\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}textDirection\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"lrTb\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}docGrid\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}charSpace\",\n         \"4096\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}linePitch\",\n         \"100\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n         \"default\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -641,7 +803,7 @@
       },
       "outcomes": {
         "safe-docx": {
-          "status": "fail",
+          "status": "pass",
           "assertionResults": [
             {
               "assertionKind": "xpathQueryCount",
@@ -655,8 +817,8 @@
             },
             {
               "assertionKind": "documentTextContainsAtOffset",
-              "passed": false,
-              "detail": "'First half second half' not found; expected offset 0. Projection: \"second half\""
+              "passed": true,
+              "detail": "'First half second half' found at offset 0"
             }
           ]
         },
@@ -665,8 +827,24 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p matched 1 node(s); expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:pPr/w:rPr/w:ins matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'First half second half' found at offset 0"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -727,8 +905,29 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(text(), 'Inserted text')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [\n  [\n   \"{http://schemas.openxmlformats.org/markup-compatibility/2006}Ignorable\",\n   \"w14 wp14 w15\"\n  ]\n ],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pStyle\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"Normal\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bidi\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}jc\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n           \"left\"\n          ]\n         ],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": []\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"nextPage\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgSz\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h\",\n         \"15840\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n         \"12240\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgMar\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header\",\n         \"0\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\",\n         \"1440\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\",\n         \"1440\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pgNumType\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}fmt\",\n         \"decimal\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}formProt\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"false\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}textDirection\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val\",\n         \"lrTb\"\n        ]\n       ],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}docGrid\",\n       \"attributes\": [\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}charSpace\",\n         \"4096\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}linePitch\",\n         \"100\"\n        ],\n        [\n         \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n         \"default\"\n        ]\n       ],\n       \"children\": []\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -825,8 +1024,44 @@
           "reason": "python-docx has no tracked-changes (revision) API"
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'Start')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'remove-me')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'end')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Anchor ' found at offset 0"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "unsupported",
@@ -934,8 +1169,24 @@
           ]
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'sixty' found at offset 15"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(text(), 'thirty')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Payment due in sixty days' found at offset 0"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "pass",
@@ -1023,8 +1274,24 @@
           "reason": "match spans run boundaries; the python-docx adapter only performs intra-run replacement (glue, not algorithms)"
         },
         "libreoffice": {
-          "status": "error",
-          "reason": "exit 1: Traceback (most recent call last):\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 251, in <module>\n    sys.exit(main())\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 244, in main\n    return run_supported_operation(args, operation)\n  File \"/Users/stevenobiajulu/Projects/docx-platform-tests/.worktrees/issue-16-docx-rs/adapters/libreoffice/run_adapter.py\", line 116, in run_supported_operation\n    import uno  # imported late so unsupported/mismatch paths need no pyuno\nModuleNotFoundError: No module named 'uno'"
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'clause' found at offset 6"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:p[contains(., 'target')] matched 0 node(s); expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Alpha-clause-tail' found at offset 0"
+            }
+          ]
         },
         "openxml-sdk": {
           "status": "unsupported",
