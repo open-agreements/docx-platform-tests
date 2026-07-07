@@ -1,0 +1,18 @@
+{
+  "dslVersion": "1.4",
+  "scenarioId": "composeTableProducesGridMatchingCellMatrix",
+  "scenarioTitle": "Composing a table produces rows and cells matching the requested matrix",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.4.37", "clauseTitle": "tbl (Table)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "composeDocumentWithTable",
+    "tableCellTextRows": [["A1", "A2"], ["B1", "B2"]]
+  },
+  "assertionList": [
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:tbl", "expectedCount": 1 },
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:tbl/w:tr", "expectedCount": 2 },
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:tbl/w:tr/w:tc", "expectedCount": 4 },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:tbl/w:tr[2]/w:tc[2]//w:t[contains(., 'B2')]" }
+  ]
+}

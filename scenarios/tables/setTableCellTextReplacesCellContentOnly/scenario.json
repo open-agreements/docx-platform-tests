@@ -1,0 +1,15 @@
+{
+  "dslVersion": "1.4",
+  "scenarioId": "setTableCellTextReplacesCellContentOnly",
+  "scenarioTitle": "Setting table cell text replaces only the addressed cell content",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.4.66", "clauseTitle": "tc (Table Cell)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "setTableCellText", "tableIndex": 0, "rowIndex": 0, "columnIndex": 1, "replacementCellText": "New target cell text" },
+  "assertionList": [
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:tbl/w:tr/w:tc", "expectedCount": 2 },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:tbl/w:tr/w:tc[1]//w:t[contains(., 'Left cell stable')]" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:tbl/w:tr/w:tc[2]//w:t[contains(., 'New target cell text')]" },
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:tbl/w:tr/w:tc//w:t[contains(., 'Old target cell text')]", "expectedCount": 0 }
+  ]
+}

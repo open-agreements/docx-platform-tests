@@ -1,0 +1,13 @@
+{
+  "dslVersion": "1.6",
+  "scenarioId": "applyNumberingToParagraphAttachesNumPr",
+  "scenarioTitle": "Applying numbering to a paragraph attaches numbering properties that resolve through numbering.xml",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.1.19", "clauseTitle": "numPr (Numbering Definition Instance Reference)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "applyNumberingToAnchorParagraph", "anchorText": "Number this paragraph", "numberingInstanceId": "42", "indentationLevel": 0 },
+  "assertionList": [
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:p[.//w:t[contains(., 'Number this paragraph')]]/w:pPr/w:numPr" },
+    { "assertionKind": "paragraphNumberingResolvesToFormat", "anchorText": "Number this paragraph", "expectedNumberFormat": "decimal" }
+  ]
+}

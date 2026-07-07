@@ -11,6 +11,7 @@
   table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; }
   th, td { border: 1px solid #d9d9d9; padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
   thead th { background: #f6f6f4; }
+  .group-row th { background: #ece8df; font-size: 1.05rem; }
   .cell-pass { background: #e8f5e9; }
   .cell-pass-divergent { background: #f3f8e2; }
   .cell-fail, .cell-error, .cell-protocol-mismatch { background: #fdecea; }
@@ -34,6 +35,7 @@ per-assertion breakdown in <a href="./latest.json">latest.json</a> carries the d
 <table>
 <thead><tr><th scope="col">Scenario</th><th scope="col">safe-docx<br><small>0.15.0+git.459051c072da</small></th><th scope="col">python-docx<br><small>1.2.0</small></th><th scope="col">libreoffice<br><small>LibreOffice 24.2.7.2 420(Build:2)</small></th><th scope="col">openxml-sdk<br><small>DocumentFormat.OpenXml 3.5.1</small></th><th scope="col">dolanmiu-docx<br><small>9.7.1</small></th><th scope="col">superdoc-sdk<br><small>1.16.1</small></th><th scope="col">docx-rs<br><small>docx-rs 0.4.20</small></th></tr></thead>
 <tbody>
+<tr class="group-row"><th scope="rowgroup" colspan="8">tracked-changes<br><small>safe-docx 10/10 · python-docx 0/10 · libreoffice 10/10 · openxml-sdk 0/10 · dolanmiu-docx 0/10 · superdoc-sdk 8/10 · docx-rs 0/10</small></th></tr>
 <tr>
       <th scope="row"><code>acceptDeletedParagraphMarkMergesParagraphs</code><br><small>Accepting a deleted paragraph mark merges the paragraph with the following paragraph</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.13.5.15 (del (Deleted Paragraph))</small></th><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>python-docx has no tracked-changes (revision) API</small></td><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm</small></td><td class="cell-unsupported">Unsupported<br><small>dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes</small></td><td class="cell-unsupported">Unsupported<br><small>SuperDoc SDK does not expose paragraph-mark tracked changes through trackChanges.list</small></td><td class="cell-unsupported">Unsupported<br><small>docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes</small></td></tr>
 <tr>
@@ -54,6 +56,7 @@ per-assertion breakdown in <a href="./latest.json">latest.json</a> carries the d
       <th scope="row"><code>rejectInsertionsRemovesInsContent</code><br><small>Rejecting insertions removes w:ins wrappers and their run content</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.13.5.18 (ins (Inserted Run Content))</small></th><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>python-docx has no tracked-changes (revision) API</small></td><td class="cell-pass-divergent">Pass (divergent serialization)</td><td class="cell-unsupported">Unsupported<br><small>the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm</small></td><td class="cell-unsupported">Unsupported<br><small>dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes</small></td><td class="cell-pass-divergent">Pass (divergent serialization)</td><td class="cell-unsupported">Unsupported<br><small>docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes</small></td></tr>
 <tr>
       <th scope="row"><code>rejectNestedDeletionInsideInsertion</code><br><small>Rejecting nested deletion inside insertion removes the whole insertion</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.13.5.18 (ins (Inserted Run Content))</small></th><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>python-docx has no tracked-changes (revision) API</small></td><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>the Open XML SDK is a typed DOM over the package with no accept/reject-revisions API; implementing one would be an adapter-side algorithm</small></td><td class="cell-unsupported">Unsupported<br><small>dolanmiu/docx can generate revision markup but exposes no API to accept or reject existing tracked changes</small></td><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes</small></td></tr>
+<tr class="group-row"><th scope="rowgroup" colspan="8">find-replace<br><small>safe-docx 2/2 · python-docx 1/2 · libreoffice 2/2 · openxml-sdk 1/2 · dolanmiu-docx 0/2 · superdoc-sdk 2/2 · docx-rs 0/2</small></th></tr>
 <tr>
       <th scope="row"><code>replaceFirstOccurrencePreservesOffsets</code><br><small>Replacing the first occurrence places the new text at the matched offset</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.3.3.31 (t (Text))</small></th><td class="cell-pass">Pass</td><td class="cell-pass">Pass</td><td class="cell-pass">Pass</td><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>dolanmiu/docx patchDocument targets explicit patch placeholders; protocol requires arbitrary paragraph-local literal search, which would be an adapter-side algorithm</small></td><td class="cell-pass">Pass</td><td class="cell-unsupported">Unsupported<br><small>docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery</small></td></tr>
 <tr>
@@ -64,7 +67,7 @@ per-assertion breakdown in <a href="./latest.json">latest.json</a> carries the d
 <a href="./results.schema.json">results/results.schema.json</a> · Suite, scenario DSL, and adapter protocol:
 <a href="https://github.com/open-agreements/docx-platform-tests">open-agreements/docx-platform-tests</a> (Apache-2.0)
 · Canonical live matrix: <a href="https://open-agreements.github.io/docx-platform-tests/results/">open-agreements.github.io</a></p>
-<footer>Run 2026-07-06T11:04:32.667Z · results schema v1 · DSL 1.2 · adapter protocol v1.
+<footer>Run 2026-07-06T11:04:32.667Z · results schema v2 · DSL 1.2 · adapter protocol v1.
 To add an implementation, see <a href="https://github.com/open-agreements/docx-platform-tests/blob/main/docs/adapter-protocol.md">docs/adapter-protocol.md</a>.</footer>
 </body>
 </html>

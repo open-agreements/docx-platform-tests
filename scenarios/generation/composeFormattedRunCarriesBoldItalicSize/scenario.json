@@ -1,0 +1,23 @@
+{
+  "dslVersion": "1.4",
+  "scenarioId": "composeFormattedRunCarriesBoldItalicSize",
+  "scenarioTitle": "Composing a formatted run carries bold italic and font size properties",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.2.1", "clauseTitle": "b (Bold)" },
+  "secondarySpecCitations": [
+    { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.2.16", "clauseTitle": "i (Italics)" },
+    { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.2.38", "clauseTitle": "sz (Non-Complex Script Font Size)" }
+  ],
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "composeDocumentWithParagraphs",
+    "paragraphDescriptorList": [
+      { "paragraphText": "Styled generated text", "runFormatting": { "bold": true, "italic": true, "fontSizeHalfPoints": 28 } }
+    ]
+  },
+  "assertionList": [
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:b" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:i" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:sz[@w:val='28']" }
+  ]
+}

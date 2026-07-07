@@ -1,0 +1,17 @@
+{
+  "dslVersion": "1.4",
+  "scenarioId": "composeHyperlinkCreatesRelationshipReferencedLink",
+  "scenarioTitle": "Composing a hyperlink creates a relationship-referenced external link",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.16.22", "clauseTitle": "hyperlink (Hyperlink)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "composeDocumentWithHyperlink",
+    "hyperlinkDisplayText": "ECMA home",
+    "hyperlinkTargetUrl": "https://ecma-international.org/"
+  },
+  "assertionList": [
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:hyperlink[.//w:t[contains(., 'ECMA home')]]" },
+    { "assertionKind": "hyperlinkResolvesToExternalUrl", "hyperlinkDisplayText": "ECMA home", "expectedTargetUrl": "https://ecma-international.org/" }
+  ]
+}

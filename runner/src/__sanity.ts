@@ -41,6 +41,8 @@ check('projection finds sixty', projected.indexOf('sixty') !== -1);
 const STYLES_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles';
 const HYPERLINK_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink';
 const HEADER_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/header';
+const COMMENTS_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments';
+const NUMBERING_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering';
 
 // A package whose main document references a styles part and an external
 // hyperlink, plus a default-type header, all by relationship (arbitrary rIds).
@@ -253,6 +255,106 @@ check(
     packed,
     dir
   ).passed
+);
+
+// --- DSL 1.5: comments assertion joins comments part IDs to main-document anchors ---
+const commentPackage = packageFromParts({
+  'word/document.xml': `<?xml version="1.0"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>
+  <w:p><w:commentRangeStart w:id="9"/><w:r><w:t>Review this phrase</w:t></w:r><w:commentRangeEnd w:id="9"/><w:r><w:commentReference w:id="9"/></w:r></w:p>
+</w:body></w:document>`,
+  'word/_rels/document.xml.rels': `<?xml version="1.0"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rComments" Type="${COMMENTS_TYPE}" Target="comments.xml"/>
+</Relationships>`,
+  'word/comments.xml': `<?xml version="1.0"?>
+<w:comments xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:comment w:id="9" w:author="Reviewer" w:initials="RV"><w:p><w:r><w:t>Clarify this point</w:t></w:r></w:p></w:comment></w:comments>`,
+});
+check(
+  'commentExistsWithTextAndAnchor matches text, author, and anchor',
+  evaluateAssertion(
+    {
+      assertionKind: 'commentExistsWithTextAndAnchor',
+      expectedCommentText: 'Clarify this point',
+      expectedAuthorName: 'Reviewer',
+      expectedAnchorText: 'Review this phrase',
+    },
+    commentPackage,
+    dir
+  ).passed
+);
+check(
+  'commentExistsWithTextAndAnchor rejects wrong anchor',
+  evaluateAssertion(
+    {
+      assertionKind: 'commentExistsWithTextAndAnchor',
+      expectedCommentText: 'Clarify this point',
+      expectedAnchorText: 'different phrase',
+    },
+    commentPackage,
+    dir
+  ).passed === false
+);
+
+// --- DSL 1.6: numbering assertion resolves direct numPr and style-carried numPr ---
+const numberingXml = `<?xml version="1.0"?>
+<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:abstractNum w:abstractNumId="1"><w:lvl w:ilvl="0"><w:numFmt w:val="decimal"/></w:lvl></w:abstractNum>
+  <w:num w:numId="10"><w:abstractNumId w:val="1"/></w:num>
+</w:numbering>`;
+const stylesWithListNumber = `<?xml version="1.0"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:style w:type="paragraph" w:styleId="ListNumber"><w:name w:val="List Number"/><w:pPr><w:numPr><w:ilvl w:val="0"/><w:numId w:val="10"/></w:numPr></w:pPr></w:style>
+</w:styles>`;
+const numberingPackage = packageFromParts({
+  'word/document.xml': `<?xml version="1.0"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>
+  <w:p><w:pPr><w:numPr><w:ilvl w:val="0"/><w:numId w:val="10"/></w:numPr></w:pPr><w:r><w:t>Direct item</w:t></w:r></w:p>
+  <w:p><w:pPr><w:pStyle w:val="ListNumber"/></w:pPr><w:r><w:t>Style item</w:t></w:r></w:p>
+</w:body></w:document>`,
+  'word/_rels/document.xml.rels': `<?xml version="1.0"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rStyles" Type="${STYLES_TYPE}" Target="styles.xml"/>
+  <Relationship Id="rNumbering" Type="${NUMBERING_TYPE}" Target="numbering.xml"/>
+</Relationships>`,
+  'word/styles.xml': stylesWithListNumber,
+  'word/numbering.xml': numberingXml,
+});
+check(
+  'paragraphNumberingResolvesToFormat matches direct numPr',
+  evaluateAssertion(
+    {
+      assertionKind: 'paragraphNumberingResolvesToFormat',
+      anchorText: 'Direct item',
+      expectedNumberFormat: 'decimal',
+    },
+    numberingPackage,
+    dir
+  ).passed
+);
+check(
+  'paragraphNumberingResolvesToFormat matches style-carried numPr',
+  evaluateAssertion(
+    {
+      assertionKind: 'paragraphNumberingResolvesToFormat',
+      anchorText: 'Style item',
+      expectedNumberFormat: 'decimal',
+    },
+    numberingPackage,
+    dir
+  ).passed
+);
+check(
+  'paragraphNumberingResolvesToFormat rejects wrong format',
+  evaluateAssertion(
+    {
+      assertionKind: 'paragraphNumberingResolvesToFormat',
+      anchorText: 'Style item',
+      expectedNumberFormat: 'bullet',
+    },
+    numberingPackage,
+    dir
+  ).passed === false
 );
 
 if (failed) {

@@ -1,0 +1,13 @@
+{
+  "dslVersion": "1.6",
+  "scenarioId": "applyNamedParagraphStyleSetsPStyleReference",
+  "scenarioTitle": "Applying a named paragraph style sets a pStyle reference to the predefined style",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.1.27", "clauseTitle": "pStyle (Referenced Paragraph Style)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "applyParagraphStyleToAnchor", "anchorText": "Style this heading", "paragraphStyleId": "Heading1" },
+  "assertionList": [
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:p[.//w:t[contains(., 'Style this heading')]]/w:pPr/w:pStyle[@w:val='Heading1']" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:style[@w:type='paragraph' and @w:styleId='Heading1']", "assertedPart": { "partResolution": "relationshipFromMainPart", "relationshipTypeUri": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" } }
+  ]
+}

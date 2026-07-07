@@ -1,0 +1,14 @@
+{
+  "dslVersion": "1.6",
+  "scenarioId": "composeNumberedListResolvesToDecimalFormat",
+  "scenarioTitle": "Composing a numbered list produces paragraphs whose numbering resolves to decimal format",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.1.19", "clauseTitle": "numPr (Numbering Definition Instance Reference)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "composeDocumentWithNumberedList", "listItemTexts": ["First numbered item", "Second numbered item"], "numberFormat": "decimal" },
+  "assertionList": [
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:body/w:p[.//w:t[contains(., 'numbered item')]]", "expectedCount": 2 },
+    { "assertionKind": "paragraphNumberingResolvesToFormat", "anchorText": "First numbered item", "expectedNumberFormat": "decimal" },
+    { "assertionKind": "paragraphNumberingResolvesToFormat", "anchorText": "Second numbered item", "expectedNumberFormat": "decimal" }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "dslVersion": "1.5",
+  "scenarioId": "addCommentBracketsRangeWithMatchingIds",
+  "scenarioTitle": "Adding a comment brackets the anchor range and records matching comment ids",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.13.4.4", "clauseTitle": "commentRangeStart (Comment Anchor Range Start)" },
+  "secondarySpecCitations": [
+    { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.13.4.3", "clauseTitle": "commentRangeEnd (Comment Anchor Range End)" },
+    { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.13.4.5", "clauseTitle": "commentReference (Comment Content Reference Mark)" }
+  ],
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "addCommentOnFirstTextOccurrence",
+    "anchorText": "anchor phrase",
+    "commentText": "Comment on anchor phrase",
+    "commentAuthorName": "Conformance Reviewer",
+    "commentAuthorInitials": "CR"
+  },
+  "assertionList": [
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:commentRangeStart" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:commentRangeEnd" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:commentReference" },
+    { "assertionKind": "commentExistsWithTextAndAnchor", "expectedCommentText": "Comment on anchor phrase", "expectedAuthorName": "Conformance Reviewer", "expectedAnchorText": "anchor phrase" }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "dslVersion": "1.6",
+  "scenarioId": "setDefaultFooterTextAddsFooterReference",
+  "scenarioTitle": "Setting default footer text adds a default footer reference and footer part",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.10.2", "clauseTitle": "footerReference (Footer Reference)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "setDefaultFooterText", "footerText": "Generated footer text" },
+  "assertionList": [
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:sectPr/w:footerReference[@w:type='default']" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:ftr//w:t[contains(., 'Generated footer text')]", "assertedPart": { "partResolution": "footerReference", "footerReferenceType": "default" } },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:body/w:p//w:t[contains(., 'Body before footer')]" }
+  ]
+}

@@ -16,6 +16,9 @@ import type { AssertedPart, AssertionResult, ScenarioAssertion } from './types.j
 const XML_NS = 'http://www.w3.org/XML/1998/namespace';
 const OFFICE_REL_NS =
   'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+const COMMENTS_REL_TYPE = `${OFFICE_REL_NS}/comments`;
+const NUMBERING_REL_TYPE = `${OFFICE_REL_NS}/numbering`;
+const STYLES_REL_TYPE = `${OFFICE_REL_NS}/styles`;
 // Bound in every scenario xpath: w: for WordprocessingML, r: for relationship
 // ids (@r:id on hyperlinks and header/footer references).
 const selectRefs = xpath.useNamespaces({ w: WML_NS, r: OFFICE_REL_NS });
@@ -121,6 +124,51 @@ function hyperlinkText(hyperlink: Element): string {
   return out;
 }
 
+function getWAttr(el: Element, localName: string): string | null {
+  return el.getAttributeNS(WML_NS, localName) ?? el.getAttribute(`w:${localName}`);
+}
+
+function xpathLiteral(value: string): string {
+  if (!value.includes("'")) return `'${value}'`;
+  if (!value.includes('"')) return `"${value}"`;
+  return `concat(${value
+    .split("'")
+    .map((part) => `'${part}'`)
+    .join(`,"'",`)})`;
+}
+
+function elementText(el: Element): string {
+  const texts = el.getElementsByTagNameNS(WML_NS, 't');
+  let out = '';
+  for (let i = 0; i < texts.length; i++) out += texts.item(i)!.textContent ?? '';
+  return out;
+}
+
+function elementChildren(el: Element, localName: string): Element[] {
+  const out: Element[] = [];
+  for (let n = el.firstChild; n; n = n.nextSibling) {
+    if (
+      n.nodeType === 1 &&
+      (n as Element).namespaceURI === WML_NS &&
+      (n as Element).localName === localName
+    ) {
+      out.push(n as Element);
+    }
+  }
+  return out;
+}
+
+function firstElementChild(el: Element, localName: string): Element | null {
+  return elementChildren(el, localName)[0] ?? null;
+}
+
+function descendantElements(el: Element, localName: string): Element[] {
+  const nodes = el.getElementsByTagNameNS(WML_NS, localName);
+  const out: Element[] = [];
+  for (let i = 0; i < nodes.length; i++) out.push(nodes.item(i)!);
+  return out;
+}
+
 function evaluateHyperlinkResolvesToExternalUrl(
   assertion: ScenarioAssertion,
   pkg: LoadedPackage
@@ -152,6 +200,215 @@ function evaluateHyperlinkResolvesToExternalUrl(
     assertionKind: assertion.assertionKind,
     passed: false,
     detail: `no w:hyperlink with text '${wanted}' resolving to external ${wantedUrl}; saw [${seen.join(', ')}]`,
+  };
+}
+
+function collectAnchorTextForCommentId(root: Element, commentId: string): {
+  hasReference: boolean;
+  anchorText: string;
+} {
+  let inside = false;
+  let hasReference = false;
+  let anchorText = '';
+
+  function visit(node: Node): void {
+    if (node.nodeType !== 1) return;
+    const el = node as Element;
+    if (el.namespaceURI === WML_NS) {
+      if (el.localName === 'commentReference' && getWAttr(el, 'id') === commentId) {
+        hasReference = true;
+      }
+      if (el.localName === 'commentRangeStart' && getWAttr(el, 'id') === commentId) {
+        inside = true;
+        return;
+      }
+      if (el.localName === 'commentRangeEnd' && getWAttr(el, 'id') === commentId) {
+        inside = false;
+        return;
+      }
+      if (inside && el.localName === 't') {
+        anchorText += el.textContent ?? '';
+      }
+    }
+    for (let child = el.firstChild; child; child = child.nextSibling) {
+      visit(child);
+    }
+  }
+
+  visit(root);
+  return { hasReference, anchorText };
+}
+
+function evaluateCommentExistsWithTextAndAnchor(
+  assertion: ScenarioAssertion,
+  pkg: LoadedPackage
+): AssertionResult {
+  const commentsPart = resolvePartByRelationshipType(pkg, COMMENTS_REL_TYPE);
+  if (!commentsPart.ok) {
+    return { assertionKind: assertion.assertionKind, passed: false, detail: commentsPart.error };
+  }
+
+  const wantedText = assertion.expectedCommentText ?? '';
+  const commentsDom = parseDom(commentsPart.xml);
+  const comments = selectRefs('//w:comment', commentsDom as never) as Element[];
+  const matchingComments = comments.filter((comment) => {
+    if (!elementText(comment).includes(wantedText)) return false;
+    if (assertion.expectedAuthorName === undefined) return true;
+    return getWAttr(comment, 'author') === assertion.expectedAuthorName;
+  });
+  if (matchingComments.length === 0) {
+    return {
+      assertionKind: assertion.assertionKind,
+      passed: false,
+      detail:
+        `no comment in ${commentsPart.partName} contains '${wantedText}'` +
+        (assertion.expectedAuthorName ? ` by '${assertion.expectedAuthorName}'` : ''),
+    };
+  }
+
+  const mainDom = parseDom(pkg.mainDocumentXml);
+  const body = mainDom.getElementsByTagNameNS(WML_NS, 'body').item(0) ?? mainDom.documentElement;
+  const seen: string[] = [];
+  for (const comment of matchingComments) {
+    const id = getWAttr(comment, 'id');
+    if (!id) {
+      seen.push('(matching comment with no w:id)');
+      continue;
+    }
+    const anchor = collectAnchorTextForCommentId(body, id);
+    seen.push(`id ${id}: reference=${anchor.hasReference}; anchor='${anchor.anchorText}'`);
+    const anchorMatches =
+      assertion.expectedAnchorText === undefined ||
+      anchor.anchorText.includes(assertion.expectedAnchorText);
+    if (anchor.hasReference && anchorMatches) {
+      return {
+        assertionKind: assertion.assertionKind,
+        passed: true,
+        detail:
+          `comment '${wantedText}' is referenced by matching anchors` +
+          (assertion.expectedAnchorText ? ` around '${assertion.expectedAnchorText}'` : ''),
+      };
+    }
+  }
+  return {
+    assertionKind: assertion.assertionKind,
+    passed: false,
+    detail: `matching comment text exists, but no joined main-document anchor matched; saw [${seen.join(', ')}]`,
+  };
+}
+
+interface EffectiveNumPr {
+  numId: string;
+  ilvl: string;
+}
+
+function paragraphEffectiveNumPr(paragraph: Element, stylesXml: string | null): EffectiveNumPr | null {
+  const pPr = firstElementChild(paragraph, 'pPr');
+  if (!pPr) return null;
+
+  const directNumPr = firstElementChild(pPr, 'numPr');
+  if (directNumPr) {
+    const numId = firstElementChild(directNumPr, 'numId');
+    const ilvl = firstElementChild(directNumPr, 'ilvl');
+    const numIdVal = numId ? getWAttr(numId, 'val') : null;
+    if (numIdVal) return { numId: numIdVal, ilvl: ilvl ? getWAttr(ilvl, 'val') ?? '0' : '0' };
+  }
+
+  const pStyle = firstElementChild(pPr, 'pStyle');
+  const styleId = pStyle ? getWAttr(pStyle, 'val') : null;
+  if (!styleId || !stylesXml) return null;
+
+  const stylesDom = parseDom(stylesXml);
+  const visited = new Set<string>();
+  let current: string | null = styleId;
+  while (current && !visited.has(current)) {
+    visited.add(current);
+    const styles = selectRefs(
+      `//w:style[@w:type='paragraph' and @w:styleId=${xpathLiteral(current)}]`,
+      stylesDom as never
+    ) as Element[];
+    const style = styles[0];
+    if (!style) return null;
+    const stylePPr = firstElementChild(style, 'pPr');
+    const styleNumPr = stylePPr ? firstElementChild(stylePPr, 'numPr') : null;
+    if (styleNumPr) {
+      const numId = firstElementChild(styleNumPr, 'numId');
+      const ilvl = firstElementChild(styleNumPr, 'ilvl');
+      const numIdVal = numId ? getWAttr(numId, 'val') : null;
+      if (numIdVal) return { numId: numIdVal, ilvl: ilvl ? getWAttr(ilvl, 'val') ?? '0' : '0' };
+    }
+    const basedOn = firstElementChild(style, 'basedOn');
+    current = basedOn ? getWAttr(basedOn, 'val') : null;
+  }
+  return null;
+}
+
+function numberingFormat(numberingXml: string, numPr: EffectiveNumPr): string | null {
+  const numberingDom = parseDom(numberingXml);
+  const num = (selectRefs(
+    `//w:num[@w:numId=${xpathLiteral(numPr.numId)}]`,
+    numberingDom as never
+  ) as Element[])[0];
+  if (!num) return null;
+
+  const override = elementChildren(num, 'lvlOverride').find((el) => getWAttr(el, 'ilvl') === numPr.ilvl);
+  const overrideLvl = override ? firstElementChild(override, 'lvl') : null;
+  const overrideNumFmt = overrideLvl ? firstElementChild(overrideLvl, 'numFmt') : null;
+  if (overrideNumFmt) return getWAttr(overrideNumFmt, 'val');
+
+  const abstractNumId = firstElementChild(num, 'abstractNumId');
+  const abstractId = abstractNumId ? getWAttr(abstractNumId, 'val') : null;
+  if (!abstractId) return null;
+  const abstractNum = (selectRefs(
+    `//w:abstractNum[@w:abstractNumId=${xpathLiteral(abstractId)}]`,
+    numberingDom as never
+  ) as Element[])[0];
+  if (!abstractNum) return null;
+  const lvl = elementChildren(abstractNum, 'lvl').find((el) => getWAttr(el, 'ilvl') === numPr.ilvl);
+  if (!lvl) return null;
+  const numFmt = firstElementChild(lvl, 'numFmt');
+  return numFmt ? getWAttr(numFmt, 'val') : null;
+}
+
+function evaluateParagraphNumberingResolvesToFormat(
+  assertion: ScenarioAssertion,
+  pkg: LoadedPackage
+): AssertionResult {
+  const numberingPart = resolvePartByRelationshipType(pkg, NUMBERING_REL_TYPE);
+  if (!numberingPart.ok) {
+    return { assertionKind: assertion.assertionKind, passed: false, detail: numberingPart.error };
+  }
+  const stylesPart = resolvePartByRelationshipType(pkg, STYLES_REL_TYPE);
+  const stylesXml = stylesPart.ok ? stylesPart.xml : null;
+  const wantedAnchor = assertion.anchorText ?? '';
+  const wantedFormat = assertion.expectedNumberFormat ?? '';
+  const dom = parseDom(pkg.mainDocumentXml);
+  const paragraphs = descendantElements(dom.documentElement, 'p').filter((p) =>
+    elementText(p).includes(wantedAnchor)
+  );
+  const seen: string[] = [];
+  for (const paragraph of paragraphs) {
+    const numPr = paragraphEffectiveNumPr(paragraph, stylesXml);
+    if (!numPr) {
+      seen.push(`'${elementText(paragraph)}' has no effective numPr`);
+      continue;
+    }
+    const fmt = numberingFormat(numberingPart.xml, numPr);
+    seen.push(
+      `'${elementText(paragraph)}' -> numId ${numPr.numId} ilvl ${numPr.ilvl} fmt ${fmt ?? '(unresolved)'}`
+    );
+    if (fmt === wantedFormat) {
+      return {
+        assertionKind: assertion.assertionKind,
+        passed: true,
+        detail: `paragraph '${wantedAnchor}' resolves to numbering format ${wantedFormat}`,
+      };
+    }
+  }
+  return {
+    assertionKind: assertion.assertionKind,
+    passed: false,
+    detail: `no paragraph containing '${wantedAnchor}' resolved to numbering format ${wantedFormat}; saw [${seen.join(', ')}]`,
   };
 }
 
@@ -223,6 +480,12 @@ export function evaluateAssertion(
     }
     case 'hyperlinkResolvesToExternalUrl': {
       return evaluateHyperlinkResolvesToExternalUrl(assertion, pkg);
+    }
+    case 'commentExistsWithTextAndAnchor': {
+      return evaluateCommentExistsWithTextAndAnchor(assertion, pkg);
+    }
+    case 'paragraphNumberingResolvesToFormat': {
+      return evaluateParagraphNumberingResolvesToFormat(assertion, pkg);
     }
     default:
       return {

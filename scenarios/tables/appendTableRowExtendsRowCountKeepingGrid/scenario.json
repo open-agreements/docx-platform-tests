@@ -1,0 +1,15 @@
+{
+  "dslVersion": "1.4",
+  "scenarioId": "appendTableRowExtendsRowCountKeepingGrid",
+  "scenarioTitle": "Appending a table row extends row count while keeping the cell grid width",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.4.79", "clauseTitle": "tr (Table Row)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "appendTableRow", "tableIndex": 0, "cellTexts": ["B1", "B2"] },
+  "assertionList": [
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:tbl/w:tr", "expectedCount": 2 },
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:tbl/w:tr[2]/w:tc", "expectedCount": 2 },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:tbl/w:tr[2]/w:tc[1]//w:t[contains(., 'B1')]" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:tbl/w:tr[2]/w:tc[2]//w:t[contains(., 'B2')]" }
+  ]
+}

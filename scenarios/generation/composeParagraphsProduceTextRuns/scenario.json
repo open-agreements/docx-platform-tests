@@ -1,0 +1,20 @@
+{
+  "dslVersion": "1.4",
+  "scenarioId": "composeParagraphsProduceTextRuns",
+  "scenarioTitle": "Composing paragraphs produces one paragraph per requested text item",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.1.22", "clauseTitle": "p (Paragraph)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "composeDocumentWithParagraphs",
+    "paragraphDescriptorList": [
+      { "paragraphText": "First generated paragraph" },
+      { "paragraphText": "Second generated paragraph" }
+    ]
+  },
+  "assertionList": [
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:body/w:p[.//w:t[contains(., 'generated paragraph')]]", "expectedCount": 2 },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:body/w:p[1]//w:t[contains(., 'First generated paragraph')]" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:body/w:p[2]//w:t[contains(., 'Second generated paragraph')]" }
+  ]
+}

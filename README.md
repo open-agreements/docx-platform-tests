@@ -13,12 +13,18 @@ scenario's assertions and publishes a results matrix.
 
 ## Scope
 
-WordprocessingML conformance only, currently:
+WordprocessingML conformance only, currently grouped into capability areas
+such as:
 
 - tracked changes (`w:ins` / `w:del` accept and reject semantics),
 - find-replace over run text,
-- schema validity (optional `xmllint` + WML XSD tooling — see
-  `docs/scenario-dsl.md`).
+- document generation (paragraphs, formatted runs, tables, hyperlinks,
+  headers, numbered lists),
+- table editing,
+- comments, styles, numbering, headers, and footers.
+
+Some scenarios may also assert schema validity with optional `xmllint` + WML
+XSD tooling; see `docs/scenario-dsl.md`.
 
 SpreadsheetML and PresentationML are out of scope.
 
@@ -40,9 +46,11 @@ does not claim a conformance failure where there is only serialization
 freedom. See "Outcome grading" in `docs/scenario-dsl.md`.
 
 Published results live at `results/latest.json` and include a top-level
-`schemaVersion`. The JSON contract is published alongside the data as
-`results/results.schema.json` (draft 2020-12), and CI validates every emitted
-results document against it before publishing.
+`schemaVersion`; each row also carries `scenarioGroup` so the HTML matrix can
+render per-group summaries instead of one long flat table. The JSON contract
+is published alongside the data as `results/results.schema.json` (draft
+2020-12), and CI validates every emitted results document against it before
+publishing.
 
 ## Layout
 

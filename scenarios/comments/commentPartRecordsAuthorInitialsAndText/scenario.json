@@ -1,0 +1,19 @@
+{
+  "dslVersion": "1.5",
+  "scenarioId": "commentPartRecordsAuthorInitialsAndText",
+  "scenarioTitle": "Adding a comment records author initials and comment text in the comments part",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.13.4.2", "clauseTitle": "comment (Comment Content)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "addCommentOnFirstTextOccurrence",
+    "anchorText": "exact statement",
+    "commentText": "Check the defined term.",
+    "commentAuthorName": "Conformance Reviewer",
+    "commentAuthorInitials": "CR"
+  },
+  "assertionList": [
+    { "assertionKind": "commentExistsWithTextAndAnchor", "expectedCommentText": "Check the defined term.", "expectedAuthorName": "Conformance Reviewer", "expectedAnchorText": "exact statement" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:comment[@w:initials='CR'][.//w:t[contains(., 'Check the defined term.')]]", "assertedPart": { "partResolution": "relationshipFromMainPart", "relationshipTypeUri": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments" } }
+  ]
+}

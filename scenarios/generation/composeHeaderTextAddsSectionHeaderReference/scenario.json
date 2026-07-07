@@ -1,0 +1,18 @@
+{
+  "dslVersion": "1.4",
+  "scenarioId": "composeHeaderTextAddsSectionHeaderReference",
+  "scenarioTitle": "Composing header text adds a default section header reference",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.10.5", "clauseTitle": "headerReference (Header Reference)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "composeDocumentWithHeaderText",
+    "headerText": "Generated header",
+    "bodyText": "Generated body"
+  },
+  "assertionList": [
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:sectPr/w:headerReference[@w:type='default']" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:hdr//w:t[contains(., 'Generated header')]", "assertedPart": { "partResolution": "headerReference", "headerReferenceType": "default" } },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:body/w:p//w:t[contains(., 'Generated body')]" }
+  ]
+}

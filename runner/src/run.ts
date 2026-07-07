@@ -8,7 +8,7 @@ import {
   mkdirSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import { loadPackage } from './docx.js';
 import { evaluateAssertion } from './assertions.js';
 import { loadAllScenarios, REPO_ROOT } from './scenarios.js';
@@ -23,7 +23,7 @@ import type {
 
 const PROTOCOL_VERSION = 1;
 // The DSL revision this runner implements; see docs/scenario-dsl.md.
-const DSL_VERSION = '1.3';
+const DSL_VERSION = '1.6';
 
 function adapterVersion(adapter: AdapterRegistration): string {
   if (!adapter.adapterVersionCommand?.length) return 'unknown';
@@ -134,7 +134,8 @@ const results: ResultsDocument = {
     adapterName: adapter.adapterName,
     adapterVersion: adapterVersion(adapter),
   })),
-  results: scenarios.map(({ manifest }) => ({
+  results: scenarios.map(({ manifest, scenarioDir }) => ({
+    scenarioGroup: basename(dirname(scenarioDir)),
     scenarioId: manifest.scenarioId,
     scenarioTitle: manifest.scenarioTitle,
     specCitation: manifest.specCitation,

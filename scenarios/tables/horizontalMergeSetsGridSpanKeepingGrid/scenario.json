@@ -1,0 +1,15 @@
+{
+  "dslVersion": "1.4",
+  "scenarioId": "horizontalMergeSetsGridSpanKeepingGrid",
+  "scenarioTitle": "Horizontally merging cells records gridSpan while preserving the table grid",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.4.17", "clauseTitle": "gridSpan (Grid Columns Spanned by Current Table Cell)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "mergeTableCellsInRow", "tableIndex": 0, "rowIndex": 0, "startColumnIndex": 0, "endColumnIndex": 1 },
+  "assertionList": [
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:tbl/w:tblGrid/w:gridCol", "expectedCount": 3 },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:tbl/w:tr/w:tc[1]/w:tcPr/w:gridSpan[@w:val='2']" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:tbl/w:tr/w:tc[1]//w:t[contains(., 'Merge left')]" },
+    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:tbl/w:tr/w:tc[last()]//w:t[contains(., 'Right stable')]" }
+  ]
+}
