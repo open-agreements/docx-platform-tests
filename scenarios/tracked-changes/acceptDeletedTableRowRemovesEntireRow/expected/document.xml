@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:w="0" w:type="auto"/>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="5000"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:tc>
+          <w:tcPr><w:tcW w:w="5000" w:type="dxa"/></w:tcPr>
+          <w:p><w:r><w:t>Kept row</w:t></w:r></w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p/>
+  </w:body>
+</w:document>
