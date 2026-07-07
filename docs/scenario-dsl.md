@@ -22,13 +22,55 @@ A scenario is a directory under `scenarios/<group>/<scenarioId>/` containing:
 | --- | --- |
 | `scenario.json` | The scenario manifest (this document specifies it). |
 | `input/document.xml` | The source-of-truth input body. Reviewable in diffs. |
-| `input.docx` | The interchange artifact adapters receive. Generated from `input/document.xml` by `npm run pack-fixtures` and committed; CI fails if it drifts from the fragment. |
+| `input/{styles,numbering,comments,header-default,footer-default}.xml` | Optional sibling fragments packed as additional parts (below). Present only when a scenario needs a pre-existing styles/numbering/comments/header/footer part in its **input**. |
+| `input.docx` | The interchange artifact adapters receive. Generated from the `input/` fragments by `npm run pack-fixtures` and committed; CI fails if it drifts from them. |
 | `expected/document.xml` | Present only when the scenario uses a `canonicalXmlEquals` assertion. |
 
 Adapters consume full `.docx` packages, never bare XML: most implementations
 (python-docx, LibreOffice, Word itself) can only open a complete package.
 The committed fragment exists so reviewers diff ten lines of XML instead of
 a zip file.
+
+### Multi-part input fixtures
+
+Most scenarios pack a single-part document (`[Content_Types].xml`,
+`_rels/.rels`, `word/document.xml`). A scenario that needs a pre-existing
+non-main part in its input — a styles part defining `Heading1`, a comments
+part its body anchors, a numbering part it references — adds the corresponding
+sibling fragment under `input/`. The packer recognizes a **closed set**:
+
+| Fragment | Packaged part | Relationship `Type` | Stable relationship `Id` |
+| --- | --- | --- | --- |
+| `input/styles.xml` | `word/styles.xml` | …/relationships/styles | `rId1` |
+| `input/numbering.xml` | `word/numbering.xml` | …/relationships/numbering | `rId2` |
+| `input/comments.xml` | `word/comments.xml` | …/relationships/comments | `rId3` |
+| `input/header-default.xml` | `word/header-default.xml` | …/relationships/header | `rId4` |
+| `input/footer-default.xml` | `word/footer-default.xml` | …/relationships/footer | `rId5` |
+
+When any sibling is present the packer emits a `word/_rels/document.xml.rels`
+(with one relationship per active fragment) and a `[Content_Types].xml`
+Override per part. Each relationship id is **stable per part type** regardless
+of which other fragments are present: a fixture author wiring a header writes
+`<w:headerReference w:type="default" r:id="rId4"/>` into `input/document.xml`
+and knows the packer emits the matching `rId4` relationship. Styles, numbering,
+and comments are linked purely by relationship `Type` — their id is never
+referenced from the body — so assertions resolve them with
+`relationshipFromMainPart`, and headers/footers with
+`headerReference`/`footerReference` (see "Asserted part" below).
+
+The set is deliberately closed: only the `default` header/footer variant is
+packed. The `first` and `even` variants (and additional sections) are
+intentionally unsupported until a scenario needs them — adding one is a new
+slot in `FIXTURE_PART_SLOTS`, not an open-ended convention.
+
+With **no** siblings the package is byte-identical to the historical
+three-entry form, so pre-existing fixtures never drift. `npm run
+pack-fixtures --check` recomputes every package from its `input/` fragments and
+compares the **decompressed part content** against the committed `input.docx`
+(not raw zip bytes, which would couple the check to the build platform's
+compression output), so drift in any part — the main document, any sibling,
+`[Content_Types].xml`, `word/_rels/document.xml.rels`, or an added/removed
+fragment — fails CI. Unrecognized `input/*.xml` files are rejected outright.
 
 ## scenario.json
 
