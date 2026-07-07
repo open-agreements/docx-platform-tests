@@ -1,12 +1,12 @@
 {
-  "schemaVersion": 1,
-  "runTimestamp": "2026-07-07T16:02:54.153Z",
-  "dslVersion": "1.3",
+  "schemaVersion": 2,
+  "runTimestamp": "2026-07-07T23:03:05.890Z",
+  "dslVersion": "1.6",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.15.0+git.9940fb736d4e"
+      "adapterVersion": "0.15.0+git.bbaa1e694d20"
     },
     {
       "adapterName": "python-docx",
@@ -35,6 +35,7 @@
   ],
   "results": [
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptDeletedParagraphMarkMergesParagraphs",
       "scenarioTitle": "Accepting a deleted paragraph mark merges the paragraph with the following paragraph",
       "specCitation": {
@@ -108,6 +109,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptDeletedTableRowRemovesEntireRow",
       "scenarioTitle": "Accepting a deleted table row removes the entire row",
       "specCitation": {
@@ -221,6 +223,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptDeletionsRemovesDelContent",
       "scenarioTitle": "Accepting deletions removes w:del wrappers and their content",
       "specCitation": {
@@ -325,6 +328,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptFormattingChangeKeepsNewRunProperties",
       "scenarioTitle": "Accepting formatting changes keeps current run properties",
       "specCitation": {
@@ -444,6 +448,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptInsertionsUnwrapsInsWrappers",
       "scenarioTitle": "Accepting insertions unwraps w:ins and keeps run content",
       "specCitation": {
@@ -533,6 +538,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptMoveRemovesSourceAndUnwrapsDestination",
       "scenarioTitle": "Accepting a move removes the source content and unwraps the destination",
       "specCitation": {
@@ -667,6 +673,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptNestedDeletionInsideInsertion",
       "scenarioTitle": "Accepting nested deletion inside insertion keeps surviving inserted text",
       "specCitation": {
@@ -816,6 +823,1004 @@
       }
     },
     {
+      "scenarioGroup": "comments",
+      "scenarioId": "addCommentBracketsRangeWithMatchingIds",
+      "scenarioTitle": "Adding a comment brackets the anchor range and records matching comment ids",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.13.4.4",
+        "clauseTitle": "commentRangeStart (Comment Anchor Range Start)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:commentRangeStart matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:commentRangeEnd matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:commentReference matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "commentExistsWithTextAndAnchor",
+              "passed": true,
+              "detail": "comment 'Comment on anchor phrase' is referenced by matching anchors around 'anchor phrase'"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "generation",
+      "scenarioId": "appendParagraphPreservesExistingContent",
+      "scenarioTitle": "Appending a paragraph preserves existing content and adds a trailing paragraph",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.3.1.22",
+        "clauseTitle": "p (Paragraph)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p[.//w:t] matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[1]//w:t[contains(., 'Existing opening paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[last()]//w:t[contains(., 'Appended closing paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'appendParagraphWithText'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "tables",
+      "scenarioId": "appendTableRowExtendsRowCountKeepingGrid",
+      "scenarioTitle": "Appending a table row extends row count while keeping the cell grid width",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.4.79",
+        "clauseTitle": "tr (Table Row)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'appendTableRow'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr[2]/w:tc matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr[2]/w:tc[1]//w:t[contains(., 'B1')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr[2]/w:tc[2]//w:t[contains(., 'B2')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'appendTableRow'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'appendTableRow'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'appendTableRow'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'appendTableRow'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'appendTableRow'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "styles-numbering",
+      "scenarioId": "applyNamedParagraphStyleSetsPStyleReference",
+      "scenarioTitle": "Applying a named paragraph style sets a pStyle reference to the predefined style",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.3.1.27",
+        "clauseTitle": "pStyle (Referenced Paragraph Style)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'applyParagraphStyleToAnchor'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:p[.//w:t[contains(., 'Style this heading')]]/w:pPr/w:pStyle[@w:val='Heading1'] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:style[@w:type='paragraph' and @w:styleId='Heading1'] matched 1 node(s) in word/styles.xml; expected at least 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'applyParagraphStyleToAnchor'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'applyParagraphStyleToAnchor'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'applyParagraphStyleToAnchor'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'applyParagraphStyleToAnchor'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'applyParagraphStyleToAnchor'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "styles-numbering",
+      "scenarioId": "applyNumberingToParagraphAttachesNumPr",
+      "scenarioTitle": "Applying numbering to a paragraph attaches numbering properties that resolve through numbering.xml",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.3.1.19",
+        "clauseTitle": "numPr (Numbering Definition Instance Reference)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'applyNumberingToAnchorParagraph'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:p[.//w:t[contains(., 'Number this paragraph')]]/w:pPr/w:numPr matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "paragraphNumberingResolvesToFormat",
+              "passed": true,
+              "detail": "paragraph 'Number this paragraph' resolves to numbering format decimal"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'applyNumberingToAnchorParagraph'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'applyNumberingToAnchorParagraph'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'applyNumberingToAnchorParagraph'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'applyNumberingToAnchorParagraph'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'applyNumberingToAnchorParagraph'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "comments",
+      "scenarioId": "commentPartRecordsAuthorInitialsAndText",
+      "scenarioTitle": "Adding a comment records author initials and comment text in the comments part",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.13.4.2",
+        "clauseTitle": "comment (Comment Content)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "commentExistsWithTextAndAnchor",
+              "passed": true,
+              "detail": "comment 'Check the defined term.' is referenced by matching anchors around 'exact statement'"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:comment[@w:initials='CR'][.//w:t[contains(., 'Check the defined term.')]] matched 1 node(s) in word/comments.xml; expected at least 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "generation",
+      "scenarioId": "composeFormattedRunCarriesBoldItalicSize",
+      "scenarioTitle": "Composing a formatted run carries bold italic and font size properties",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.3.2.1",
+        "clauseTitle": "b (Bold)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'composeDocumentWithParagraphs'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:b matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:i matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:sz[@w:val='28'] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'composeDocumentWithParagraphs'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'composeDocumentWithParagraphs'"
+        },
+        "dolanmiu-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:b matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:i matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:sz[@w:val='28'] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'composeDocumentWithParagraphs'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'composeDocumentWithParagraphs'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "generation",
+      "scenarioId": "composeHeaderTextAddsSectionHeaderReference",
+      "scenarioTitle": "Composing header text adds a default section header reference",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.10.5",
+        "clauseTitle": "headerReference (Header Reference)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'composeDocumentWithHeaderText'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:sectPr/w:headerReference[@w:type='default'] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:hdr//w:t[contains(., 'Generated header')] matched 1 node(s) in word/header1.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p//w:t[contains(., 'Generated body')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'composeDocumentWithHeaderText'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'composeDocumentWithHeaderText'"
+        },
+        "dolanmiu-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:sectPr/w:headerReference[@w:type='default'] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:hdr//w:t[contains(., 'Generated header')] matched 1 node(s) in word/header1.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p//w:t[contains(., 'Generated body')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'composeDocumentWithHeaderText'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'composeDocumentWithHeaderText'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "generation",
+      "scenarioId": "composeHyperlinkCreatesRelationshipReferencedLink",
+      "scenarioTitle": "Composing a hyperlink creates a relationship-referenced external link",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.16.22",
+        "clauseTitle": "hyperlink (Hyperlink)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'composeDocumentWithHyperlink'"
+        },
+        "python-docx": {
+          "status": "unsupported",
+          "reason": "python-docx exposes no public API for writing external hyperlinks"
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'composeDocumentWithHyperlink'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'composeDocumentWithHyperlink'"
+        },
+        "dolanmiu-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:hyperlink[.//w:t[contains(., 'ECMA home')]] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "hyperlinkResolvesToExternalUrl",
+              "passed": true,
+              "detail": "hyperlink 'ECMA home' resolves to external https://ecma-international.org/"
+            }
+          ]
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'composeDocumentWithHyperlink'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'composeDocumentWithHyperlink'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "styles-numbering",
+      "scenarioId": "composeNumberedListResolvesToDecimalFormat",
+      "scenarioTitle": "Composing a numbered list produces paragraphs whose numbering resolves to decimal format",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.3.1.19",
+        "clauseTitle": "numPr (Numbering Definition Instance Reference)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'composeDocumentWithNumberedList'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p[.//w:t[contains(., 'numbered item')]] matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "paragraphNumberingResolvesToFormat",
+              "passed": true,
+              "detail": "paragraph 'First numbered item' resolves to numbering format decimal"
+            },
+            {
+              "assertionKind": "paragraphNumberingResolvesToFormat",
+              "passed": true,
+              "detail": "paragraph 'Second numbered item' resolves to numbering format decimal"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'composeDocumentWithNumberedList'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'composeDocumentWithNumberedList'"
+        },
+        "dolanmiu-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p[.//w:t[contains(., 'numbered item')]] matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "paragraphNumberingResolvesToFormat",
+              "passed": true,
+              "detail": "paragraph 'First numbered item' resolves to numbering format decimal"
+            },
+            {
+              "assertionKind": "paragraphNumberingResolvesToFormat",
+              "passed": true,
+              "detail": "paragraph 'Second numbered item' resolves to numbering format decimal"
+            }
+          ]
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'composeDocumentWithNumberedList'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'composeDocumentWithNumberedList'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "generation",
+      "scenarioId": "composeParagraphsProduceTextRuns",
+      "scenarioTitle": "Composing paragraphs produces one paragraph per requested text item",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.3.1.22",
+        "clauseTitle": "p (Paragraph)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'composeDocumentWithParagraphs'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p[.//w:t[contains(., 'generated paragraph')]] matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[1]//w:t[contains(., 'First generated paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[2]//w:t[contains(., 'Second generated paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'composeDocumentWithParagraphs'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'composeDocumentWithParagraphs'"
+        },
+        "dolanmiu-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p[.//w:t[contains(., 'generated paragraph')]] matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[1]//w:t[contains(., 'First generated paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[2]//w:t[contains(., 'Second generated paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'composeDocumentWithParagraphs'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'composeDocumentWithParagraphs'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "generation",
+      "scenarioId": "composeTableProducesGridMatchingCellMatrix",
+      "scenarioTitle": "Composing a table produces rows and cells matching the requested matrix",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.4.37",
+        "clauseTitle": "tbl (Table)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'composeDocumentWithTable'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc matched 4 node(s) in word/document.xml; expected 4"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr[2]/w:tc[2]//w:t[contains(., 'B2')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'composeDocumentWithTable'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'composeDocumentWithTable'"
+        },
+        "dolanmiu-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc matched 4 node(s) in word/document.xml; expected 4"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr[2]/w:tc[2]//w:t[contains(., 'B2')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'composeDocumentWithTable'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'composeDocumentWithTable'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "tables",
+      "scenarioId": "deleteTableRowRemovesRowAndContent",
+      "scenarioTitle": "Deleting a table row removes that row and its distinctive content",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.4.79",
+        "clauseTitle": "tr (Table Row)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'deleteTableRowAtIndex'"
+        },
+        "python-docx": {
+          "status": "unsupported",
+          "reason": "python-docx has no public table row deletion API"
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'deleteTableRowAtIndex'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'deleteTableRowAtIndex'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'deleteTableRowAtIndex'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'deleteTableRowAtIndex'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'deleteTableRowAtIndex'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "styles-numbering",
+      "scenarioId": "directFormattingDoesNotBakeIntoStyleDefinition",
+      "scenarioTitle": "Direct run formatting does not bake formatting into the paragraph style definition",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.7.4.17",
+        "clauseTitle": "style (Style Definition)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'formatFirstTextOccurrence'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r[.//w:t[contains(., 'these words')]]/w:rPr/w:b matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:style[@w:styleId='BodyText']//w:b matched 0 node(s) in word/styles.xml; expected 0"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'formatFirstTextOccurrence'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'formatFirstTextOccurrence'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'formatFirstTextOccurrence'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'formatFirstTextOccurrence'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'formatFirstTextOccurrence'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "tables",
+      "scenarioId": "horizontalMergeSetsGridSpanKeepingGrid",
+      "scenarioTitle": "Horizontally merging cells records gridSpan while preserving the table grid",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.4.17",
+        "clauseTitle": "gridSpan (Grid Columns Spanned by Current Table Cell)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'mergeTableCellsInRow'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tblGrid/w:gridCol matched 3 node(s) in word/document.xml; expected 3"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc[1]/w:tcPr/w:gridSpan[@w:val='2'] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc[1]//w:t[contains(., 'Merge left')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc[last()]//w:t[contains(., 'Right stable')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'mergeTableCellsInRow'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'mergeTableCellsInRow'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'mergeTableCellsInRow'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'mergeTableCellsInRow'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'mergeTableCellsInRow'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "generation",
+      "scenarioId": "insertParagraphAfterAnchorShiftsSubsequent",
+      "scenarioTitle": "Inserting a paragraph after an anchor shifts the following paragraph later",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.3.1.22",
+        "clauseTitle": "p (Paragraph)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'insertParagraphAfterAnchorText'"
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p[.//w:t] matched 3 node(s) in word/document.xml; expected 3"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[1]//w:t[contains(., 'Anchor paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[2]//w:t[contains(., 'Inserted middle paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[3]//w:t[contains(., 'Following paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'insertParagraphAfterAnchorText'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'insertParagraphAfterAnchorText'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'insertParagraphAfterAnchorText'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'insertParagraphAfterAnchorText'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'insertParagraphAfterAnchorText'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectDeletionsRestoresDelContent",
       "scenarioTitle": "Rejecting deletions restores w:delText content to body text",
       "specCitation": {
@@ -920,6 +1925,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectFormattingChangeRestoresPriorRunProperties",
       "scenarioTitle": "Rejecting formatting changes restores prior run properties",
       "specCitation": {
@@ -1039,6 +2045,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectInsertedParagraphMarkMergesParagraphs",
       "scenarioTitle": "Rejecting an inserted paragraph mark removes the mark and merges the paragraph with the following paragraph",
       "specCitation": {
@@ -1112,6 +2119,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectInsertedTableRowRemovesEntireRow",
       "scenarioTitle": "Rejecting an inserted table row removes the entire row",
       "specCitation": {
@@ -1215,6 +2223,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectInsertionsRemovesInsContent",
       "scenarioTitle": "Rejecting insertions removes w:ins wrappers and their run content",
       "specCitation": {
@@ -1319,6 +2328,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectMoveRestoresSourceRemovesDestination",
       "scenarioTitle": "Rejecting a move restores the source content and removes the destination",
       "specCitation": {
@@ -1453,6 +2463,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectNestedDeletionInsideInsertion",
       "scenarioTitle": "Rejecting nested deletion inside insertion removes the whole insertion",
       "specCitation": {
@@ -1602,6 +2613,7 @@
       }
     },
     {
+      "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectParagraphPropertiesChangeRestoresPrior",
       "scenarioTitle": "Rejecting a paragraph-properties change restores the prior properties",
       "specCitation": {
@@ -1706,6 +2718,49 @@
       }
     },
     {
+      "scenarioGroup": "comments",
+      "scenarioId": "removeAllCommentsStripsAnchorsKeepsText",
+      "scenarioTitle": "Removing all comments strips comment anchors while keeping the commented text",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.13.4.5",
+        "clauseTitle": "commentReference (Comment Content Reference Mark)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'removeAllComments'"
+        },
+        "python-docx": {
+          "status": "unsupported",
+          "reason": "python-docx exposes no public API to remove all comments and anchors"
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'removeAllComments'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'removeAllComments'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'removeAllComments'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'removeAllComments'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'removeAllComments'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "find-replace",
       "scenarioId": "replaceFirstOccurrencePreservesOffsets",
       "scenarioTitle": "Replacing the first occurrence places the new text at the matched offset",
       "specCitation": {
@@ -1827,6 +2882,7 @@
       }
     },
     {
+      "scenarioGroup": "find-replace",
       "scenarioId": "replaceTextAcrossRunBoundary",
       "scenarioTitle": "Replacing text spanning a run boundary places the replacement at the matched offset",
       "specCitation": {
@@ -1859,7 +2915,7 @@
         },
         "python-docx": {
           "status": "unsupported",
-          "reason": "match spans run boundaries; the python-docx adapter only performs intra-run replacement (glue, not algorithms)"
+          "reason": "match spans run boundaries; the python-docx adapter only performs intra-run replacement/formatting (glue, not algorithms)"
         },
         "libreoffice": {
           "status": "pass",
@@ -1912,6 +2968,236 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "tables",
+      "scenarioId": "replaceTextInsideTableCellPreservesStructure",
+      "scenarioTitle": "Replacing text inside a table cell preserves table structure and adjacent cell text",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.3.3.31",
+        "clauseTitle": "t (Text)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "fail",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": false,
+              "detail": "//w:tbl/w:tr/w:tc[1]//w:t[contains(., 'Invoice total sixty dollars')] matched 0 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc[2]//w:t[contains(., 'Neighbor cell remains')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "python-docx": {
+          "status": "error",
+          "reason": "exit 1: findText not present in any paragraph: 'thirty'"
+        },
+        "libreoffice": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc[1]//w:t[contains(., 'Invoice total sixty dollars')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc[2]//w:t[contains(., 'Neighbor cell remains')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "openxml-sdk": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc[1]//w:t[contains(., 'Invoice total sixty dollars')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc[2]//w:t[contains(., 'Neighbor cell remains')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx patchDocument targets explicit patch placeholders; protocol requires arbitrary paragraph-local literal search, which would be an adapter-side algorithm"
+        },
+        "superdoc-sdk": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc[1]//w:t[contains(., 'Invoice total sixty dollars')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc[2]//w:t[contains(., 'Neighbor cell remains')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "styles-numbering",
+      "scenarioId": "setDefaultFooterTextAddsFooterReference",
+      "scenarioTitle": "Setting default footer text adds a default footer reference and footer part",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.10.2",
+        "clauseTitle": "footerReference (Footer Reference)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'setDefaultFooterText'"
+        },
+        "python-docx": {
+          "status": "error",
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/run_adapter.py\", line 258, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/run_adapter.py\", line 249, in main\n    document.sections[0].footer.paragraphs[0].text = operation[\"footerText\"]\n    ~~~~~~~~~~~~~~~~~^^^\n  File \"/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.12/site-packages/docx/section.py\", line 279, in __getitem__\n    return Section(self._document_elm.sectPr_lst[key], self._document_part)\n                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^\nIndexError: list index out of range"
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'setDefaultFooterText'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'setDefaultFooterText'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'setDefaultFooterText'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'setDefaultFooterText'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'setDefaultFooterText'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "tables",
+      "scenarioId": "setTableCellTextReplacesCellContentOnly",
+      "scenarioTitle": "Setting table cell text replaces only the addressed cell content",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.4.66",
+        "clauseTitle": "tc (Table Cell)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'setTableCellText'"
+        },
+        "python-docx": {
+          "status": "error",
+          "reason": "exit 1: Traceback (most recent call last):\n  File \"/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/run_adapter.py\", line 258, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/run_adapter.py\", line 178, in main\n    cell = document.tables[int(operation[\"tableIndex\"])].cell(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.12/site-packages/docx/table.py\", line 90, in cell\n    cell_idx = col_idx + (row_idx * self._column_count)\n                                    ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.12/site-packages/docx/table.py\", line 185, in _column_count\n    return self._tbl.col_count\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.12/site-packages/docx/oxml/table.py\", line 178, in col_count\n    return len(self.tblGrid.gridCol_lst)\n               ^^^^^^^^^^^^\n  File \"/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.12/site-packages/docx/oxml/xmlchemy.py\", line 502, in get_child_element\n    raise InvalidXmlError(\ndocx.oxml.exceptions.InvalidXmlError: required ``<w:tblGrid>`` child element not present"
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'setTableCellText'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'setTableCellText'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'setTableCellText'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'setTableCellText'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'setTableCellText'"
         }
       }
     }
