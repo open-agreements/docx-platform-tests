@@ -1,0 +1,36 @@
+{
+  "dslVersion": "1.0",
+  "scenarioId": "rejectParagraphPropertiesChangeRestoresPrior",
+  "scenarioTitle": "Rejecting a paragraph-properties change restores the prior properties",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.13.5.29",
+    "clauseTitle": "pPrChange (Revision Information for Paragraph Properties)"
+  },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "rejectAllTrackedChanges" },
+  "assertionList": [
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:pPrChange",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:pPr/w:jc",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "documentTextContainsAtOffset",
+      "expectedSubstring": "Paragraph text",
+      "expectedOffset": 0
+    },
+    {
+      "assertionKind": "canonicalXmlEquals",
+      "expectedDocumentPath": "expected/document.xml"
+    }
+  ]
+}

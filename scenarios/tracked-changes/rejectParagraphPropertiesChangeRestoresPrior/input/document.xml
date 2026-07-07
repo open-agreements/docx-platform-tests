@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>
+    <w:p>
+      <w:pPr>
+        <w:jc w:val="center"/>
+        <w:pPrChange w:id="1" w:author="Reviewer" w:date="2026-01-01T00:00:00Z">
+          <w:pPr/>
+        </w:pPrChange>
+      </w:pPr>
+      <w:r><w:t>Paragraph text</w:t></w:r>
+    </w:p>
+  </w:body>
+</w:document>

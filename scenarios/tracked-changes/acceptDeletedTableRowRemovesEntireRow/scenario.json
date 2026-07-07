@@ -1,0 +1,59 @@
+{
+  "dslVersion": "1.2",
+  "scenarioId": "acceptDeletedTableRowRemovesEntireRow",
+  "scenarioTitle": "Accepting a deleted table row removes the entire row",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.13.5.12",
+    "clauseTitle": "del (Deleted Table Row)"
+  },
+  "secondarySpecCitations": [
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.13.5.14",
+      "clauseTitle": "del (Deleted Run Content)"
+    }
+  ],
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "acceptAllTrackedChanges" },
+  "assertionList": [
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:tr",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:trPr/w:del",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:del",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:delText",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "xpathQueryExists",
+      "xpathExpression": "//w:tbl/w:tr/w:tc//w:t[normalize-space(.)='Kept row']"
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:t[contains(., 'Deleted row')]",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "canonicalXmlEquals",
+      "expectedDocumentPath": "expected/document.xml"
+    }
+  ]
+}

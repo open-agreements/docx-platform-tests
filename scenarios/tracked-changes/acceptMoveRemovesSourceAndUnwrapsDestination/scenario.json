@@ -1,0 +1,55 @@
+{
+  "dslVersion": "1.2",
+  "scenarioId": "acceptMoveRemovesSourceAndUnwrapsDestination",
+  "scenarioTitle": "Accepting a move removes the source content and unwraps the destination",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.13.5.22",
+    "clauseTitle": "moveFrom (Move Source Run Content)"
+  },
+  "secondarySpecCitations": [
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.13.5.25",
+      "clauseTitle": "moveTo (Move Destination Run Content)"
+    }
+  ],
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "acceptAllTrackedChanges" },
+  "assertionList": [
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:moveFrom",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:moveTo",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:moveFromRangeStart | //w:moveFromRangeEnd | //w:moveToRangeStart | //w:moveToRangeEnd",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "documentTextContainsAtOffset",
+      "expectedSubstring": "Before ",
+      "expectedOffset": 0
+    },
+    {
+      "assertionKind": "documentTextContainsAtOffset",
+      "expectedSubstring": "moved clause",
+      "expectedOffset": 14
+    },
+    {
+      "assertionKind": "canonicalXmlEquals",
+      "expectedDocumentPath": "expected/document.xml"
+    }
+  ]
+}
