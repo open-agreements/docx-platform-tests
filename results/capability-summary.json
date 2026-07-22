@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "registryVersion": 1,
   "sourceResults": {
-    "schemaVersion": 2,
-    "runTimestamp": "2026-07-22T13:05:13.581Z",
-    "scenarioCount": 38,
+    "schemaVersion": 3,
+    "runTimestamp": "2026-07-22T18:53:07.651Z",
+    "scenarioCount": 42,
     "implementations": [
       {
         "adapterName": "safe-docx",
-        "adapterVersion": "0.16.0+git.96ae994cbdf0"
+        "adapterVersion": "0.17.0+git.7e08d64ca258"
       },
       {
         "adapterName": "python-docx",
@@ -41,6 +41,7 @@
     {
       "capabilityId": "word.comments.anchors",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "addCommentBracketsRangeWithMatchingIds"
       ],
@@ -99,6 +100,7 @@
     {
       "capabilityId": "word.comments.anchors",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "addCommentBracketsRangeWithMatchingIds"
       ],
@@ -157,6 +159,7 @@
     {
       "capabilityId": "word.comments.content",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "commentPartRecordsAuthorInitialsAndText"
       ],
@@ -215,6 +218,7 @@
     {
       "capabilityId": "word.comments.content",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "commentPartRecordsAuthorInitialsAndText"
       ],
@@ -273,6 +277,7 @@
     {
       "capabilityId": "word.comments.removal",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "removeAllCommentsStripsAnchorsKeepsText"
       ],
@@ -331,6 +336,7 @@
     {
       "capabilityId": "word.comments.removal",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "removeAllCommentsStripsAnchorsKeepsText"
       ],
@@ -387,8 +393,245 @@
       }
     },
     {
+      "capabilityId": "word.content-controls.inline",
+      "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
+      "scenarioIds": [
+        "unrelatedTextEditPreservesInlineContentControlStructure"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "fail": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.content-controls.inline",
+      "axis": "crossPlatform",
+      "oracleKind": "metamorphic-invariant",
+      "scenarioIds": [
+        "unrelatedTextEditPreservesOpaqueInlineContentControl"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "invariant-fail": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "invariant-fail": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.content-controls.inline",
+      "axis": "preserve",
+      "oracleKind": "ecma-conformance",
+      "scenarioIds": [
+        "unrelatedTextEditPreservesInlineContentControlStructure"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "fail": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.content-controls.inline",
+      "axis": "preserve",
+      "oracleKind": "metamorphic-invariant",
+      "scenarioIds": [
+        "unrelatedTextEditPreservesOpaqueInlineContentControl"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "invariant-fail": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "invariant-fail": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
       "capabilityId": "word.footers.default",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "setDefaultFooterTextAddsFooterReference"
       ],
@@ -447,6 +690,7 @@
     {
       "capabilityId": "word.footers.default",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "setDefaultFooterTextAddsFooterReference"
       ],
@@ -505,6 +749,7 @@
     {
       "capabilityId": "word.headers.default",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "composeHeaderTextAddsSectionHeaderReference"
       ],
@@ -563,6 +808,7 @@
     {
       "capabilityId": "word.headers.default",
       "axis": "generate",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "composeHeaderTextAddsSectionHeaderReference"
       ],
@@ -621,6 +867,7 @@
     {
       "capabilityId": "word.hyperlinks.external",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "composeHyperlinkCreatesRelationshipReferencedLink"
       ],
@@ -679,6 +926,7 @@
     {
       "capabilityId": "word.hyperlinks.external",
       "axis": "generate",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "composeHyperlinkCreatesRelationshipReferencedLink"
       ],
@@ -737,6 +985,7 @@
     {
       "capabilityId": "word.numbering.paragraph",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "applyNumberingToParagraphAttachesNumPr",
         "composeNumberedListResolvesToDecimalFormat"
@@ -797,6 +1046,7 @@
     {
       "capabilityId": "word.numbering.paragraph",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "applyNumberingToParagraphAttachesNumPr"
       ],
@@ -855,6 +1105,7 @@
     {
       "capabilityId": "word.numbering.paragraph",
       "axis": "generate",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "composeNumberedListResolvesToDecimalFormat"
       ],
@@ -913,8 +1164,9 @@
     {
       "capabilityId": "word.paragraphs.structure",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
-        "appendParagraphPreservesExistingContent",
+        "appendParagraphAddsTrailingParagraph",
         "composeParagraphsProduceTextRuns",
         "insertParagraphAfterAnchorShiftsSubsequent"
       ],
@@ -973,7 +1225,67 @@
     },
     {
       "capabilityId": "word.paragraphs.structure",
+      "axis": "crossPlatform",
+      "oracleKind": "metamorphic-invariant",
+      "scenarioIds": [
+        "appendParagraphPreservesExistingContent"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.paragraphs.structure",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "insertParagraphAfterAnchorShiftsSubsequent"
       ],
@@ -1032,8 +1344,9 @@
     {
       "capabilityId": "word.paragraphs.structure",
       "axis": "generate",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
-        "appendParagraphPreservesExistingContent",
+        "appendParagraphAddsTrailingParagraph",
         "composeParagraphsProduceTextRuns"
       ],
       "outcomes": {
@@ -1092,6 +1405,7 @@
     {
       "capabilityId": "word.paragraphs.structure",
       "axis": "preserve",
+      "oracleKind": "metamorphic-invariant",
       "scenarioIds": [
         "appendParagraphPreservesExistingContent"
       ],
@@ -1107,7 +1421,7 @@
           "denominator": 1,
           "passLike": 1,
           "counts": {
-            "pass": 1
+            "invariant-pass": 1
           }
         },
         "libreoffice": {
@@ -1150,6 +1464,7 @@
     {
       "capabilityId": "word.revisions.content",
       "axis": "acceptReject",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "acceptDeletedTableRowRemovesEntireRow",
         "acceptDeletionsRemovesDelContent",
@@ -1166,7 +1481,7 @@
           "passLike": 6,
           "counts": {
             "pass": 6,
-            "fail": 2
+            "unsupported": 2
           }
         },
         "python-docx": {
@@ -1219,6 +1534,7 @@
     {
       "capabilityId": "word.revisions.content",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "acceptDeletedTableRowRemovesEntireRow",
         "acceptDeletionsRemovesDelContent",
@@ -1235,7 +1551,7 @@
           "passLike": 6,
           "counts": {
             "pass": 6,
-            "fail": 2
+            "unsupported": 2
           }
         },
         "python-docx": {
@@ -1288,6 +1604,7 @@
     {
       "capabilityId": "word.revisions.moves",
       "axis": "acceptReject",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "acceptMoveRemovesSourceAndUnwrapsDestination",
         "rejectMoveRestoresSourceRemovesDestination"
@@ -1347,6 +1664,7 @@
     {
       "capabilityId": "word.revisions.moves",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "acceptMoveRemovesSourceAndUnwrapsDestination",
         "rejectMoveRestoresSourceRemovesDestination"
@@ -1406,6 +1724,7 @@
     {
       "capabilityId": "word.revisions.paragraph-mark",
       "axis": "acceptReject",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "acceptDeletedParagraphMarkMergesParagraphs",
         "rejectInsertedParagraphMarkMergesParagraphs"
@@ -1465,6 +1784,7 @@
     {
       "capabilityId": "word.revisions.paragraph-mark",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "acceptDeletedParagraphMarkMergesParagraphs",
         "rejectInsertedParagraphMarkMergesParagraphs"
@@ -1524,6 +1844,7 @@
     {
       "capabilityId": "word.revisions.paragraph-properties",
       "axis": "acceptReject",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "rejectParagraphPropertiesChangeRestoresPrior"
       ],
@@ -1582,6 +1903,7 @@
     {
       "capabilityId": "word.revisions.paragraph-properties",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "rejectParagraphPropertiesChangeRestoresPrior"
       ],
@@ -1640,6 +1962,7 @@
     {
       "capabilityId": "word.revisions.run-properties",
       "axis": "acceptReject",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "acceptFormattingChangeKeepsNewRunProperties",
         "rejectFormattingChangeRestoresPriorRunProperties"
@@ -1699,6 +2022,7 @@
     {
       "capabilityId": "word.revisions.run-properties",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "acceptFormattingChangeKeepsNewRunProperties",
         "rejectFormattingChangeRestoresPriorRunProperties"
@@ -1758,6 +2082,7 @@
     {
       "capabilityId": "word.revisions.table-rows",
       "axis": "acceptReject",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "acceptDeletedTableRowRemovesEntireRow",
         "rejectInsertedTableRowRemovesEntireRow"
@@ -1767,7 +2092,7 @@
           "denominator": 2,
           "passLike": 0,
           "counts": {
-            "fail": 2
+            "unsupported": 2
           }
         },
         "python-docx": {
@@ -1817,6 +2142,7 @@
     {
       "capabilityId": "word.revisions.table-rows",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "acceptDeletedTableRowRemovesEntireRow",
         "rejectInsertedTableRowRemovesEntireRow"
@@ -1826,7 +2152,7 @@
           "denominator": 2,
           "passLike": 0,
           "counts": {
-            "fail": 2
+            "unsupported": 2
           }
         },
         "python-docx": {
@@ -1876,6 +2202,7 @@
     {
       "capabilityId": "word.runs.formatting",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "composeFormattedRunCarriesBoldItalicSize",
         "directFormattingDoesNotBakeIntoStyleDefinition"
@@ -1936,6 +2263,7 @@
     {
       "capabilityId": "word.runs.formatting",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "directFormattingDoesNotBakeIntoStyleDefinition"
       ],
@@ -1994,6 +2322,7 @@
     {
       "capabilityId": "word.runs.formatting",
       "axis": "generate",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "composeFormattedRunCarriesBoldItalicSize"
       ],
@@ -2052,15 +2381,16 @@
     {
       "capabilityId": "word.settings.compatibility-mode",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "composeCompatibilityMode15WritesCompatSetting"
       ],
       "outcomes": {
         "safe-docx": {
           "denominator": 1,
-          "passLike": 0,
+          "passLike": 1,
           "counts": {
-            "unsupported": 1
+            "pass": 1
           }
         },
         "python-docx": {
@@ -2110,15 +2440,16 @@
     {
       "capabilityId": "word.settings.compatibility-mode",
       "axis": "generate",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "composeCompatibilityMode15WritesCompatSetting"
       ],
       "outcomes": {
         "safe-docx": {
           "denominator": 1,
-          "passLike": 0,
+          "passLike": 1,
           "counts": {
-            "unsupported": 1
+            "pass": 1
           }
         },
         "python-docx": {
@@ -2168,6 +2499,7 @@
     {
       "capabilityId": "word.styles.paragraph",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "applyNamedParagraphStyleSetsPStyleReference"
       ],
@@ -2226,6 +2558,7 @@
     {
       "capabilityId": "word.styles.paragraph",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "applyNamedParagraphStyleSetsPStyleReference"
       ],
@@ -2284,62 +2617,117 @@
     {
       "capabilityId": "word.tables.cells",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
-        "replaceTextInsideTableCellPreservesStructure",
         "setTableCellTextReplacesCellContentOnly"
       ],
       "outcomes": {
         "safe-docx": {
-          "denominator": 2,
+          "denominator": 1,
           "passLike": 0,
           "counts": {
-            "fail": 1,
             "unsupported": 1
           }
         },
         "python-docx": {
-          "denominator": 2,
+          "denominator": 1,
           "passLike": 0,
           "counts": {
-            "error": 2
+            "error": 1
           }
         },
         "libreoffice": {
-          "denominator": 2,
-          "passLike": 1,
+          "denominator": 1,
+          "passLike": 0,
           "counts": {
-            "pass": 1,
             "unsupported": 1
           }
         },
         "openxml-sdk": {
-          "denominator": 2,
-          "passLike": 1,
+          "denominator": 1,
+          "passLike": 0,
           "counts": {
-            "pass": 1,
             "unsupported": 1
           }
         },
         "dolanmiu-docx": {
-          "denominator": 2,
+          "denominator": 1,
           "passLike": 0,
           "counts": {
-            "unsupported": 2
+            "unsupported": 1
           }
         },
         "superdoc-sdk": {
-          "denominator": 2,
-          "passLike": 1,
+          "denominator": 1,
+          "passLike": 0,
           "counts": {
-            "pass": 1,
             "unsupported": 1
           }
         },
         "docx-rs": {
-          "denominator": 2,
+          "denominator": 1,
           "passLike": 0,
           "counts": {
-            "unsupported": 2
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.tables.cells",
+      "axis": "crossPlatform",
+      "oracleKind": "metamorphic-invariant",
+      "scenarioIds": [
+        "replaceTextInsideTableCellPreservesStructure"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "error": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
           }
         }
       }
@@ -2347,6 +2735,7 @@
     {
       "capabilityId": "word.tables.cells",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "setTableCellTextReplacesCellContentOnly"
       ],
@@ -2405,15 +2794,16 @@
     {
       "capabilityId": "word.tables.cells",
       "axis": "preserve",
+      "oracleKind": "metamorphic-invariant",
       "scenarioIds": [
         "replaceTextInsideTableCellPreservesStructure"
       ],
       "outcomes": {
         "safe-docx": {
           "denominator": 1,
-          "passLike": 0,
+          "passLike": 1,
           "counts": {
-            "fail": 1
+            "invariant-pass": 1
           }
         },
         "python-docx": {
@@ -2427,14 +2817,14 @@
           "denominator": 1,
           "passLike": 1,
           "counts": {
-            "pass": 1
+            "invariant-pass": 1
           }
         },
         "openxml-sdk": {
           "denominator": 1,
           "passLike": 1,
           "counts": {
-            "pass": 1
+            "invariant-pass": 1
           }
         },
         "dolanmiu-docx": {
@@ -2448,7 +2838,7 @@
           "denominator": 1,
           "passLike": 1,
           "counts": {
-            "pass": 1
+            "invariant-pass": 1
           }
         },
         "docx-rs": {
@@ -2463,6 +2853,7 @@
     {
       "capabilityId": "word.tables.horizontal-merge",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "horizontalMergeSetsGridSpanKeepingGrid"
       ],
@@ -2521,6 +2912,7 @@
     {
       "capabilityId": "word.tables.horizontal-merge",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "horizontalMergeSetsGridSpanKeepingGrid"
       ],
@@ -2579,6 +2971,7 @@
     {
       "capabilityId": "word.tables.rows",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "appendTableRowExtendsRowCountKeepingGrid",
         "deleteTableRowRemovesRowAndContent"
@@ -2639,6 +3032,7 @@
     {
       "capabilityId": "word.tables.rows",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "appendTableRowExtendsRowCountKeepingGrid",
         "deleteTableRowRemovesRowAndContent"
@@ -2699,6 +3093,7 @@
     {
       "capabilityId": "word.tables.structure",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "composeTableProducesGridMatchingCellMatrix"
       ],
@@ -2757,6 +3152,7 @@
     {
       "capabilityId": "word.tables.structure",
       "axis": "generate",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "composeTableProducesGridMatchingCellMatrix"
       ],
@@ -2815,63 +3211,65 @@
     {
       "capabilityId": "word.text.find-replace",
       "axis": "crossPlatform",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "replaceFirstOccurrencePreservesOffsets",
         "replaceTextAcrossRunBoundary",
-        "replaceTextInsideTableCellPreservesStructure"
+        "replaceTextInsideTableCellUpdatesTargetText",
+        "unrelatedTextEditPreservesInlineContentControlStructure"
       ],
       "outcomes": {
         "safe-docx": {
-          "denominator": 3,
-          "passLike": 2,
+          "denominator": 4,
+          "passLike": 4,
           "counts": {
-            "pass": 2,
-            "fail": 1
+            "pass": 4
           }
         },
         "python-docx": {
-          "denominator": 3,
-          "passLike": 1,
+          "denominator": 4,
+          "passLike": 2,
           "counts": {
-            "pass": 1,
+            "pass": 2,
             "unsupported": 1,
             "error": 1
           }
         },
         "libreoffice": {
-          "denominator": 3,
-          "passLike": 3,
+          "denominator": 4,
+          "passLike": 4,
           "counts": {
-            "pass": 3
+            "pass": 4
           }
         },
         "openxml-sdk": {
-          "denominator": 3,
-          "passLike": 2,
+          "denominator": 4,
+          "passLike": 3,
           "counts": {
-            "pass": 2,
+            "pass": 3,
             "unsupported": 1
           }
         },
         "dolanmiu-docx": {
-          "denominator": 3,
+          "denominator": 4,
           "passLike": 0,
           "counts": {
-            "unsupported": 3
+            "unsupported": 4
           }
         },
         "superdoc-sdk": {
-          "denominator": 3,
+          "denominator": 4,
           "passLike": 3,
           "counts": {
-            "pass": 3
+            "pass": 3,
+            "fail": 1
           }
         },
         "docx-rs": {
-          "denominator": 3,
+          "denominator": 4,
           "passLike": 0,
           "counts": {
-            "unsupported": 3
+            "unsupported": 4
           }
         }
       }
@@ -2879,63 +3277,65 @@
     {
       "capabilityId": "word.text.find-replace",
       "axis": "edit",
+      "oracleKind": "ecma-conformance",
       "scenarioIds": [
         "replaceFirstOccurrencePreservesOffsets",
         "replaceTextAcrossRunBoundary",
-        "replaceTextInsideTableCellPreservesStructure"
+        "replaceTextInsideTableCellUpdatesTargetText",
+        "unrelatedTextEditPreservesInlineContentControlStructure"
       ],
       "outcomes": {
         "safe-docx": {
-          "denominator": 3,
-          "passLike": 2,
+          "denominator": 4,
+          "passLike": 4,
           "counts": {
-            "pass": 2,
-            "fail": 1
+            "pass": 4
           }
         },
         "python-docx": {
-          "denominator": 3,
-          "passLike": 1,
+          "denominator": 4,
+          "passLike": 2,
           "counts": {
-            "pass": 1,
+            "pass": 2,
             "unsupported": 1,
             "error": 1
           }
         },
         "libreoffice": {
-          "denominator": 3,
-          "passLike": 3,
+          "denominator": 4,
+          "passLike": 4,
           "counts": {
-            "pass": 3
+            "pass": 4
           }
         },
         "openxml-sdk": {
-          "denominator": 3,
-          "passLike": 2,
+          "denominator": 4,
+          "passLike": 3,
           "counts": {
-            "pass": 2,
+            "pass": 3,
             "unsupported": 1
           }
         },
         "dolanmiu-docx": {
-          "denominator": 3,
+          "denominator": 4,
           "passLike": 0,
           "counts": {
-            "unsupported": 3
+            "unsupported": 4
           }
         },
         "superdoc-sdk": {
-          "denominator": 3,
+          "denominator": 4,
           "passLike": 3,
           "counts": {
-            "pass": 3
+            "pass": 3,
+            "fail": 1
           }
         },
         "docx-rs": {
-          "denominator": 3,
+          "denominator": 4,
           "passLike": 0,
           "counts": {
-            "unsupported": 3
+            "unsupported": 4
           }
         }
       }

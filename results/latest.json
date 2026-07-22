@@ -1,12 +1,12 @@
 {
-  "schemaVersion": 2,
-  "runTimestamp": "2026-07-22T13:05:13.581Z",
-  "dslVersion": "1.7",
+  "schemaVersion": 3,
+  "runTimestamp": "2026-07-22T18:53:07.651Z",
+  "dslVersion": "1.8",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.16.0+git.96ae994cbdf0"
+      "adapterVersion": "0.17.0+git.7e08d64ca258"
     },
     {
       "adapterName": "python-docx",
@@ -38,6 +38,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptDeletedParagraphMarkMergesParagraphs",
       "scenarioTitle": "Accepting a deleted paragraph mark merges the paragraph with the following paragraph",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -112,6 +113,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptDeletedTableRowRemovesEntireRow",
       "scenarioTitle": "Accepting a deleted table row removes the entire row",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -121,44 +123,8 @@
       },
       "outcomes": {
         "safe-docx": {
-          "status": "fail",
-          "assertionResults": [
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": false,
-              "detail": "//w:tr matched 2 node(s) in word/document.xml; expected 1"
-            },
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": true,
-              "detail": "//w:trPr/w:del matched 0 node(s) in word/document.xml; expected 0"
-            },
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": true,
-              "detail": "//w:del matched 0 node(s) in word/document.xml; expected 0"
-            },
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": true,
-              "detail": "//w:delText matched 0 node(s) in word/document.xml; expected 0"
-            },
-            {
-              "assertionKind": "xpathQueryExists",
-              "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc//w:t[normalize-space(.)='Kept row'] matched 1 node(s) in word/document.xml; expected at least 1"
-            },
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": true,
-              "detail": "//w:t[contains(., 'Deleted row')] matched 0 node(s) in word/document.xml; expected 0"
-            },
-            {
-              "assertionKind": "canonicalXmlEquals",
-              "passed": false,
-              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tbl\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblW\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n           \"auto\"\n          ],\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblGrid\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gridCol\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"5000\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tc\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcPr\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcW\",\n             \"attributes\": [\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n               \"dxa\"\n              ],\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n               \"5000\"\n              ]\n             ],\n             \"children\": []\n            }\n           ]\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n             \"attributes\": [],\n             \"children\": [\n              {\n               \"kind\": \"element\",\n               \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n               \"attributes\": [],\n               \"children\": [\n                {\n                 \"kind\": \"text\",\n                 \"text\": \"Kept row\"\n                }\n               ]\n              }\n             ]\n            }\n           ]\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": []\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tbl\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblW\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n           \"auto\"\n          ],\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblGrid\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gridCol\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"5000\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tc\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcPr\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcW\",\n             \"attributes\": [\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n               \"dxa\"\n              ],\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n               \"5000\"\n              ]\n             ],\n             \"children\": []\n            }\n           ]\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n             \"attributes\": [],\n             \"children\": [\n              {\n               \"kind\": \"element\",\n               \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n               \"attributes\": [],\n               \"children\": [\n                {\n                 \"kind\": \"text\",\n                 \"text\": \"Kept row\"\n                }\n               ]\n              }\n             ]\n            }\n           ]\n          }\n         ]\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}trPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"\\n          \\n        \"\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tc\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcPr\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcW\",\n             \"attributes\": [\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n               \"dxa\"\n              ],\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n               \"5000\"\n              ]\n             ],\n             \"children\": []\n            }\n           ]\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"text\",\n             \"text\": \"\\n            \\n          \"\n            }\n           ]\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": []\n    }\n   ]\n  }\n ]\n}"
-            }
-          ]
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement accepting deleted table-row revisions"
         },
         "python-docx": {
           "status": "unsupported",
@@ -226,6 +192,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptDeletionsRemovesDelContent",
       "scenarioTitle": "Accepting deletions removes w:del wrappers and their content",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -331,6 +298,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptFormattingChangeKeepsNewRunProperties",
       "scenarioTitle": "Accepting formatting changes keeps current run properties",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -451,6 +419,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptInsertionsUnwrapsInsWrappers",
       "scenarioTitle": "Accepting insertions unwraps w:ins and keeps run content",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -541,6 +510,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptMoveRemovesSourceAndUnwrapsDestination",
       "scenarioTitle": "Accepting a move removes the source content and unwraps the destination",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -676,6 +646,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "acceptNestedDeletionInsideInsertion",
       "scenarioTitle": "Accepting nested deletion inside insertion keeps surviving inserted text",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -826,6 +797,7 @@
       "scenarioGroup": "comments",
       "scenarioId": "addCommentBracketsRangeWithMatchingIds",
       "scenarioTitle": "Adding a comment brackets the anchor range and records matching comment ids",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -887,8 +859,9 @@
     },
     {
       "scenarioGroup": "generation",
-      "scenarioId": "appendParagraphPreservesExistingContent",
-      "scenarioTitle": "Appending a paragraph preserves existing content and adds a trailing paragraph",
+      "scenarioId": "appendParagraphAddsTrailingParagraph",
+      "scenarioTitle": "Appending a paragraph adds one trailing paragraph with the requested text",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -910,14 +883,58 @@
               "detail": "//w:body/w:p[.//w:t] matched 2 node(s) in word/document.xml; expected 2"
             },
             {
-              "assertionKind": "xpathQueryExists",
+              "assertionKind": "xpathElementTextEquals",
               "passed": true,
-              "detail": "//w:body/w:p[1]//w:t[contains(., 'Existing opening paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
-            },
+              "detail": "visible descendant w:t text \"Appended closing paragraph\"; expected \"Appended closing paragraph\""
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "openxml-sdk": {
+          "status": "unsupported",
+          "reason": "openxml-sdk adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu-docx adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'appendParagraphWithText'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "generation",
+      "scenarioId": "appendParagraphPreservesExistingContent",
+      "scenarioTitle": "Appending a paragraph preserves the existing opening paragraph",
+      "oracleKind": "metamorphic-invariant",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.3.1.22",
+        "clauseTitle": "p (Paragraph)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "python-docx": {
+          "status": "invariant-pass",
+          "assertionResults": [
             {
-              "assertionKind": "xpathQueryExists",
+              "assertionKind": "xpathElementTextEquals",
               "passed": true,
-              "detail": "//w:body/w:p[last()]//w:t[contains(., 'Appended closing paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+              "detail": "visible descendant w:t text \"Existing opening paragraph\"; expected \"Existing opening paragraph\""
             }
           ]
         },
@@ -947,6 +964,7 @@
       "scenarioGroup": "tables",
       "scenarioId": "appendTableRowExtendsRowCountKeepingGrid",
       "scenarioTitle": "Appending a table row extends row count while keeping the cell grid width",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1010,6 +1028,7 @@
       "scenarioGroup": "styles-numbering",
       "scenarioId": "applyNamedParagraphStyleSetsPStyleReference",
       "scenarioTitle": "Applying a named paragraph style sets a pStyle reference to the predefined style",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1063,6 +1082,7 @@
       "scenarioGroup": "styles-numbering",
       "scenarioId": "applyNumberingToParagraphAttachesNumPr",
       "scenarioTitle": "Applying numbering to a paragraph attaches numbering properties that resolve through numbering.xml",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1116,6 +1136,7 @@
       "scenarioGroup": "comments",
       "scenarioId": "commentPartRecordsAuthorInitialsAndText",
       "scenarioTitle": "Adding a comment records author initials and comment text in the comments part",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1169,6 +1190,7 @@
       "scenarioGroup": "generation",
       "scenarioId": "composeCompatibilityMode15WritesCompatSetting",
       "scenarioTitle": "Composing compatibility mode 15 writes the matching settings entry",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1185,8 +1207,19 @@
       ],
       "outcomes": {
         "safe-docx": {
-          "status": "unsupported",
-          "reason": "safe-docx adapter does not implement operation 'composeDocumentWithCompatibilityMode'"
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "/w:settings/w:compat/w:compatSetting[@w:name='compatibilityMode' and @w:uri='http://schemas.microsoft.com/office/word' and @w:val='15'] matched 1 node(s) in word/settings.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Compatibility mode 15' found at offset 0"
+            }
+          ]
         },
         "python-docx": {
           "status": "unsupported",
@@ -1240,6 +1273,7 @@
       "scenarioGroup": "generation",
       "scenarioId": "composeFormattedRunCarriesBoldItalicSize",
       "scenarioTitle": "Composing a formatted run carries bold italic and font size properties",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1314,6 +1348,7 @@
       "scenarioGroup": "generation",
       "scenarioId": "composeHeaderTextAddsSectionHeaderReference",
       "scenarioTitle": "Composing header text adds a default section header reference",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1388,6 +1423,7 @@
       "scenarioGroup": "generation",
       "scenarioId": "composeHyperlinkCreatesRelationshipReferencedLink",
       "scenarioTitle": "Composing a hyperlink creates a relationship-referenced external link",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1441,6 +1477,7 @@
       "scenarioGroup": "styles-numbering",
       "scenarioId": "composeNumberedListResolvesToDecimalFormat",
       "scenarioTitle": "Composing a numbered list produces paragraphs whose numbering resolves to decimal format",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1515,6 +1552,7 @@
       "scenarioGroup": "generation",
       "scenarioId": "composeParagraphsProduceTextRuns",
       "scenarioTitle": "Composing paragraphs produces one paragraph per requested text item",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1589,6 +1627,7 @@
       "scenarioGroup": "generation",
       "scenarioId": "composeTableProducesGridMatchingCellMatrix",
       "scenarioTitle": "Composing a table produces rows and cells matching the requested matrix",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1673,6 +1712,7 @@
       "scenarioGroup": "tables",
       "scenarioId": "deleteTableRowRemovesRowAndContent",
       "scenarioTitle": "Deleting a table row removes that row and its distinctive content",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1715,6 +1755,7 @@
       "scenarioGroup": "styles-numbering",
       "scenarioId": "directFormattingDoesNotBakeIntoStyleDefinition",
       "scenarioTitle": "Direct run formatting does not bake formatting into the paragraph style definition",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1768,6 +1809,7 @@
       "scenarioGroup": "tables",
       "scenarioId": "horizontalMergeSetsGridSpanKeepingGrid",
       "scenarioTitle": "Horizontally merging cells records gridSpan while preserving the table grid",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1831,6 +1873,7 @@
       "scenarioGroup": "generation",
       "scenarioId": "insertParagraphAfterAnchorShiftsSubsequent",
       "scenarioTitle": "Inserting a paragraph after an anchor shifts the following paragraph later",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1894,6 +1937,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectDeletionsRestoresDelContent",
       "scenarioTitle": "Rejecting deletions restores w:delText content to body text",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -1999,6 +2043,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectFormattingChangeRestoresPriorRunProperties",
       "scenarioTitle": "Rejecting formatting changes restores prior run properties",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -2119,6 +2164,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectInsertedParagraphMarkMergesParagraphs",
       "scenarioTitle": "Rejecting an inserted paragraph mark removes the mark and merges the paragraph with the following paragraph",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -2193,6 +2239,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectInsertedTableRowRemovesEntireRow",
       "scenarioTitle": "Rejecting an inserted table row removes the entire row",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -2202,39 +2249,8 @@
       },
       "outcomes": {
         "safe-docx": {
-          "status": "fail",
-          "assertionResults": [
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": false,
-              "detail": "//w:tr matched 2 node(s) in word/document.xml; expected 1"
-            },
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": true,
-              "detail": "//w:trPr/w:ins matched 0 node(s) in word/document.xml; expected 0"
-            },
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": true,
-              "detail": "//w:ins matched 0 node(s) in word/document.xml; expected 0"
-            },
-            {
-              "assertionKind": "xpathQueryExists",
-              "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc//w:t[normalize-space(.)='Kept row'] matched 1 node(s) in word/document.xml; expected at least 1"
-            },
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": true,
-              "detail": "//w:t[contains(., 'Inserted row')] matched 0 node(s) in word/document.xml; expected 0"
-            },
-            {
-              "assertionKind": "canonicalXmlEquals",
-              "passed": false,
-              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tbl\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblW\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n           \"auto\"\n          ],\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblGrid\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gridCol\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"5000\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tc\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcPr\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcW\",\n             \"attributes\": [\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n               \"dxa\"\n              ],\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n               \"5000\"\n              ]\n             ],\n             \"children\": []\n            }\n           ]\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n             \"attributes\": [],\n             \"children\": [\n              {\n               \"kind\": \"element\",\n               \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n               \"attributes\": [],\n               \"children\": [\n                {\n                 \"kind\": \"text\",\n                 \"text\": \"Kept row\"\n                }\n               ]\n              }\n             ]\n            }\n           ]\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": []\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tbl\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblW\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n           \"auto\"\n          ],\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblGrid\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gridCol\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"5000\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tc\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcPr\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcW\",\n             \"attributes\": [\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n               \"dxa\"\n              ],\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n               \"5000\"\n              ]\n             ],\n             \"children\": []\n            }\n           ]\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n             \"attributes\": [],\n             \"children\": [\n              {\n               \"kind\": \"element\",\n               \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n               \"attributes\": [],\n               \"children\": [\n                {\n                 \"kind\": \"text\",\n                 \"text\": \"Kept row\"\n                }\n               ]\n              }\n             ]\n            }\n           ]\n          }\n         ]\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}trPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"\\n          \\n        \"\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tc\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcPr\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcW\",\n             \"attributes\": [\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n               \"dxa\"\n              ],\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n               \"5000\"\n              ]\n             ],\n             \"children\": []\n            }\n           ]\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"text\",\n             \"text\": \"\\n            \\n          \"\n            }\n           ]\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": []\n    }\n   ]\n  }\n ]\n}"
-            }
-          ]
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement rejecting inserted table-row revisions"
         },
         "python-docx": {
           "status": "unsupported",
@@ -2297,6 +2313,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectInsertionsRemovesInsContent",
       "scenarioTitle": "Rejecting insertions removes w:ins wrappers and their run content",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -2402,6 +2419,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectMoveRestoresSourceRemovesDestination",
       "scenarioTitle": "Rejecting a move restores the source content and removes the destination",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -2537,6 +2555,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectNestedDeletionInsideInsertion",
       "scenarioTitle": "Rejecting nested deletion inside insertion removes the whole insertion",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -2687,6 +2706,7 @@
       "scenarioGroup": "tracked-changes",
       "scenarioId": "rejectParagraphPropertiesChangeRestoresPrior",
       "scenarioTitle": "Rejecting a paragraph-properties change restores the prior properties",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -2792,6 +2812,7 @@
       "scenarioGroup": "comments",
       "scenarioId": "removeAllCommentsStripsAnchorsKeepsText",
       "scenarioTitle": "Removing all comments strips comment anchors while keeping the commented text",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -2834,6 +2855,7 @@
       "scenarioGroup": "find-replace",
       "scenarioId": "replaceFirstOccurrencePreservesOffsets",
       "scenarioTitle": "Replacing the first occurrence places the new text at the matched offset",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -2956,6 +2978,7 @@
       "scenarioGroup": "find-replace",
       "scenarioId": "replaceTextAcrossRunBoundary",
       "scenarioTitle": "Replacing text spanning a run boundary places the replacement at the matched offset",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -3046,16 +3069,17 @@
       "scenarioGroup": "tables",
       "scenarioId": "replaceTextInsideTableCellPreservesStructure",
       "scenarioTitle": "Replacing text inside a table cell preserves table structure and adjacent cell text",
+      "oracleKind": "metamorphic-invariant",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
         "part": 1,
-        "section": "17.3.3.31",
-        "clauseTitle": "t (Text)"
+        "section": "17.4.66",
+        "clauseTitle": "tc (Table Cell)"
       },
       "outcomes": {
         "safe-docx": {
-          "status": "fail",
+          "status": "invariant-pass",
           "assertionResults": [
             {
               "assertionKind": "xpathQueryCount",
@@ -3068,19 +3092,111 @@
               "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
             },
             {
-              "assertionKind": "xpathQueryExists",
-              "passed": false,
-              "detail": "//w:tbl/w:tr/w:tc[1]//w:t[contains(., 'Invoice total sixty dollars')] matched 0 node(s) in word/document.xml; expected at least 1"
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Neighbor cell remains\"; expected \"Neighbor cell remains\""
+            }
+          ]
+        },
+        "python-docx": {
+          "status": "error",
+          "reason": "exit 1: findText not present in any paragraph: 'thirty'"
+        },
+        "libreoffice": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 1 node(s) in word/document.xml; expected 1"
             },
             {
               "assertionKind": "xpathQueryCount",
               "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
+              "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
             },
             {
-              "assertionKind": "xpathQueryExists",
+              "assertionKind": "xpathElementTextEquals",
               "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc[2]//w:t[contains(., 'Neighbor cell remains')] matched 1 node(s) in word/document.xml; expected at least 1"
+              "detail": "visible descendant w:t text \"Neighbor cell remains\"; expected \"Neighbor cell remains\""
+            }
+          ]
+        },
+        "openxml-sdk": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Neighbor cell remains\"; expected \"Neighbor cell remains\""
+            }
+          ]
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx patchDocument targets explicit patch placeholders; protocol requires arbitrary paragraph-local literal search, which would be an adapter-side algorithm"
+        },
+        "superdoc-sdk": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Neighbor cell remains\"; expected \"Neighbor cell remains\""
+            }
+          ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "tables",
+      "scenarioId": "replaceTextInsideTableCellUpdatesTargetText",
+      "scenarioTitle": "Replacing text inside a table cell updates the target text",
+      "oracleKind": "ecma-conformance",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.3.3.31",
+        "clauseTitle": "t (Text)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Invoice total sixty dollars\"; expected \"Invoice total sixty dollars\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
             }
           ]
         },
@@ -3092,29 +3208,14 @@
           "status": "pass",
           "assertionResults": [
             {
-              "assertionKind": "xpathQueryCount",
+              "assertionKind": "xpathElementTextEquals",
               "passed": true,
-              "detail": "//w:tbl/w:tr matched 1 node(s) in word/document.xml; expected 1"
+              "detail": "visible descendant w:t text \"Invoice total sixty dollars\"; expected \"Invoice total sixty dollars\""
             },
             {
               "assertionKind": "xpathQueryCount",
               "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
-            },
-            {
-              "assertionKind": "xpathQueryExists",
-              "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc[1]//w:t[contains(., 'Invoice total sixty dollars')] matched 1 node(s) in word/document.xml; expected at least 1"
-            },
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
-            },
-            {
-              "assertionKind": "xpathQueryExists",
-              "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc[2]//w:t[contains(., 'Neighbor cell remains')] matched 1 node(s) in word/document.xml; expected at least 1"
+              "detail": "//w:body//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
             }
           ]
         },
@@ -3122,29 +3223,14 @@
           "status": "pass",
           "assertionResults": [
             {
-              "assertionKind": "xpathQueryCount",
+              "assertionKind": "xpathElementTextEquals",
               "passed": true,
-              "detail": "//w:tbl/w:tr matched 1 node(s) in word/document.xml; expected 1"
+              "detail": "visible descendant w:t text \"Invoice total sixty dollars\"; expected \"Invoice total sixty dollars\""
             },
             {
               "assertionKind": "xpathQueryCount",
               "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
-            },
-            {
-              "assertionKind": "xpathQueryExists",
-              "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc[1]//w:t[contains(., 'Invoice total sixty dollars')] matched 1 node(s) in word/document.xml; expected at least 1"
-            },
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
-            },
-            {
-              "assertionKind": "xpathQueryExists",
-              "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc[2]//w:t[contains(., 'Neighbor cell remains')] matched 1 node(s) in word/document.xml; expected at least 1"
+              "detail": "//w:body//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
             }
           ]
         },
@@ -3156,29 +3242,14 @@
           "status": "pass",
           "assertionResults": [
             {
-              "assertionKind": "xpathQueryCount",
+              "assertionKind": "xpathElementTextEquals",
               "passed": true,
-              "detail": "//w:tbl/w:tr matched 1 node(s) in word/document.xml; expected 1"
+              "detail": "visible descendant w:t text \"Invoice total sixty dollars\"; expected \"Invoice total sixty dollars\""
             },
             {
               "assertionKind": "xpathQueryCount",
               "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
-            },
-            {
-              "assertionKind": "xpathQueryExists",
-              "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc[1]//w:t[contains(., 'Invoice total sixty dollars')] matched 1 node(s) in word/document.xml; expected at least 1"
-            },
-            {
-              "assertionKind": "xpathQueryCount",
-              "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
-            },
-            {
-              "assertionKind": "xpathQueryExists",
-              "passed": true,
-              "detail": "//w:tbl/w:tr/w:tc[2]//w:t[contains(., 'Neighbor cell remains')] matched 1 node(s) in word/document.xml; expected at least 1"
+              "detail": "//w:body//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
             }
           ]
         },
@@ -3192,6 +3263,7 @@
       "scenarioGroup": "styles-numbering",
       "scenarioId": "setDefaultFooterTextAddsFooterReference",
       "scenarioTitle": "Setting default footer text adds a default footer reference and footer part",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -3234,6 +3306,7 @@
       "scenarioGroup": "tables",
       "scenarioId": "setTableCellTextReplacesCellContentOnly",
       "scenarioTitle": "Setting table cell text replaces only the addressed cell content",
+      "oracleKind": "ecma-conformance",
       "specCitation": {
         "standard": "ECMA-376",
         "edition": 5,
@@ -3269,6 +3342,452 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'setTableCellText'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "content-controls",
+      "scenarioId": "unrelatedTextEditPreservesInlineContentControlStructure",
+      "scenarioTitle": "An unrelated text edit preserves one inline content control with valid known structure",
+      "oracleKind": "ecma-conformance",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.5.2.31",
+        "clauseTitle": "sdt (Inline-Level Structured Document Tag)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:id)=1 and count(w:tag)=1]/w:alias[@w:val='Opaque inline control'][following-sibling::w:tag[1][@w:val='dpt-inline-sdt' and following-sibling::w:id[1][@w:val='54']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled text sentinel\"; expected \"Controlled text sentinel\""
+            }
+          ]
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:id)=1 and count(w:tag)=1]/w:alias[@w:val='Opaque inline control'][following-sibling::w:tag[1][@w:val='dpt-inline-sdt' and following-sibling::w:id[1][@w:val='54']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled text sentinel\"; expected \"Controlled text sentinel\""
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:id)=1 and count(w:tag)=1]/w:alias[@w:val='Opaque inline control'][following-sibling::w:tag[1][@w:val='dpt-inline-sdt' and following-sibling::w:id[1][@w:val='54']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled text sentinel\"; expected \"Controlled text sentinel\""
+            }
+          ]
+        },
+        "openxml-sdk": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:id)=1 and count(w:tag)=1]/w:alias[@w:val='Opaque inline control'][following-sibling::w:tag[1][@w:val='dpt-inline-sdt' and following-sibling::w:id[1][@w:val='54']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled text sentinel\"; expected \"Controlled text sentinel\""
+            }
+          ]
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx patchDocument targets explicit patch placeholders; protocol requires arbitrary paragraph-local literal search, which would be an adapter-side algorithm"
+        },
+        "superdoc-sdk": {
+          "status": "fail",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:id)=1 and count(w:tag)=1]/w:alias[@w:val='Opaque inline control'][following-sibling::w:tag[1][@w:val='dpt-inline-sdt' and following-sibling::w:id[1][@w:val='54']]] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled text sentinel\"; expected \"Controlled text sentinel\""
+            }
+          ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "content-controls",
+      "scenarioId": "unrelatedTextEditPreservesOpaqueInlineContentControl",
+      "scenarioTitle": "An unrelated text edit preserves declared opaque sentinels on one inline content control",
+      "oracleKind": "metamorphic-invariant",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 3,
+        "section": "7.2",
+        "clauseTitle": "Ignorable Attribute"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": true,
+              "detail": "target or ancestor mc:Ignorable resolves urn:open-agreements:docx-platform-tests:inline-content-control"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='opaque-attribute-sentinel']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-inline-sdt']]][following-sibling::*[1][self::w:id[@w:val='54']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='nested-payload-sentinel'] and normalize-space(.)='opaque payload sentinel'] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='last-child-sentinel']]] matched 1 node(s) in word/document.xml; expected 1"
+            }
+          ]
+        },
+        "python-docx": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": true,
+              "detail": "target or ancestor mc:Ignorable resolves urn:open-agreements:docx-platform-tests:inline-content-control"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='opaque-attribute-sentinel']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-inline-sdt']]][following-sibling::*[1][self::w:id[@w:val='54']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='nested-payload-sentinel'] and normalize-space(.)='opaque payload sentinel'] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='last-child-sentinel']]] matched 1 node(s) in word/document.xml; expected 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "invariant-fail",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": false,
+              "detail": "target or ancestor mc:Ignorable declarations [w14=http://schemas.microsoft.com/office/word/2010/wordml, wp14=http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing, w15=http://schemas.microsoft.com/office/word/2012/wordml]; expected urn:open-agreements:docx-platform-tests:inline-content-control"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='opaque-attribute-sentinel']] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-inline-sdt']]][following-sibling::*[1][self::w:id[@w:val='54']]] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='nested-payload-sentinel'] and normalize-space(.)='opaque payload sentinel'] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='last-child-sentinel']]] matched 0 node(s) in word/document.xml; expected 1"
+            }
+          ]
+        },
+        "openxml-sdk": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": true,
+              "detail": "target or ancestor mc:Ignorable resolves urn:open-agreements:docx-platform-tests:inline-content-control"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='opaque-attribute-sentinel']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-inline-sdt']]][following-sibling::*[1][self::w:id[@w:val='54']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='nested-payload-sentinel'] and normalize-space(.)='opaque payload sentinel'] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='last-child-sentinel']]] matched 1 node(s) in word/document.xml; expected 1"
+            }
+          ]
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx patchDocument targets explicit patch placeholders; protocol requires arbitrary paragraph-local literal search, which would be an adapter-side algorithm"
+        },
+        "superdoc-sdk": {
+          "status": "invariant-fail",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": true,
+              "detail": "target or ancestor mc:Ignorable resolves urn:open-agreements:docx-platform-tests:inline-content-control"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='opaque-attribute-sentinel']] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-inline-sdt']]][following-sibling::*[1][self::w:id[@w:val='54']]] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='nested-payload-sentinel'] and normalize-space(.)='opaque payload sentinel'] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='last-child-sentinel']]] matched 1 node(s) in word/document.xml; expected 1"
+            }
+          ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
         }
       }
     }
