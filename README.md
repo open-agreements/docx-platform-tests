@@ -70,6 +70,7 @@ cd runner
 npm ci
 npm run check-fixtures   # verify input.docx packages match input/document.xml
 npm run check-capability-index # validate registry + generated coverage artifacts
+npm run check-results-migration # reproduce historical schema-v2 oracle labels
 npm run suite            # run all registered adapters, write ../results/latest.json
 npm run validate-results # validate ../results/latest.json against the schema
 ```

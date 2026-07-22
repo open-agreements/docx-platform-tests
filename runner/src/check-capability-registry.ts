@@ -7,11 +7,13 @@ import {
 } from './capability-registry.js';
 import { REPO_ROOT } from './scenarios.js';
 import type { ResultsDocument } from './types.js';
+import { normalizeResultsDocument } from './normalize-results.js';
 
 const checkOnly = process.argv.includes('--check');
 const loaded = loadAndValidateCapabilityRegistry();
-const results = JSON.parse(
-  readFileSync(join(REPO_ROOT, 'results', 'latest.json'), 'utf8')
+const results = normalizeResultsDocument(
+  JSON.parse(readFileSync(join(REPO_ROOT, 'results', 'latest.json'), 'utf8')),
+  loaded
 ) as ResultsDocument;
 const outputs = new Map<string, object>([
   [join(REPO_ROOT, 'registry', 'scenario-coverage.json'), buildScenarioCoverage(loaded)],

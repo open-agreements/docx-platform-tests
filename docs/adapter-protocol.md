@@ -61,6 +61,15 @@ Each scenario result declares `oracleKind`. ECMA conformance uses `pass`,
 `pass-divergent`, and `fail`; suite-declared metamorphic preservation evidence
 uses `invariant-pass` and `invariant-fail` and is not an ECMA failure signal.
 
+Schema-v2 snapshots did not carry `oracleKind`. The command
+`npm run migrate-results -- --input <v2.json> --output <v3.json>` performs the
+deterministic migration. It
+infers `ecma-conformance` only when both the current pure mapping and
+`registry/results-history.json` identify that historical scenario as
+conformance evidence for the recorded run timestamp. Legacy rows mapped to an
+invariant, or rows from timestamps/scenarios without explicit schema-v2
+history, are rejected as ambiguous rather than guessed.
+
 ## Versioning
 
 The protocol version is asserted by the adapter, not negotiated. Breaking

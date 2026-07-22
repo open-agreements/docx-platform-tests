@@ -89,6 +89,20 @@ Mixed metamorphic/conformance scenarios are rejected. Result aggregation
 groups by capability, axis, and `oracleKind`, so invariant failures cannot
 enter conformance denominators or another capability's mapped evidence.
 
+### Oracle-purity migration
+
+An audit of every pre-existing mapping for the oracle-aware results contract
+found two mixed scenarios. They were split without discarding their
+preservation-oriented IDs:
+
+| Historical scenario ID | Retained meaning | Normative companion |
+| --- | --- | --- |
+| `appendParagraphPreservesExistingContent` | prior paragraph preservation invariant | `appendParagraphAddsTrailingParagraph` |
+| `replaceTextInsideTableCellPreservesStructure` | table and neighboring-cell preservation invariant | `replaceTextInsideTableCellUpdatesTargetText` |
+
+The companions run the same operations against equivalent fixtures. This
+keeps historical links stable while ensuring each result has one oracle kind.
+
 ## Repository boundary
 
 This repository owns neutral capability definitions, neutral scenario mappings,

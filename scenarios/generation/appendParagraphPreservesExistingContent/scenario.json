@@ -1,14 +1,12 @@
 {
   "dslVersion": "1.4",
   "scenarioId": "appendParagraphPreservesExistingContent",
-  "scenarioTitle": "Appending a paragraph preserves existing content and adds a trailing paragraph",
+  "scenarioTitle": "Appending a paragraph preserves the existing opening paragraph",
   "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.1.22", "clauseTitle": "p (Paragraph)" },
   "wordBehaviorNote": null,
   "inputDocumentPath": "input.docx",
   "operationDescriptor": { "operationName": "appendParagraphWithText", "paragraphText": "Appended closing paragraph" },
   "assertionList": [
-    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:body/w:p[.//w:t]", "expectedCount": 2 },
-    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:body/w:p[1]//w:t[contains(., 'Existing opening paragraph')]" },
-    { "assertionKind": "xpathQueryExists", "xpathExpression": "//w:body/w:p[last()]//w:t[contains(., 'Appended closing paragraph')]" }
+    { "assertionKind": "xpathElementTextEquals", "xpathExpression": "//w:body/w:p[1]", "expectedText": "Existing opening paragraph" }
   ]
 }

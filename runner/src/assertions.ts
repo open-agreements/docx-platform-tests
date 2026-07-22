@@ -564,20 +564,43 @@ export function evaluateAssertion(
       if (!part.ok) {
         return { assertionKind: assertion.assertionKind, passed: false, detail: part.error };
       }
-      const root = parseDom(part.xml).documentElement;
-      const prefixes = root
-        .getAttributeNS(MCE_NS, 'Ignorable')
-        ?.trim()
-        .split(/\s+/)
-        .filter(Boolean) ?? [];
-      const namespaces = prefixes.map((prefix) => root.lookupNamespaceURI(prefix));
-      const passed = namespaces.includes(assertion.expectedNamespaceUri ?? '');
+      const dom = parseDom(part.xml);
+      const nodes = selectRefs(assertion.xpathExpression!, dom as never) as unknown[];
+      const targets = nodes.filter(
+        (node): node is Element =>
+          Boolean(node && typeof node === 'object' && (node as Node).nodeType === 1)
+      );
+      if (targets.length !== 1) {
+        return {
+          assertionKind: assertion.assertionKind,
+          passed: false,
+          detail: `${assertion.xpathExpression} selected ${targets.length} element(s) in ${part.partName}; expected exactly 1`,
+        };
+      }
+      const declarations: Array<{ prefix: string; namespace: string | null }> = [];
+      for (let scope: Element | null = targets[0]; scope; ) {
+        const prefixes =
+          scope
+            .getAttributeNS(MCE_NS, 'Ignorable')
+            ?.trim()
+            .split(/\s+/)
+            .filter(Boolean) ?? [];
+        declarations.push(
+          ...prefixes.map((prefix) => ({ prefix, namespace: scope!.lookupNamespaceURI(prefix) }))
+        );
+        scope = scope.parentNode?.nodeType === 1 ? (scope.parentNode as Element) : null;
+      }
+      const passed = declarations.some(
+        ({ namespace }) => namespace === assertion.expectedNamespaceUri
+      );
       return {
         assertionKind: assertion.assertionKind,
         passed,
         detail: passed
-          ? `mc:Ignorable resolves ${assertion.expectedNamespaceUri}`
-          : `mc:Ignorable prefixes [${prefixes.join(', ')}] resolve to [${namespaces.join(', ')}]; expected ${assertion.expectedNamespaceUri}`,
+          ? `target or ancestor mc:Ignorable resolves ${assertion.expectedNamespaceUri}`
+          : `target or ancestor mc:Ignorable declarations [${declarations
+              .map(({ prefix, namespace }) => `${prefix}=${namespace ?? 'unbound'}`)
+              .join(', ')}]; expected ${assertion.expectedNamespaceUri}`,
       };
     }
     case 'documentTextContainsAtOffset': {

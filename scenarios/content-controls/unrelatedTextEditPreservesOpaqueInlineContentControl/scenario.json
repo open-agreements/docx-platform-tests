@@ -50,6 +50,7 @@
     },
     {
       "assertionKind": "ignorableNamespaceDeclared",
+      "xpathExpression": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]",
       "expectedNamespaceUri": "urn:open-agreements:docx-platform-tests:inline-content-control"
     },
     {

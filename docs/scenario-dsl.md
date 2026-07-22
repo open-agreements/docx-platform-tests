@@ -203,7 +203,7 @@ assertion failing never masks a lenient one passing.
 | `xpathQueryCount` | `xpathExpression`, `expectedCount` | the raw output DOM |
 | `xpathQueryExists` | `xpathExpression` | the raw output DOM (sugar for count ≥ 1) |
 | `xpathElementTextEquals` | `xpathExpression`, `expectedText` | exactly one selected element; concatenated visible descendant `w:t` text must equal `expectedText` |
-| `ignorableNamespaceDeclared` | `expectedNamespaceUri` | root `mc:Ignorable` tokens resolved through namespace declarations |
+| `ignorableNamespaceDeclared` | `xpathExpression`, `expectedNamespaceUri` | exactly one selected target; `mc:Ignorable` tokens on that element or its ancestors, resolved in declaration scope |
 | `documentTextContainsAtOffset` | `expectedSubstring`, `expectedOffset` | the body text projection (below) |
 | `canonicalXmlEquals` | `expectedDocumentPath` | the canonicalized output vs the canonicalized expected document |
 | `schemaValidAgainstWml` | — | the output `word/document.xml` validated with `xmllint --schema` against `DPT_WML_SCHEMA_PATH` |
@@ -227,8 +227,10 @@ inside revision-hidden `w:del` and `w:moveFrom` containers. Exactly one element
 must be selected, so duplication cannot pass accidentally.
 
 `ignorableNamespaceDeclared` compares namespace URIs, not literal prefix
-spelling. Renaming an extension prefix while updating its binding and the
-`mc:Ignorable` token remains equivalent.
+spelling. It selects exactly one target and walks only that element's ancestor
+chain. Each `mc:Ignorable` token is resolved using the effective namespace
+binding where the attribute is declared. Equivalent local declarations pass;
+sibling declarations and mismatched or out-of-scope bindings do not.
 
 ### Asserted part (`assertedPart`)
 

@@ -175,6 +175,33 @@ check(
     ).passed
   )
 );
+const extensionNamespace =
+  'urn:open-agreements:docx-platform-tests:inline-content-control';
+const locallyDeclaredIgnorable = inlineSdtOutput
+  .replace(`\n  xmlns:ext="${extensionNamespace}"`, '')
+  .replace('\n  mc:Ignorable="ext"', '')
+  .replace(
+    '<w:sdt ext:opaqueAttribute=',
+    `<w:sdt xmlns:ext="${extensionNamespace}" mc:Ignorable="ext" ext:opaqueAttribute=`
+  );
+check(
+  'target-local ignorable namespace declaration is equivalent',
+  assertionPasses(invariantSdtManifest, invariantSdtDir, locallyDeclaredIgnorable, 3)
+);
+const siblingOnlyIgnorable = inlineSdtOutput
+  .replace('\n  mc:Ignorable="ext"', '')
+  .replace('<w:r><w:t xml:space="preserve">Edit target:', '<w:r mc:Ignorable="ext"><w:t xml:space="preserve">Edit target:');
+check(
+  'out-of-scope sibling mc:Ignorable declaration is rejected',
+  !assertionPasses(invariantSdtManifest, invariantSdtDir, siblingOnlyIgnorable, 3)
+);
+const mismatchedIgnorable = inlineSdtOutput
+  .replace('xmlns:ext=', 'xmlns:other="urn:wrong-extension" xmlns:ext=')
+  .replace('mc:Ignorable="ext"', 'mc:Ignorable="other"');
+check(
+  'mismatched ignorable namespace binding is rejected',
+  !assertionPasses(invariantSdtManifest, invariantSdtDir, mismatchedIgnorable, 3)
+);
 
 const sentinelMutations: Array<{
   label: string;
@@ -211,11 +238,15 @@ for (const mutation of sentinelMutations) {
 }
 
 const mceProcessed = preprocessIgnorableMarkupForSchema(inlineSdtOutput);
+const localMceProcessed = preprocessIgnorableMarkupForSchema(locallyDeclaredIgnorable);
 check(
-  'MCE preprocessing removes ignorable extension markup before WML schema validation',
+  'MCE preprocessing removes inherited and target-local ignorable extension markup',
   !mceProcessed.includes('opaqueAttribute') &&
     !mceProcessed.includes('opaqueExtension') &&
-    /<w:alias[^>]*\/>[\s\S]*<w:tag[^>]*\/>[\s\S]*<w:id[^>]*\/>/.test(mceProcessed)
+    !localMceProcessed.includes('opaqueAttribute') &&
+    !localMceProcessed.includes('opaqueExtension') &&
+    /<w:alias[^>]*\/>[\s\S]*<w:tag[^>]*\/>[\s\S]*<w:id[^>]*\/>/.test(mceProcessed) &&
+    /<w:alias[^>]*\/>[\s\S]*<w:tag[^>]*\/>[\s\S]*<w:id[^>]*\/>/.test(localMceProcessed)
 );
 
 // --- DSL 1.3: multi-part assertion machinery ---

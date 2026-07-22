@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { isDeepStrictEqual } from 'node:util';
 import { Ajv2020 } from 'ajv/dist/2020.js';
 import {
   buildCapabilitySummary,
@@ -14,6 +15,8 @@ import { loadAllScenarios, REPO_ROOT } from './scenarios.js';
 import type { ResultsDocument } from './types.js';
 import { gradeAssertionResults } from './oracle-grading.js';
 import { RESULTS_SCHEMA } from './results-schema.js';
+import { normalizeResultsDocument } from './normalize-results.js';
+import { renderMatrixHtml } from './render-matrix.js';
 
 let failed = false;
 
@@ -47,6 +50,19 @@ const profiles: CapabilityProfiles = {
 
 check('committed registry validates', loaded.registry.capabilities.length === 23);
 check('every committed scenario is mapped', new Set(loaded.mappings.map((mapping) => mapping.scenarioId)).size === scenarios.length);
+const auditedInvariantScenarioIds = [...new Set(
+  loaded.mappings
+    .filter((mapping) => mapping.oracleClasses.includes('metamorphic-invariant'))
+    .map((mapping) => mapping.scenarioId)
+)].sort();
+check(
+  'pre-existing mapping audit retains only declared pure invariants',
+  isDeepStrictEqual(auditedInvariantScenarioIds, [
+    'appendParagraphPreservesExistingContent',
+    'replaceTextInsideTableCellPreservesStructure',
+    'unrelatedTextEditPreservesOpaqueInlineContentControl',
+  ])
+);
 
 const withoutScenario = structuredClone(mappings);
 const removedScenarioId = withoutScenario.mappings[0].scenarioId;
@@ -197,6 +213,36 @@ check(
 const results = JSON.parse(
   readFileSync(join(REPO_ROOT, 'results', 'latest.json'), 'utf8')
 ) as ResultsDocument;
+const exactPriorSnapshotShape = {
+  ...results,
+  schemaVersion: 2,
+  results: results.results.map(({ oracleKind: _oracleKind, ...result }) => result),
+};
+check(
+  'exact schema-v2 snapshot shape normalizes deterministically',
+  isDeepStrictEqual(normalizeResultsDocument(exactPriorSnapshotShape, loaded), results)
+);
+const unknownLegacyRun = structuredClone(exactPriorSnapshotShape);
+unknownLegacyRun.runTimestamp = '2026-07-07T00:00:00.000Z';
+expectThrows(
+  'unrecorded schema-v2 run is rejected',
+  /has no explicit oracle history/,
+  () => normalizeResultsDocument(unknownLegacyRun, loaded)
+);
+const ambiguousLegacyInvariant = structuredClone(exactPriorSnapshotShape);
+ambiguousLegacyInvariant.results[0].scenarioId = 'appendParagraphPreservesExistingContent';
+expectThrows(
+  'schema-v2 invariant evidence is rejected rather than guessed',
+  /ambiguous legacy invariant evidence/,
+  () => normalizeResultsDocument(ambiguousLegacyInvariant, loaded)
+);
+const unrecordedLegacyConformance = structuredClone(exactPriorSnapshotShape);
+unrecordedLegacyConformance.results[0].scenarioId = 'appendParagraphAddsTrailingParagraph';
+expectThrows(
+  'schema-v2 current conformance without history is rejected',
+  /no schema-v2 oracle history/,
+  () => normalizeResultsDocument(unrecordedLegacyConformance, loaded)
+);
 const summary = buildCapabilitySummary(loaded, results) as {
   capabilities: Array<{
     axis: string;
@@ -265,6 +311,15 @@ const oracleSummary = buildCapabilitySummary(loaded, oracleResults) as {
     outcomes: Record<string, { counts: Record<string, number> }>;
   }>;
 };
+const oracleMatrix = renderMatrixHtml(oracleResults);
+check(
+  'matrix renders separate conformance and invariant group totals',
+  oracleMatrix.includes('<strong>ECMA conformance:</strong>') &&
+    oracleMatrix.includes('<strong>Metamorphic invariants:</strong>') &&
+    oracleMatrix.includes('oracle-test-adapter 1/1') &&
+    oracleMatrix.includes('oracle-test-adapter 0/1') &&
+    !oracleMatrix.includes('oracle-test-adapter 1/2')
+);
 const contentControlRows = oracleSummary.capabilities.filter(
   (row) => row.capabilityId === 'word.content-controls.inline' && row.axis === 'preserve'
 );

@@ -3,8 +3,8 @@
   "registryVersion": 1,
   "totals": {
     "capabilities": 23,
-    "scenarios": 40,
-    "mappings": 44,
+    "scenarios": 42,
+    "mappings": 45,
     "coveredAxes": 28,
     "applicableAxes": 145,
     "uncoveredAxes": 117
@@ -283,6 +283,7 @@
         {
           "axis": "generate",
           "scenarioIds": [
+            "appendParagraphAddsTrailingParagraph",
             "composeParagraphsProduceTextRuns"
           ]
         },
@@ -835,7 +836,7 @@
           "scenarioIds": [
             "replaceFirstOccurrencePreservesOffsets",
             "replaceTextAcrossRunBoundary",
-            "replaceTextInsideTableCellPreservesStructure",
+            "replaceTextInsideTableCellUpdatesTargetText",
             "unrelatedTextEditPreservesInlineContentControlStructure"
           ]
         },

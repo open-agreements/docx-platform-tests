@@ -2,6 +2,8 @@ import { readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { Ajv2020 } from 'ajv/dist/2020.js';
 import { REPO_ROOT } from './scenarios.js';
+import { loadAndValidateCapabilityRegistry } from './capability-registry.js';
+import { normalizeResultsDocument } from './normalize-results.js';
 
 // --results lets a caller validate an arbitrary results file (e.g. a temp file
 // in a test) without touching the committed snapshot; defaults to the tracked
@@ -16,7 +18,10 @@ const resultsLabel = relative(REPO_ROOT, resultsPath) || resultsPath;
 const schema = JSON.parse(
   readFileSync(join(REPO_ROOT, 'results', 'results.schema.json'), 'utf8')
 );
-const results = JSON.parse(readFileSync(resultsPath, 'utf8'));
+const results = normalizeResultsDocument(
+  JSON.parse(readFileSync(resultsPath, 'utf8')),
+  loadAndValidateCapabilityRegistry()
+);
 
 const ajv = new Ajv2020({ allErrors: true });
 const validate = ajv.compile(schema);

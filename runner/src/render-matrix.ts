@@ -1,11 +1,10 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { REPO_ROOT } from './scenarios.js';
-import type { ResultsDocument } from './types.js';
-
-// Renders results/latest.json to a small static results/index.html — the
-// suite-owned, implementation-neutral matrix view (the wpt.fyi analog).
-// Published to gh-pages by CI alongside the JSON it is derived from.
+import type { ResultsDocument, ScenarioOracleKind } from './types.js';
+import { loadAndValidateCapabilityRegistry } from './capability-registry.js';
+import { normalizeResultsDocument } from './normalize-results.js';
 
 const STATUS_LABEL: Record<string, string> = {
   pass: 'Pass',
@@ -26,37 +25,57 @@ function esc(text: string): string {
     .replace(/"/g, '&quot;');
 }
 
-const results = JSON.parse(
-  readFileSync(join(REPO_ROOT, 'results', 'latest.json'), 'utf8')
-) as ResultsDocument;
+function groupTotals(
+  results: ResultsDocument,
+  group: string,
+  oracleKind: ScenarioOracleKind,
+  label: string
+): string {
+  const scenarios = results.results.filter(
+    (scenario) => scenario.scenarioGroup === group && scenario.oracleKind === oracleKind
+  );
+  if (scenarios.length === 0) return '';
+  const totals = results.implementations
+    .map((implementation) => {
+      const passLike = scenarios.filter((scenario) => {
+        const status = scenario.outcomes[implementation.adapterName]?.status;
+        return oracleKind === 'ecma-conformance'
+          ? status === 'pass' || status === 'pass-divergent'
+          : status === 'invariant-pass';
+      }).length;
+      return `${esc(implementation.adapterName)} ${passLike}/${scenarios.length}`;
+    })
+    .join(' · ');
+  return `<br><small><strong>${label}:</strong> ${totals}</small>`;
+}
 
-const headerCells = results.implementations
-  .map(
-    (impl) =>
-      `<th scope="col">${esc(impl.adapterName)}<br><small>${esc(impl.adapterVersion)}</small></th>`
-  )
-  .join('');
+export function renderMatrixHtml(results: ResultsDocument): string {
+  const headerCells = results.implementations
+    .map(
+      (implementation) =>
+        `<th scope="col">${esc(implementation.adapterName)}<br><small>${esc(implementation.adapterVersion)}</small></th>`
+    )
+    .join('');
 
-const rows = results.results
-  .reduce(
-    (htmlRows, scenario, index) => {
+  const rows = results.results
+    .reduce((htmlRows, scenario, index) => {
       const previous = results.results[index - 1];
       if (!previous || previous.scenarioGroup !== scenario.scenarioGroup) {
-        const groupScenarios = results.results.filter(
-          (candidate) => candidate.scenarioGroup === scenario.scenarioGroup
+        const conformanceTotals = groupTotals(
+          results,
+          scenario.scenarioGroup,
+          'ecma-conformance',
+          'ECMA conformance'
         );
-        const totals = results.implementations
-          .map((impl) => {
-            const passLike = groupScenarios.filter((candidate) => {
-              const status = candidate.outcomes[impl.adapterName]?.status;
-              return status === 'pass' || status === 'pass-divergent' || status === 'invariant-pass';
-            }).length;
-            return `${esc(impl.adapterName)} ${passLike}/${groupScenarios.length}`;
-          })
-          .join(' · ');
+        const invariantTotals = groupTotals(
+          results,
+          scenario.scenarioGroup,
+          'metamorphic-invariant',
+          'Metamorphic invariants'
+        );
         htmlRows.push(`<tr class="group-row"><th scope="rowgroup" colspan="${
           results.implementations.length + 1
-        }">${esc(scenario.scenarioGroup)}<br><small>${totals}</small></th></tr>`);
+        }">${esc(scenario.scenarioGroup)}${conformanceTotals}${invariantTotals}</th></tr>`);
       }
       const citation = scenario.specCitation;
       const oracleLabel =
@@ -64,8 +83,8 @@ const rows = results.results
           ? 'Metamorphic invariant (not ECMA conformance)'
           : 'ECMA conformance';
       const cells = results.implementations
-        .map((impl) => {
-          const outcome = scenario.outcomes[impl.adapterName];
+        .map((implementation) => {
+          const outcome = scenario.outcomes[implementation.adapterName];
           const status = outcome?.status ?? 'error';
           const reason = outcome?.reason ? `<br><small>${esc(outcome.reason)}</small>` : '';
           return `<td class="cell-${esc(status)}">${esc(STATUS_LABEL[status] ?? status)}${reason}</td>`;
@@ -76,12 +95,10 @@ const rows = results.results
         `${citation.standard} edition ${citation.edition}, Part ${citation.part} § ${citation.section} (${citation.clauseTitle})`
       )}</small></th>${cells}</tr>`);
       return htmlRows;
-    },
-    [] as string[]
-  )
-  .join('\n');
+    }, [] as string[])
+    .join('\n');
 
-const html = `<!doctype html>
+  return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -131,12 +148,21 @@ ${rows}
 <a href="https://github.com/open-agreements/docx-platform-tests">open-agreements/docx-platform-tests</a> (Apache-2.0)
 · Canonical live matrix: <a href="https://open-agreements.github.io/docx-platform-tests/results/">open-agreements.github.io</a></p>
 <footer>Run ${esc(results.runTimestamp)} · results schema v${results.schemaVersion} · DSL ${esc(
-  results.dslVersion
-)} · adapter protocol v${results.protocolVersion}.
+    results.dslVersion
+  )} · adapter protocol v${results.protocolVersion}.
 To add an implementation, see <a href="https://github.com/open-agreements/docx-platform-tests/blob/main/docs/adapter-protocol.md">docs/adapter-protocol.md</a>.</footer>
 </body>
 </html>
 `;
+}
 
-writeFileSync(join(REPO_ROOT, 'results', 'index.html'), html);
-console.log('wrote results/index.html');
+function main(): void {
+  const results = normalizeResultsDocument(
+    JSON.parse(readFileSync(join(REPO_ROOT, 'results', 'latest.json'), 'utf8')),
+    loadAndValidateCapabilityRegistry()
+  );
+  writeFileSync(join(REPO_ROOT, 'results', 'index.html'), renderMatrixHtml(results));
+  console.log('wrote results/index.html');
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) main();

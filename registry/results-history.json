@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "legacySchemas": {
+    "2": {
+      "sourceRunTimestamp": "2026-07-06T11:04:32.667Z",
+      "oracleKindByScenario": {
+        "acceptDeletedParagraphMarkMergesParagraphs": "ecma-conformance",
+        "acceptDeletionsRemovesDelContent": "ecma-conformance",
+        "acceptFormattingChangeKeepsNewRunProperties": "ecma-conformance",
+        "acceptInsertionsUnwrapsInsWrappers": "ecma-conformance",
+        "acceptNestedDeletionInsideInsertion": "ecma-conformance",
+        "rejectDeletionsRestoresDelContent": "ecma-conformance",
+        "rejectFormattingChangeRestoresPriorRunProperties": "ecma-conformance",
+        "rejectInsertedParagraphMarkMergesParagraphs": "ecma-conformance",
+        "rejectInsertionsRemovesInsContent": "ecma-conformance",
+        "rejectNestedDeletionInsideInsertion": "ecma-conformance",
+        "replaceFirstOccurrencePreservesOffsets": "ecma-conformance",
+        "replaceTextAcrossRunBoundary": "ecma-conformance"
+      }
+    }
+  }
+}
