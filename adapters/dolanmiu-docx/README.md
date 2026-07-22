@@ -8,6 +8,10 @@ It can create DOCX content and includes `patchDocument` for replacing explicit
 patch placeholders in an existing document, but it does not expose an editor API
 for arbitrary paragraph-local literal search over an existing package.
 
+- `composeDocumentWithCompatibilityMode`: uses the library's
+  `compatabilityModeVersion` document option, which writes the settings part and
+  compatibility setting. The adapter only maps the neutral numeric descriptor.
+
 - `replaceFirstTextOccurrence`: reports `unsupported`. The protocol requires
   locating the first literal occurrence in document order. Using `patchDocument`
   would require changing scenarios to contain placeholders, and locating

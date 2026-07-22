@@ -51,12 +51,14 @@ function unknownInputXml(scenarioDir: string): string[] {
  * Returns a human-readable reason on drift, or null when the packages match.
  */
 function comparePartMaps(expected: Uint8Array, committed: Uint8Array): string | null {
-  const e = loadPackage(expected).parts;
-  const a = loadPackage(committed).parts;
+  const e = loadPackage(expected).rawParts;
+  const a = loadPackage(committed).rawParts;
   for (const name of [...new Set([...e.keys(), ...a.keys()])].sort()) {
     if (!a.has(name)) return `missing part ${name}`;
     if (!e.has(name)) return `unexpected part ${name}`;
-    if (e.get(name) !== a.get(name)) return `part ${name} differs`;
+    if (!Buffer.from(e.get(name)!).equals(Buffer.from(a.get(name)!))) {
+      return `part ${name} differs`;
+    }
   }
   return null;
 }

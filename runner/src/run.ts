@@ -23,7 +23,7 @@ import type {
 
 const PROTOCOL_VERSION = 1;
 // The DSL revision this runner implements; see docs/scenario-dsl.md.
-const DSL_VERSION = '1.6';
+const DSL_VERSION = '1.7';
 
 function adapterVersion(adapter: AdapterRegistration): string {
   if (!adapter.adapterVersionCommand?.length) return 'unknown';
@@ -139,6 +139,9 @@ const results: ResultsDocument = {
     scenarioId: manifest.scenarioId,
     scenarioTitle: manifest.scenarioTitle,
     specCitation: manifest.specCitation,
+    ...(manifest.microsoftExtensionCitations
+      ? { microsoftExtensionCitations: manifest.microsoftExtensionCitations }
+      : {}),
     outcomes: {},
   })),
 };

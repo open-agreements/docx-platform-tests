@@ -62,6 +62,16 @@ export const RESULTS_SCHEMA = {
         clauseTitle: { type: 'string', minLength: 1 },
       },
     },
+    microsoftExtensionCitation: {
+      type: 'object',
+      additionalProperties: false,
+      required: ['standard', 'section', 'clauseTitle'],
+      properties: {
+        standard: { const: 'MS-DOCX' },
+        section: { type: 'string', pattern: '^\\d+(?:\\.\\d+)*$' },
+        clauseTitle: { type: 'string', minLength: 1 },
+      },
+    },
     scenarioResult: {
       type: 'object',
       additionalProperties: false,
@@ -71,6 +81,11 @@ export const RESULTS_SCHEMA = {
         scenarioId: { type: 'string', minLength: 1 },
         scenarioTitle: { type: 'string', minLength: 1 },
         specCitation: { $ref: '#/$defs/specCitation' },
+        microsoftExtensionCitations: {
+          type: 'array',
+          minItems: 1,
+          items: { $ref: '#/$defs/microsoftExtensionCitation' },
+        },
         outcomes: {
           type: 'object',
           additionalProperties: { $ref: '#/$defs/scenarioOutcome' },

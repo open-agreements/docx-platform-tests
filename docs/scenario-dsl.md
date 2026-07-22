@@ -1,4 +1,9 @@
-# Scenario DSL, version 1.6
+# Scenario DSL, version 1.7
+
+Changes in 1.7: `composeDocumentWithCompatibilityMode` is added for generating
+a document whose settings part declares a requested Word compatibility mode;
+relationship-resolved parts can require an effective package content type; and
+Microsoft extension oracles carry structured `microsoftExtensionCitations`.
 
 Changes in 1.6: styles and numbering operations are added, including
 `composeDocumentWithNumberedList`; `paragraphNumberingResolvesToFormat` joins
@@ -112,6 +117,13 @@ All keys are deliberately self-disambiguating (3–4-word camelCase).
       "clauseTitle": "del (Deleted Run Content)"
     }
   ],
+  "microsoftExtensionCitations": [
+    {
+      "standard": "MS-DOCX",
+      "section": "2.3.5",
+      "clauseTitle": "compatibilityMode"
+    }
+  ],
   "wordBehaviorNote": null,
   "inputDocumentPath": "input.docx",
   "operationDescriptor": { "operationName": "acceptAllTrackedChanges" },
@@ -127,12 +139,17 @@ All keys are deliberately self-disambiguating (3–4-word camelCase).
   `w:del` content inside a `w:ins` wrapper). Single-clause scenarios omit it,
   and the single-object `specCitation` form remains the DSL 1.x compatibility
   surface.
+- `microsoftExtensionCitations` is optional and directly identifies normative
+  Microsoft extension clauses used by an oracle. Every such citation must be
+  represented by a mapped capability and classified as
+  `normative-microsoft-extension`; extension semantics are not presented as
+  ECMA requirements.
 - `wordBehaviorNote` records cases where Microsoft Word's observed behavior
   deviates from a strict reading of the cited clause. When the two conflict,
   the suite treats documented Word behavior as canonical and the note says so
   explicitly. `null` when no deviation is known.
 
-## Operations (v1.0-1.6 — closed enum)
+## Operations (v1.0-1.7 — closed enum)
 
 | `operationName` | Parameters | `inputContract` | Meaning |
 | --- | --- | --- | --- |
@@ -144,6 +161,7 @@ All keys are deliberately self-disambiguating (3–4-word camelCase).
 | `composeDocumentWithHyperlink` | `hyperlinkDisplayText`, `hyperlinkTargetUrl` | `replacesInput` | Compose a fresh document containing an external hyperlink. |
 | `composeDocumentWithHeaderText` | `headerText`, `bodyText` | `replacesInput` | Compose a fresh document with body text and a default header part/reference. |
 | `composeDocumentWithNumberedList` | `listItemTexts`, `numberFormat`, `itemLevels?` | `replacesInput` | Compose a fresh document containing numbered-list paragraphs resolving to the requested number format. |
+| `composeDocumentWithCompatibilityMode` | `compatibilityMode`, `bodyText` | `replacesInput` | Compose a fresh document whose settings part declares the requested Word compatibility mode and whose body contains `bodyText`. |
 | `appendParagraphWithText` | `paragraphText`, `runFormatting?` | `preservesInput` | Append a paragraph to the existing document. |
 | `insertParagraphAfterAnchorText` | `anchorText`, `paragraphText` | `preservesInput` | Insert a paragraph after the first paragraph containing the anchor text. |
 | `appendTableRow` | `tableIndex`, `cellTexts` | `preservesInput` | Append a row to the addressed table. |
@@ -168,8 +186,9 @@ an existing one is a major bump.
 
 ## Assertions (v1.0)
 
-Assertions are evaluated by the runner against the adapter's output
-`word/document.xml`. Each assertion is reported individually, so one strict
+Assertions are evaluated by the runner against the adapter's output main
+document part or a relationship-resolved related part. Each assertion is
+reported individually, so one strict
 assertion failing never masks a lenient one passing.
 
 | `assertionKind` | Parameters | Evaluated against |
@@ -197,19 +216,24 @@ performs the id join inside the runner.
 
 `xpathQueryCount`, `xpathQueryExists`, and `schemaValidAgainstWml` accept an
 optional `assertedPart` selecting which package part to evaluate against.
-Omitting it (or `{"partResolution":"mainDocumentPart"}`) targets
-`word/document.xml`. `documentTextContainsAtOffset` and `canonicalXmlEquals`
+Omitting it (or `{"partResolution":"mainDocumentPart"}`) targets the main
+document resolved from the package-level `officeDocument` relationship.
+`documentTextContainsAtOffset` and `canonicalXmlEquals`
 are always evaluated against the main document part.
 
 | `partResolution` | Extra fields | Resolves to |
 | --- | --- | --- |
-| `mainDocumentPart` | — | `word/document.xml` (the default) |
-| `relationshipFromMainPart` | `relationshipTypeUri` | the single part reached from `word/_rels/document.xml.rels` by relationship `Type` (styles, numbering, comments) |
+| `mainDocumentPart` | `expectedContentType?` | the package-level `officeDocument` relationship target (the default) |
+| `relationshipFromMainPart` | `relationshipTypeUri`, `expectedContentType?` | the single part reached from the main part's relationship item by relationship `Type` (styles, numbering, comments, settings) |
 | `headerReference` | `headerReferenceType` | main-document `sectPr/headerReference[@w:type=…]` → its `@r:id` → relationship target |
 | `footerReference` | `footerReferenceType` | main-document `sectPr/footerReference[@w:type=…]` → its `@r:id` → relationship target |
 
 Part names (`styles.xml`, `header1.xml` vs `header3.xml`, …) are
 implementation-chosen, so resolution is always by relationship, never by path.
+When `expectedContentType` is present, the resolved target must also have that
+exact effective content type in `[Content_Types].xml` (part override first,
+then extension default); a missing manifest/declaration or mismatch fails the
+assertion.
 Cardinality for `relationshipFromMainPart` is singleton-by-type: **zero**
 matches fails the assertion with a "no part with relationship type …"
 diagnostic (that failure is itself the conformance signal — e.g. "no comments

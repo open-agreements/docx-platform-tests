@@ -7,6 +7,7 @@ import { canonicalizeDocumentXml, WML_NS } from './canonicalize.js';
 import {
   externalRelationshipTarget,
   resolveHeaderFooterPart,
+  resolvePartContentType,
   resolvePartByRelationshipType,
   type LoadedPackage,
   type PartResolution,
@@ -65,22 +66,43 @@ function resolveAssertedPart(
   pkg: LoadedPackage,
   assertedPart: AssertedPart | undefined
 ): PartResolution {
+  let resolution: PartResolution;
   if (!assertedPart || assertedPart.partResolution === 'mainDocumentPart') {
-    return { ok: true, partName: 'word/document.xml', xml: pkg.mainDocumentXml };
+    resolution = {
+      ok: true,
+      partName: pkg.mainDocumentPartName,
+      xml: pkg.mainDocumentXml,
+    };
+  } else {
+    switch (assertedPart.partResolution) {
+      case 'relationshipFromMainPart':
+        resolution = resolvePartByRelationshipType(pkg, assertedPart.relationshipTypeUri);
+        break;
+      case 'headerReference':
+        resolution = resolveHeaderFooterPart(pkg, 'headerReference', assertedPart.headerReferenceType);
+        break;
+      case 'footerReference':
+        resolution = resolveHeaderFooterPart(pkg, 'footerReference', assertedPart.footerReferenceType);
+        break;
+      default:
+        return {
+          ok: false,
+          error: `unknown partResolution ${String((assertedPart as AssertedPart).partResolution)}`,
+        };
+    }
   }
-  switch (assertedPart.partResolution) {
-    case 'relationshipFromMainPart':
-      return resolvePartByRelationshipType(pkg, assertedPart.relationshipTypeUri);
-    case 'headerReference':
-      return resolveHeaderFooterPart(pkg, 'headerReference', assertedPart.headerReferenceType);
-    case 'footerReference':
-      return resolveHeaderFooterPart(pkg, 'footerReference', assertedPart.footerReferenceType);
-    default:
-      return {
-        ok: false,
-        error: `unknown partResolution ${String((assertedPart as AssertedPart).partResolution)}`,
-      };
+  if (!resolution.ok || !assertedPart?.expectedContentType) return resolution;
+  const contentType = resolvePartContentType(pkg, resolution.partName);
+  if (!contentType.ok) return contentType;
+  if (contentType.contentType !== assertedPart.expectedContentType) {
+    return {
+      ok: false,
+      error:
+        `${resolution.partName} has content type ${contentType.contentType}; ` +
+        `expected ${assertedPart.expectedContentType}`,
+    };
   }
+  return resolution;
 }
 
 function validateAgainstWmlSchema(documentXml: string): AssertionResult {

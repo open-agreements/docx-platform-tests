@@ -4,9 +4,10 @@
 // - replaceFirstTextOccurrence: intra-w:t replacement via the SDK's typed
 //   DOM. A match that spans w:t boundaries is declined (exit 2) rather than
 //   approximated with adapter-side algorithms.
-// - acceptAllTrackedChanges / rejectAllTrackedChanges and everything else:
-//   exit 2 unsupported -- the SDK is a typed DOM over the package and
-//   provides no accept/reject-revisions API.
+// - composeDocumentWithCompatibilityMode: typed document/settings part
+//   generation through the SDK.
+// - acceptAllTrackedChanges / rejectAllTrackedChanges: exit 2 unsupported --
+//   the SDK provides no accept/reject-revisions API.
 using System.Reflection;
 using System.Text.Json;
 using DocumentFormat.OpenXml;
@@ -62,6 +63,13 @@ if (operationName is "acceptAllTrackedChanges" or "rejectAllTrackedChanges")
         "adapter-side algorithm");
     return 2;
 }
+if (operationName == "composeDocumentWithCompatibilityMode")
+{
+    var compatibilityMode = operation.RootElement.GetProperty("compatibilityMode").GetInt32();
+    var bodyText = operation.RootElement.GetProperty("bodyText").GetString()!;
+    ComposeWithCompatibilityMode(outputPath, compatibilityMode, bodyText);
+    return 0;
+}
 if (operationName != "replaceFirstTextOccurrence")
 {
     Console.WriteLine(
@@ -88,6 +96,29 @@ try
 finally
 {
     if (File.Exists(tempPath)) File.Delete(tempPath);
+}
+
+static void ComposeWithCompatibilityMode(
+    string outputPath,
+    int compatibilityMode,
+    string bodyText)
+{
+    using var package = WordprocessingDocument.Create(
+        outputPath,
+        WordprocessingDocumentType.Document);
+    var mainPart = package.AddMainDocumentPart();
+    mainPart.Document = new Document(
+        new Body(new Paragraph(new Run(new Text(bodyText)))));
+
+    var settingsPart = mainPart.AddNewPart<DocumentSettingsPart>();
+    settingsPart.Settings = new Settings(
+        new Compatibility(
+            new CompatibilitySetting
+            {
+                Name = CompatSettingNameValues.CompatibilityMode,
+                Uri = "http://schemas.microsoft.com/office/word",
+                Val = compatibilityMode.ToString(),
+            }));
 }
 
 static int Replace(string packagePath, string findText, string replaceText)

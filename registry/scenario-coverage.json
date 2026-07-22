@@ -2,12 +2,12 @@
   "schemaVersion": 1,
   "registryVersion": 1,
   "totals": {
-    "capabilities": 21,
-    "scenarios": 37,
-    "mappings": 41,
-    "coveredAxes": 26,
-    "applicableAxes": 131,
-    "uncoveredAxes": 105
+    "capabilities": 22,
+    "scenarios": 38,
+    "mappings": 42,
+    "coveredAxes": 27,
+    "applicableAxes": 138,
+    "uncoveredAxes": 111
   },
   "unclassifiedScenarioIds": [],
   "capabilities": [
@@ -544,6 +544,44 @@
       ],
       "coveredAxisCount": 2,
       "applicableAxisCount": 9
+    },
+    {
+      "capabilityId": "word.settings.compatibility-mode",
+      "family": "settings",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": [
+            "composeCompatibilityMode15WritesCompatSetting"
+          ]
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": []
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 7
     },
     {
       "capabilityId": "word.styles.paragraph",

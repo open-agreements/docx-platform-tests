@@ -1,11 +1,18 @@
 import { strToU8, strFromU8, zipSync, unzipSync } from 'fflate';
 import { DOMParser } from '@xmldom/xmldom';
+import { posix } from 'node:path';
 import xpath from 'xpath';
 import { WML_NS } from './canonicalize.js';
 
 const RELS_NS = 'http://schemas.openxmlformats.org/package/2006/relationships';
+const CONTENT_TYPES_NS = 'http://schemas.openxmlformats.org/package/2006/content-types';
 const OFFICE_REL_NS =
   'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+const STRICT_OFFICE_REL_NS = 'http://purl.oclc.org/ooxml/officeDocument/relationships';
+const OFFICE_DOCUMENT_REL_TYPES = new Set([
+  `${OFFICE_REL_NS}/officeDocument`,
+  `${STRICT_OFFICE_REL_NS}/officeDocument`,
+]);
 const HEADER_REL_TYPE = `${OFFICE_REL_NS}/header`;
 const FOOTER_REL_TYPE = `${OFFICE_REL_NS}/footer`;
 
@@ -150,45 +157,42 @@ ${relationships}
 }
 
 /**
- * A loaded .docx package: every text part decoded to a string, keyed by part
- * name. Assertions resolve non-main parts (styles, numbering, comments,
- * headers, footers) through OPC relationships rather than by name.
+ * A loaded .docx package retains every decompressed ZIP entry as bytes and
+ * decodes text only when package-graph resolution selects a part. `parts` is
+ * the decoded-text cache; callers that compare whole packages use `rawParts`.
  */
 export interface LoadedPackage {
+  rawParts: Map<string, Uint8Array>;
   parts: Map<string, string>;
+  getPartText(partName: string): string | undefined;
+  mainDocumentPartName: string;
   mainDocumentXml: string;
 }
 
-export function loadPackage(docxBytes: Uint8Array): LoadedPackage {
-  const entries = unzipSync(docxBytes);
-  const parts = new Map<string, string>();
-  for (const [name, bytes] of Object.entries(entries)) {
-    // Decode every text-shaped part; binary parts (media) are irrelevant to the
-    // XML-only assertions and are simply skipped by not being queried.
-    if (name.endsWith('.xml') || name.endsWith('.rels')) {
-      parts.set(name, strFromU8(bytes));
-    }
-  }
-  const mainDocumentXml = parts.get(MAIN_DOCUMENT_PART);
-  if (mainDocumentXml === undefined) {
-    throw new Error('package has no word/document.xml part');
-  }
-  return { parts, mainDocumentXml };
+interface PackagePartStore {
+  rawParts: Map<string, Uint8Array>;
+  parts: Map<string, string>;
+  getPartText(partName: string): string | undefined;
 }
 
-/** In-memory package for tests, no zip round-trip. `word/document.xml` required. */
-export function packageFromParts(parts: Record<string, string>): LoadedPackage {
-  const map = new Map(Object.entries(parts));
-  const mainDocumentXml = map.get(MAIN_DOCUMENT_PART);
-  if (mainDocumentXml === undefined) {
-    throw new Error('packageFromParts requires a word/document.xml part');
-  }
-  return { parts: map, mainDocumentXml };
+function createPartStore(
+  rawParts: Map<string, Uint8Array>,
+  decodedParts: Map<string, string> = new Map()
+): PackagePartStore {
+  return {
+    rawParts,
+    parts: decodedParts,
+    getPartText(partName: string): string | undefined {
+      const cached = decodedParts.get(partName);
+      if (cached !== undefined) return cached;
+      const bytes = rawParts.get(partName);
+      if (bytes === undefined) return undefined;
+      const decoded = strFromU8(bytes);
+      decodedParts.set(partName, decoded);
+      return decoded;
+    },
+  };
 }
-
-export type PartResolution =
-  | { ok: true; partName: string; xml: string }
-  | { ok: false; error: string };
 
 interface RelationshipEntry {
   id: string;
@@ -197,9 +201,7 @@ interface RelationshipEntry {
   external: boolean;
 }
 
-function parseMainPartRelationships(pkg: LoadedPackage): RelationshipEntry[] {
-  const relsXml = pkg.parts.get('word/_rels/document.xml.rels');
-  if (!relsXml) return [];
+function parseRelationshipsXml(relsXml: string): RelationshipEntry[] {
   const dom = new DOMParser().parseFromString(relsXml, 'text/xml');
   const nodes = dom.getElementsByTagNameNS(RELS_NS, 'Relationship');
   const out: RelationshipEntry[] = [];
@@ -215,20 +217,126 @@ function parseMainPartRelationships(pkg: LoadedPackage): RelationshipEntry[] {
   return out;
 }
 
-/**
- * Resolve an internal relationship target (relative to word/) to a package part
- * name, normalizing a leading `/` (package-absolute) and any `../` segments.
- */
-export function resolveTargetToPartName(target: string): string {
+function relationshipsPartName(sourcePartName: string): string {
+  const directory = posix.dirname(sourcePartName);
+  const prefix = directory === '.' ? '' : `${directory}/`;
+  return `${prefix}_rels/${posix.basename(sourcePartName)}.rels`;
+}
+
+function resolveRelationshipTarget(sourcePartName: string | null, target: string): string {
   if (target.startsWith('/')) return target.slice(1);
-  const segments = 'word'.split('/').concat(target.split('/'));
-  const stack: string[] = [];
-  for (const seg of segments) {
-    if (seg === '' || seg === '.') continue;
-    if (seg === '..') stack.pop();
-    else stack.push(seg);
+  const base = sourcePartName ? posix.dirname(sourcePartName) : '';
+  const normalized = posix.normalize(posix.join(base === '.' ? '' : base, target));
+  if (normalized === '..' || normalized.startsWith('../')) {
+    throw new Error(`relationship target escapes package root: ${target}`);
   }
-  return stack.join('/');
+  return normalized;
+}
+
+function resolveMainDocumentPartName(
+  store: PackagePartStore,
+  allowLegacyFallback: boolean
+): string {
+  const packageRels = store.getPartText('_rels/.rels');
+  if (!packageRels) {
+    if (allowLegacyFallback && store.rawParts.has(MAIN_DOCUMENT_PART)) {
+      return MAIN_DOCUMENT_PART;
+    }
+    throw new Error('package has no _rels/.rels package relationships part');
+  }
+  const matches = parseRelationshipsXml(packageRels).filter(
+    (relationship) =>
+      !relationship.external && OFFICE_DOCUMENT_REL_TYPES.has(relationship.type)
+  );
+  if (matches.length !== 1) {
+    throw new Error(`package must have exactly one officeDocument relationship; found ${matches.length}`);
+  }
+  return resolveRelationshipTarget(null, matches[0].target);
+}
+
+export function loadPackage(docxBytes: Uint8Array): LoadedPackage {
+  const entries = unzipSync(docxBytes);
+  const store = createPartStore(new Map(Object.entries(entries)));
+  const mainDocumentPartName = resolveMainDocumentPartName(store, false);
+  const mainDocumentXml = store.getPartText(mainDocumentPartName);
+  if (mainDocumentXml === undefined) {
+    throw new Error(`officeDocument relationship resolves to missing part ${mainDocumentPartName}`);
+  }
+  return { ...store, mainDocumentPartName, mainDocumentXml };
+}
+
+/** In-memory package for tests; canonical main-part fallback preserves legacy fixtures. */
+export function packageFromParts(parts: Record<string, string>): LoadedPackage {
+  const decodedParts = new Map(Object.entries(parts));
+  const rawParts = new Map(
+    Object.entries(parts).map(([partName, text]) => [partName, strToU8(text)])
+  );
+  const store = createPartStore(rawParts, decodedParts);
+  const mainDocumentPartName = resolveMainDocumentPartName(store, true);
+  const mainDocumentXml = store.getPartText(mainDocumentPartName);
+  if (mainDocumentXml === undefined) {
+    throw new Error(`officeDocument relationship resolves to missing part ${mainDocumentPartName}`);
+  }
+  return { ...store, mainDocumentPartName, mainDocumentXml };
+}
+
+export type PartResolution =
+  | { ok: true; partName: string; xml: string }
+  | { ok: false; error: string };
+
+function parseMainPartRelationships(pkg: LoadedPackage): RelationshipEntry[] {
+  const relsXml = pkg.getPartText(relationshipsPartName(pkg.mainDocumentPartName));
+  if (!relsXml) return [];
+  return parseRelationshipsXml(relsXml);
+}
+
+/**
+ * Resolve an internal relationship target relative to its source part,
+ * normalizing a leading `/` (package-absolute) and any `../` segments.
+ */
+export function resolveTargetToPartName(
+  target: string,
+  sourcePartName: string = MAIN_DOCUMENT_PART
+): string {
+  return resolveRelationshipTarget(sourcePartName, target);
+}
+
+export type ContentTypeResolution =
+  | { ok: true; contentType: string }
+  | { ok: false; error: string };
+
+export function resolvePartContentType(
+  pkg: LoadedPackage,
+  partName: string
+): ContentTypeResolution {
+  const contentTypesXml = pkg.getPartText('[Content_Types].xml');
+  if (!contentTypesXml) {
+    return { ok: false, error: 'package has no [Content_Types].xml content-type item' };
+  }
+  const dom = new DOMParser().parseFromString(contentTypesXml, 'text/xml');
+  const overrides = dom.getElementsByTagNameNS(CONTENT_TYPES_NS, 'Override');
+  const normalizedPartName = `/${partName.replace(/^\/+/, '')}`;
+  for (let i = 0; i < overrides.length; i++) {
+    const override = overrides.item(i)!;
+    if (override.getAttribute('PartName') === normalizedPartName) {
+      const contentType = override.getAttribute('ContentType');
+      return contentType
+        ? { ok: true, contentType }
+        : { ok: false, error: `${normalizedPartName} has an empty content type` };
+    }
+  }
+  const extension = posix.extname(partName).slice(1);
+  const defaults = dom.getElementsByTagNameNS(CONTENT_TYPES_NS, 'Default');
+  for (let i = 0; i < defaults.length; i++) {
+    const fallback = defaults.item(i)!;
+    if ((fallback.getAttribute('Extension') ?? '').toLowerCase() === extension.toLowerCase()) {
+      const contentType = fallback.getAttribute('ContentType');
+      return contentType
+        ? { ok: true, contentType }
+        : { ok: false, error: `default for .${extension} has an empty content type` };
+    }
+  }
+  return { ok: false, error: `no content type declared for part ${partName}` };
 }
 
 /** Singleton lookup of a part by OPC relationship Type (styles, numbering, comments). */
@@ -248,8 +356,8 @@ export function resolvePartByRelationshipType(
       error: `expected a single part with relationship type ${typeUri}, found ${matches.length}`,
     };
   }
-  const partName = resolveTargetToPartName(matches[0].target);
-  const xml = pkg.parts.get(partName);
+  const partName = resolveTargetToPartName(matches[0].target, pkg.mainDocumentPartName);
+  const xml = pkg.getPartText(partName);
   if (xml === undefined) {
     return { ok: false, error: `relationship resolves to missing part ${partName}` };
   }
@@ -297,8 +405,8 @@ export function resolveHeaderFooterPart(
       error: `${referenceLocal} r:id ${rid} resolves to relationship type ${rel.type}, expected ${expectedType}`,
     };
   }
-  const partName = resolveTargetToPartName(rel.target);
-  const xml = pkg.parts.get(partName);
+  const partName = resolveTargetToPartName(rel.target, pkg.mainDocumentPartName);
+  const xml = pkg.getPartText(partName);
   if (xml === undefined) {
     return { ok: false, error: `relationship resolves to missing part ${partName}` };
   }
