@@ -11,11 +11,15 @@ import {
   type CapabilityRegistry,
   type ScenarioCapabilityRegistry,
 } from './capability-registry.js';
-import { loadAllScenarios, REPO_ROOT } from './scenarios.js';
+import {
+  loadAllScenarios,
+  REPO_ROOT,
+  validateScenarioDslCompatibility,
+} from './scenarios.js';
 import type { ResultsDocument } from './types.js';
 import { gradeAssertionResults } from './oracle-grading.js';
 import { RESULTS_SCHEMA } from './results-schema.js';
-import { normalizeResultsDocument } from './normalize-results.js';
+import { canonicalResultsDigest, normalizeResultsDocument } from './normalize-results.js';
 import { renderMatrixHtml } from './render-matrix.js';
 
 let failed = false;
@@ -50,6 +54,15 @@ const profiles: CapabilityProfiles = {
 
 check('committed registry validates', loaded.registry.capabilities.length === 23);
 check('every committed scenario is mapped', new Set(loaded.mappings.map((mapping) => mapping.scenarioId)).size === scenarios.length);
+const understatedDslScenario = structuredClone(
+  scenarios.find(
+    (scenario) => scenario.manifest.scenarioId === 'appendParagraphPreservesExistingContent'
+  )!.manifest
+);
+understatedDslScenario.dslVersion = '1.7';
+expectThrows('assertion kind newer than declared DSL is rejected', /requires DSL 1\.8/, () =>
+  validateScenarioDslCompatibility(understatedDslScenario)
+);
 const auditedInvariantScenarioIds = [...new Set(
   loaded.mappings
     .filter((mapping) => mapping.oracleClasses.includes('metamorphic-invariant'))
@@ -213,35 +226,67 @@ check(
 const results = JSON.parse(
   readFileSync(join(REPO_ROOT, 'results', 'latest.json'), 'utf8')
 ) as ResultsDocument;
-const exactPriorSnapshotShape = {
-  ...results,
-  schemaVersion: 2,
-  results: results.results.map(({ oracleKind: _oracleKind, ...result }) => result),
-};
+const resultsHistory = JSON.parse(
+  readFileSync(join(REPO_ROOT, 'registry', 'results-history.json'), 'utf8')
+);
+const historicalV2 = JSON.parse(
+  readFileSync(
+    join(REPO_ROOT, resultsHistory.legacySchemas['2'].fixturePath),
+    'utf8'
+  )
+);
 check(
-  'exact schema-v2 snapshot shape normalizes deterministically',
-  isDeepStrictEqual(normalizeResultsDocument(exactPriorSnapshotShape, loaded), results)
+  'actual historical schema-v2 fixture matches its recorded digest',
+  canonicalResultsDigest(historicalV2) === resultsHistory.legacySchemas['2'].canonicalSha256
 );
-const unknownLegacyRun = structuredClone(exactPriorSnapshotShape);
-unknownLegacyRun.runTimestamp = '2026-07-07T00:00:00.000Z';
-expectThrows(
-  'unrecorded schema-v2 run is rejected',
-  /has no explicit oracle history/,
-  () => normalizeResultsDocument(unknownLegacyRun, loaded)
+check(
+  'actual historical schema-v2 fixture normalizes deterministically',
+  isDeepStrictEqual(normalizeResultsDocument(historicalV2, loaded), results)
 );
-const ambiguousLegacyInvariant = structuredClone(exactPriorSnapshotShape);
-ambiguousLegacyInvariant.results[0].scenarioId = 'appendParagraphPreservesExistingContent';
+const missingLegacyRow = structuredClone(historicalV2);
+missingLegacyRow.results.pop();
 expectThrows(
-  'schema-v2 invariant evidence is rejected rather than guessed',
-  /ambiguous legacy invariant evidence/,
-  () => normalizeResultsDocument(ambiguousLegacyInvariant, loaded)
+  'schema-v2 migration rejects a missing row',
+  /scenario cardinality/,
+  () => normalizeResultsDocument(missingLegacyRow, loaded)
 );
-const unrecordedLegacyConformance = structuredClone(exactPriorSnapshotShape);
-unrecordedLegacyConformance.results[0].scenarioId = 'appendParagraphAddsTrailingParagraph';
+const extraLegacyRow = structuredClone(historicalV2);
+extraLegacyRow.results.push(structuredClone(extraLegacyRow.results[0]));
 expectThrows(
-  'schema-v2 current conformance without history is rejected',
-  /no schema-v2 oracle history/,
-  () => normalizeResultsDocument(unrecordedLegacyConformance, loaded)
+  'schema-v2 migration rejects an extra row',
+  /scenario cardinality/,
+  () => normalizeResultsDocument(extraLegacyRow, loaded)
+);
+const duplicateLegacyRow = structuredClone(historicalV2);
+duplicateLegacyRow.results[1] = structuredClone(duplicateLegacyRow.results[0]);
+expectThrows(
+  'schema-v2 migration rejects a duplicate row identity',
+  /ordered scenario identities/,
+  () => normalizeResultsDocument(duplicateLegacyRow, loaded)
+);
+const reorderedLegacyRows = structuredClone(historicalV2);
+[reorderedLegacyRows.results[0], reorderedLegacyRows.results[1]] = [
+  reorderedLegacyRows.results[1],
+  reorderedLegacyRows.results[0],
+];
+expectThrows(
+  'schema-v2 migration rejects reordered rows',
+  /ordered scenario identities/,
+  () => normalizeResultsDocument(reorderedLegacyRows, loaded)
+);
+const alteredLegacyRow = structuredClone(historicalV2);
+alteredLegacyRow.results[0].scenarioTitle = 'Altered historical title';
+expectThrows(
+  'schema-v2 migration rejects altered row payload',
+  /snapshot digest/,
+  () => normalizeResultsDocument(alteredLegacyRow, loaded)
+);
+const injectedInvariantRow = structuredClone(historicalV2);
+injectedInvariantRow.results[0].scenarioId = 'appendParagraphPreservesExistingContent';
+expectThrows(
+  'schema-v2 migration rejects injected invariant evidence',
+  /ordered scenario identities/,
+  () => normalizeResultsDocument(injectedInvariantRow, loaded)
 );
 const summary = buildCapabilitySummary(loaded, results) as {
   capabilities: Array<{

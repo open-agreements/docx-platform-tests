@@ -100,6 +100,9 @@ fragment — fails CI. Unrecognized `input/*.xml` files are rejected outright.
 ## scenario.json
 
 All keys are deliberately self-disambiguating (3–4-word camelCase).
+The runner validates each assertion kind against the DSL version in which it
+was introduced; a manifest cannot use a newer assertion while declaring an
+older `dslVersion`.
 
 ```json
 {

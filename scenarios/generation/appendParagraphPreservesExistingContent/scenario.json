@@ -1,5 +1,5 @@
 {
-  "dslVersion": "1.4",
+  "dslVersion": "1.8",
   "scenarioId": "appendParagraphPreservesExistingContent",
   "scenarioTitle": "Appending a paragraph preserves the existing opening paragraph",
   "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.1.22", "clauseTitle": "p (Paragraph)" },

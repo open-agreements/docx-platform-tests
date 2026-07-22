@@ -1,6 +1,7 @@
 import { isDeepStrictEqual } from 'node:util';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import { Ajv2020 } from 'ajv/dist/2020.js';
 import {
   loadAndValidateCapabilityRegistry,
@@ -18,7 +19,14 @@ interface ResultsHistory {
   schemaVersion: 1;
   legacySchemas: {
     '2': {
-      sourceRunTimestamp: string;
+      sourceCommit: string;
+      fixturePath: string;
+      fixtureSha256: string;
+      canonicalSha256: string;
+      expectedImplementationCount: number;
+      expectedAdapterNames: string[];
+      expectedScenarioCount: number;
+      expectedScenarioIds: string[];
       oracleKindByScenario: Record<string, 'ecma-conformance'>;
     };
   };
@@ -35,7 +43,30 @@ function loadResultsHistory(): ResultsHistory {
   if (!validate(history)) {
     throw new Error(`invalid results history: ${JSON.stringify(validate.errors)}`);
   }
-  return history as ResultsHistory;
+  const typed = history as ResultsHistory;
+  const evidence = typed.legacySchemas['2'];
+  const fixtureBytes = readFileSync(join(REPO_ROOT, evidence.fixturePath));
+  const fixtureDigest = createHash('sha256').update(fixtureBytes).digest('hex');
+  if (fixtureDigest !== evidence.fixtureSha256) {
+    throw new Error(
+      `immutable schema-v2 fixture digest ${fixtureDigest} does not match ${evidence.fixtureSha256}`
+    );
+  }
+  if (evidence.expectedAdapterNames.length !== evidence.expectedImplementationCount) {
+    throw new Error('results history implementation cardinality does not match adapter identities');
+  }
+  if (evidence.expectedScenarioIds.length !== evidence.expectedScenarioCount) {
+    throw new Error('results history scenario cardinality does not match scenario identities');
+  }
+  if (
+    !isDeepStrictEqual(
+      Object.keys(evidence.oracleKindByScenario).sort(),
+      [...evidence.expectedScenarioIds].sort()
+    )
+  ) {
+    throw new Error('results history oracle identities do not match expected scenario identities');
+  }
+  return typed;
 }
 
 function object(value: unknown, label: string): JsonObject {
@@ -43,6 +74,58 @@ function object(value: unknown, label: string): JsonObject {
     throw new Error(`${label} must be an object`);
   }
   return value as JsonObject;
+}
+
+function canonicalJson(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`;
+  if (value && typeof value === 'object') {
+    return `{${Object.keys(value)
+      .sort()
+      .map((key) => `${JSON.stringify(key)}:${canonicalJson((value as JsonObject)[key])}`)
+      .join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+export function canonicalResultsDigest(value: unknown): string {
+  return createHash('sha256').update(canonicalJson(value)).digest('hex');
+}
+
+function authenticateSchemaV2Snapshot(document: JsonObject, history: ResultsHistory): void {
+  const evidence = history.legacySchemas['2'];
+  if (!Array.isArray(document.implementations)) throw new Error('implementations must be an array');
+  if (!Array.isArray(document.results)) throw new Error('results must be an array');
+
+  if (document.implementations.length !== evidence.expectedImplementationCount) {
+    throw new Error(
+      `schema-v2 implementation cardinality ${document.implementations.length}; expected ${evidence.expectedImplementationCount}`
+    );
+  }
+  const adapterNames = document.implementations.map((item, index) => {
+    const implementation = object(item, `implementations[${index}]`);
+    return implementation.adapterName;
+  });
+  if (!isDeepStrictEqual(adapterNames, evidence.expectedAdapterNames)) {
+    throw new Error('schema-v2 ordered adapter identities do not match immutable history');
+  }
+  if (document.results.length !== evidence.expectedScenarioCount) {
+    throw new Error(
+      `schema-v2 scenario cardinality ${document.results.length}; expected ${evidence.expectedScenarioCount}`
+    );
+  }
+  const scenarioIds = document.results.map((item, index) => {
+    const result = object(item, `results[${index}]`);
+    return result.scenarioId;
+  });
+  if (!isDeepStrictEqual(scenarioIds, evidence.expectedScenarioIds)) {
+    throw new Error('schema-v2 ordered scenario identities do not match immutable history');
+  }
+  const digest = canonicalResultsDigest(document);
+  if (digest !== evidence.canonicalSha256) {
+    throw new Error(
+      `schema-v2 snapshot digest ${digest} does not match immutable history ${evidence.canonicalSha256}`
+    );
+  }
 }
 
 export function normalizeResultsDocument(
@@ -55,14 +138,11 @@ export function normalizeResultsDocument(
   if (document.schemaVersion !== 2) {
     throw new Error(`unsupported results schemaVersion ${String(document.schemaVersion)}`);
   }
-  if (document.runTimestamp !== history.legacySchemas['2'].sourceRunTimestamp) {
-    throw new Error(
-      `schema-v2 run ${String(document.runTimestamp)} has no explicit oracle history`
-    );
-  }
-  if (!Array.isArray(document.results)) throw new Error('results must be an array');
+  authenticateSchemaV2Snapshot(document, history);
+  const rawResults = document.results;
+  if (!Array.isArray(rawResults)) throw new Error('results must be an array');
 
-  const normalizedResults = document.results.map((rawResult, index) => {
+  const normalizedResults = rawResults.map((rawResult, index) => {
     const result = object(rawResult, `results[${index}]`);
     const scenarioId = result.scenarioId;
     if (typeof scenarioId !== 'string') throw new Error(`results[${index}].scenarioId must be a string`);
@@ -102,16 +182,15 @@ function main(): void {
   const loaded = loadAndValidateCapabilityRegistry();
   if (process.argv.includes('--check')) {
     const current = JSON.parse(readFileSync(latestPath, 'utf8')) as ResultsDocument;
-    const legacyShape = {
-      ...current,
-      schemaVersion: 2,
-      results: current.results.map(({ oracleKind: _oracleKind, ...result }) => result),
-    };
-    const normalized = normalizeResultsDocument(legacyShape, loaded);
+    const evidence = loadResultsHistory().legacySchemas['2'];
+    const historical = JSON.parse(
+      readFileSync(join(REPO_ROOT, evidence.fixturePath), 'utf8')
+    );
+    const normalized = normalizeResultsDocument(historical, loaded);
     if (!isDeepStrictEqual(normalized, current)) {
-      throw new Error('results/latest.json is not reproducible from its exact schema-v2 shape');
+      throw new Error('results/latest.json is not reproducible from the immutable schema-v2 fixture');
     }
-    console.log('results/latest.json is reproducible from its exact schema-v2 shape');
+    console.log('results/latest.json is reproducible from the immutable schema-v2 fixture');
     return;
   }
 

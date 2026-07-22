@@ -1,5 +1,5 @@
 {
-  "dslVersion": "1.4",
+  "dslVersion": "1.8",
   "scenarioId": "replaceTextInsideTableCellPreservesStructure",
   "scenarioTitle": "Replacing text inside a table cell preserves table structure and adjacent cell text",
   "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.4.66", "clauseTitle": "tc (Table Cell)" },
