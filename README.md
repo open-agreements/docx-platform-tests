@@ -60,7 +60,8 @@ scenarios/   one directory per scenario: scenario.json + input/ + expected/
 adapters/    one directory per registered implementation adapter
 runner/      the neutral runner (Node, @xmldom/xmldom; no implementation deps)
 registry/    adapters.json — registered adapters and their invocation commands
-results/     latest published results snapshot (also published to gh-pages)
+results/     latest results plus generated capability-axis aggregation
+registry/    adapters, neutral capability identities, profiles, and scenario mappings
 ```
 
 ## Running the suite
@@ -69,6 +70,7 @@ results/     latest published results snapshot (also published to gh-pages)
 cd runner
 npm ci
 npm run check-fixtures   # verify input.docx packages match input/document.xml
+npm run check-capability-index # validate registry + generated coverage artifacts
 npm run suite            # run all registered adapters, write ../results/latest.json
 npm run validate-results # validate ../results/latest.json against the schema
 ```
@@ -92,6 +94,11 @@ A scenario must cite the ECMA-376 section its assertion derives from. Where
 Microsoft Word's observed behavior deviates from a strict reading of the
 spec, record it in the scenario's `wordBehaviorNote`. See
 `docs/scenario-dsl.md` for the format and the assertion-strength rules.
+
+Every scenario also maps to one or more neutral capability axes through
+`registry/scenario-capabilities.json`. The registry defines vocabulary and
+normative scope, not an implementation's timeless support status. See
+`docs/capability-registry.md`.
 
 ## License
 

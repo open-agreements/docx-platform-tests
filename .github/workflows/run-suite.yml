@@ -36,6 +36,10 @@ jobs:
         working-directory: runner
         run: npm run check-results-schema
 
+      - name: Verify capability registry and generated indexes
+        working-directory: runner
+        run: npm run check-capability-index
+
       # An install failure fails CI; runtime library breakage instead surfaces
       # as error cells in the published matrix.
       - name: Install adapter dependencies
@@ -55,6 +59,10 @@ jobs:
         working-directory: runner
         run: npm run validate-results
 
+      - name: Generate capability result aggregation
+        working-directory: runner
+        run: npm run write-capability-index
+
       - name: Render matrix view
         working-directory: runner
         run: npm run render-matrix
@@ -65,6 +73,8 @@ jobs:
           path: |
             results/latest.json
             results/results.schema.json
+            results/capability-summary.json
+            registry/scenario-coverage.json
 
       - name: Publish results to gh-pages
         if: github.event_name != 'pull_request'
