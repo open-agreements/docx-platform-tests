@@ -89,10 +89,12 @@ perform with exit code 2 — never approximate.
 
 ## Adding a scenario
 
-A scenario must cite the ECMA-376 section its assertion derives from. Where
+A conformance scenario must cite the ECMA-376 section its assertion derives from. Where
 Microsoft Word's observed behavior deviates from a strict reading of the
 spec, record it in the scenario's `wordBehaviorNote`. See
 `docs/scenario-dsl.md` for the format and the assertion-strength rules.
+Pure metamorphic scenarios are labeled separately as suite-declared invariants;
+their failures are not reported as ECMA conformance failures.
 
 Every scenario also maps to one or more neutral capability axes through
 `registry/scenario-capabilities.json`. The registry defines vocabulary and

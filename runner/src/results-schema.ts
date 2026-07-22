@@ -1,4 +1,4 @@
-export const RESULTS_SCHEMA_VERSION = 2;
+export const RESULTS_SCHEMA_VERSION = 3;
 
 export const RESULTS_SCHEMA = {
   $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -75,11 +75,36 @@ export const RESULTS_SCHEMA = {
     scenarioResult: {
       type: 'object',
       additionalProperties: false,
-      required: ['scenarioGroup', 'scenarioId', 'scenarioTitle', 'specCitation', 'outcomes'],
+      required: ['scenarioGroup', 'scenarioId', 'scenarioTitle', 'oracleKind', 'specCitation', 'outcomes'],
+      allOf: [
+        {
+          if: {
+            properties: { oracleKind: { const: 'metamorphic-invariant' } },
+            required: ['oracleKind'],
+          },
+          then: {
+            properties: {
+              outcomes: {
+                type: 'object',
+                additionalProperties: { $ref: '#/$defs/invariantScenarioOutcome' },
+              },
+            },
+          },
+          else: {
+            properties: {
+              outcomes: {
+                type: 'object',
+                additionalProperties: { $ref: '#/$defs/conformanceScenarioOutcome' },
+              },
+            },
+          },
+        },
+      ],
       properties: {
         scenarioGroup: { type: 'string', minLength: 1 },
         scenarioId: { type: 'string', minLength: 1 },
         scenarioTitle: { type: 'string', minLength: 1 },
+        oracleKind: { enum: ['ecma-conformance', 'metamorphic-invariant'] },
         specCitation: { $ref: '#/$defs/specCitation' },
         microsoftExtensionCitations: {
           type: 'array',
@@ -102,6 +127,8 @@ export const RESULTS_SCHEMA = {
             'pass',
             'pass-divergent',
             'fail',
+            'invariant-pass',
+            'invariant-fail',
             'unsupported',
             'error',
             'protocol-mismatch',
@@ -111,6 +138,22 @@ export const RESULTS_SCHEMA = {
         assertionResults: {
           type: 'array',
           items: { $ref: '#/$defs/assertionResult' },
+        },
+      },
+    },
+    conformanceScenarioOutcome: {
+      type: 'object',
+      properties: {
+        status: {
+          enum: ['pass', 'pass-divergent', 'fail', 'unsupported', 'error', 'protocol-mismatch'],
+        },
+      },
+    },
+    invariantScenarioOutcome: {
+      type: 'object',
+      properties: {
+        status: {
+          enum: ['invariant-pass', 'invariant-fail', 'unsupported', 'error', 'protocol-mismatch'],
         },
       },
     },

@@ -1,0 +1,95 @@
+{
+  "dslVersion": "1.8",
+  "scenarioId": "unrelatedTextEditPreservesInlineContentControlStructure",
+  "scenarioTitle": "An unrelated text edit preserves one inline content control with valid known structure",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.5.2.31",
+    "clauseTitle": "sdt (Inline-Level Structured Document Tag)"
+  },
+  "secondarySpecCitations": [
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.5.2.36",
+      "clauseTitle": "sdtContent (Inline-Level Structured Document Tag Content)"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.5.2.38",
+      "clauseTitle": "sdtPr (Structured Document Tag Properties)"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.3.3.31",
+      "clauseTitle": "t (Text)"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 3,
+      "section": "7.2",
+      "clauseTitle": "Ignorable Attribute"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 3,
+      "section": "9.2",
+      "clauseTitle": "Step 1: Processing the Ignorable and ProcessContent Attributes"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 3,
+      "section": "9.4",
+      "clauseTitle": "Step 3: Processing the MustUnderstand Attribute and Creating the Output Document"
+    }
+  ],
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "replaceFirstTextOccurrence",
+    "findText": "thirty",
+    "replaceText": "sixty"
+  },
+  "assertionList": [
+    {
+      "assertionKind": "xpathElementTextEquals",
+      "xpathExpression": "/w:document/w:body/w:p",
+      "expectedText": "Edit target: sixty days. Controlled text sentinel Paragraph tail."
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body//w:sdt",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:id)=1 and count(w:tag)=1]/w:alias[@w:val='Opaque inline control'][following-sibling::w:tag[1][@w:val='dpt-inline-sdt' and following-sibling::w:id[1][@w:val='54']]]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathElementTextEquals",
+      "xpathExpression": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtContent",
+      "expectedText": "Controlled text sentinel"
+    }
+  ]
+}

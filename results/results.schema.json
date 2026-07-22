@@ -14,7 +14,7 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": 2,
+      "const": 3,
       "description": "Version of the published results JSON contract."
     },
     "runTimestamp": {
@@ -122,8 +122,43 @@
         "scenarioGroup",
         "scenarioId",
         "scenarioTitle",
+        "oracleKind",
         "specCitation",
         "outcomes"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "oracleKind": {
+                "const": "metamorphic-invariant"
+              }
+            },
+            "required": [
+              "oracleKind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "outcomes": {
+                "type": "object",
+                "additionalProperties": {
+                  "$ref": "#/$defs/invariantScenarioOutcome"
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "outcomes": {
+                "type": "object",
+                "additionalProperties": {
+                  "$ref": "#/$defs/conformanceScenarioOutcome"
+                }
+              }
+            }
+          }
+        }
       ],
       "properties": {
         "scenarioGroup": {
@@ -137,6 +172,12 @@
         "scenarioTitle": {
           "type": "string",
           "minLength": 1
+        },
+        "oracleKind": {
+          "enum": [
+            "ecma-conformance",
+            "metamorphic-invariant"
+          ]
         },
         "specCitation": {
           "$ref": "#/$defs/specCitation"
@@ -168,6 +209,8 @@
             "pass",
             "pass-divergent",
             "fail",
+            "invariant-pass",
+            "invariant-fail",
             "unsupported",
             "error",
             "protocol-mismatch"
@@ -181,6 +224,35 @@
           "items": {
             "$ref": "#/$defs/assertionResult"
           }
+        }
+      }
+    },
+    "conformanceScenarioOutcome": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "pass",
+            "pass-divergent",
+            "fail",
+            "unsupported",
+            "error",
+            "protocol-mismatch"
+          ]
+        }
+      }
+    },
+    "invariantScenarioOutcome": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "invariant-pass",
+            "invariant-fail",
+            "unsupported",
+            "error",
+            "protocol-mismatch"
+          ]
         }
       }
     },

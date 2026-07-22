@@ -57,6 +57,9 @@ Pages. Consumers should treat the top-level `schemaVersion` as the results
 format version and validate against `results/results.schema.json` (draft
 2020-12), published alongside the data. CI checks that the committed schema is
 current and validates every emitted `latest.json` before publication.
+Each scenario result declares `oracleKind`. ECMA conformance uses `pass`,
+`pass-divergent`, and `fail`; suite-declared metamorphic preservation evidence
+uses `invariant-pass` and `invariant-fail` and is not an ECMA failure signal.
 
 ## Versioning
 

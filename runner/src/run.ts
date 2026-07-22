@@ -11,7 +11,12 @@ import { tmpdir } from 'node:os';
 import { basename, dirname, join } from 'node:path';
 import { loadPackage } from './docx.js';
 import { evaluateAssertion } from './assertions.js';
+import { gradeAssertionResults } from './oracle-grading.js';
 import { loadAllScenarios, REPO_ROOT } from './scenarios.js';
+import {
+  loadAndValidateCapabilityRegistry,
+  scenarioOracleKind,
+} from './capability-registry.js';
 import { RESULTS_SCHEMA_VERSION } from './results-schema.js';
 import type {
   AdapterRegistration,
@@ -19,11 +24,12 @@ import type {
   LoadedScenario,
   ResultsDocument,
   ScenarioOutcome,
+  ScenarioOracleKind,
 } from './types.js';
 
 const PROTOCOL_VERSION = 1;
 // The DSL revision this runner implements; see docs/scenario-dsl.md.
-const DSL_VERSION = '1.7';
+const DSL_VERSION = '1.8';
 
 function adapterVersion(adapter: AdapterRegistration): string {
   if (!adapter.adapterVersionCommand?.length) return 'unknown';
@@ -34,7 +40,8 @@ function adapterVersion(adapter: AdapterRegistration): string {
 
 function runScenario(
   adapter: AdapterRegistration,
-  scenario: LoadedScenario
+  scenario: LoadedScenario,
+  oracleKind: ScenarioOracleKind
 ): ScenarioOutcome {
   const workDir = mkdtempSync(join(tmpdir(), 'dpt-'));
   try {
@@ -90,19 +97,10 @@ function runScenario(
     const assertionResults = scenario.manifest.assertionList.map((assertion) =>
       evaluateAssertion(assertion, outputPackage, scenario.scenarioDir)
     );
-    // Outcome grading (docs/scenario-dsl.md): the conformance claim is
-    // carried by the semantic assertions; canonicalXmlEquals pins
-    // serialization granularity. An implementation that satisfies the cited
-    // clause but normalizes formatting on save is exercising serialization
-    // freedom, not failing the clause — grade it pass-divergent, not fail.
-    const semanticFailed = assertionResults.some(
-      (r) => r.assertionKind !== 'canonicalXmlEquals' && !r.passed
-    );
-    const canonicalFailed = assertionResults.some(
-      (r) => r.assertionKind === 'canonicalXmlEquals' && !r.passed
-    );
+    // Oracle-aware grading keeps metamorphic evidence out of conformance
+    // statuses. Canonical divergence is special only for conformance oracles.
     return {
-      status: semanticFailed ? 'fail' : canonicalFailed ? 'pass-divergent' : 'pass',
+      status: gradeAssertionResults(assertionResults, oracleKind),
       assertionResults,
     };
   } finally {
@@ -124,6 +122,7 @@ const resultsPath =
 
 const registry = JSON.parse(readFileSync(registryPath, 'utf8')) as AdapterRegistry;
 const scenarios = loadAllScenarios();
+const capabilityRegistry = loadAndValidateCapabilityRegistry();
 
 const results: ResultsDocument = {
   schemaVersion: RESULTS_SCHEMA_VERSION,
@@ -138,6 +137,7 @@ const results: ResultsDocument = {
     scenarioGroup: basename(dirname(scenarioDir)),
     scenarioId: manifest.scenarioId,
     scenarioTitle: manifest.scenarioTitle,
+    oracleKind: scenarioOracleKind(capabilityRegistry.mappings, manifest.scenarioId),
     specCitation: manifest.specCitation,
     ...(manifest.microsoftExtensionCitations
       ? { microsoftExtensionCitations: manifest.microsoftExtensionCitations }
@@ -149,7 +149,11 @@ const results: ResultsDocument = {
 for (const adapter of registry.adapters) {
   console.log(`\n=== adapter: ${adapter.adapterName}`);
   for (let i = 0; i < scenarios.length; i++) {
-    const outcome = runScenario(adapter, scenarios[i]);
+    const outcome = runScenario(
+      adapter,
+      scenarios[i],
+      scenarioOracleKind(capabilityRegistry.mappings, scenarios[i].manifest.scenarioId)
+    );
     results.results[i].outcomes[adapter.adapterName] = outcome;
     console.log(
       `  ${scenarios[i].manifest.scenarioId}: ${outcome.status}` +

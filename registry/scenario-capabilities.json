@@ -6,10 +6,16 @@
       "scenarioId": "unrelatedTextEditPreservesOpaqueInlineContentControl",
       "capabilityId": "word.content-controls.inline",
       "axis": "preserve",
-      "oracleClasses": ["normative-prose", "metamorphic-invariant"]
+      "oracleClasses": ["metamorphic-invariant"]
     },
     {
-      "scenarioId": "unrelatedTextEditPreservesOpaqueInlineContentControl",
+      "scenarioId": "unrelatedTextEditPreservesInlineContentControlStructure",
+      "capabilityId": "word.content-controls.inline",
+      "axis": "preserve",
+      "oracleClasses": ["normative-prose"]
+    },
+    {
+      "scenarioId": "unrelatedTextEditPreservesInlineContentControlStructure",
       "capabilityId": "word.text.find-replace",
       "axis": "edit",
       "oracleClasses": ["normative-prose"]
@@ -42,12 +48,6 @@
       "scenarioId": "replaceTextAcrossRunBoundary",
       "capabilityId": "word.text.find-replace",
       "axis": "edit",
-      "oracleClasses": ["normative-prose"]
-    },
-    {
-      "scenarioId": "appendParagraphPreservesExistingContent",
-      "capabilityId": "word.paragraphs.structure",
-      "axis": "generate",
       "oracleClasses": ["normative-prose"]
     },
     {
@@ -114,7 +114,7 @@
       "scenarioId": "composeCompatibilityMode15WritesCompatSetting",
       "capabilityId": "word.settings.compatibility-mode",
       "axis": "generate",
-      "oracleClasses": ["normative-prose", "normative-microsoft-extension", "metamorphic-invariant"]
+      "oracleClasses": ["normative-prose", "normative-microsoft-extension"]
     },
     {
       "scenarioId": "directFormattingDoesNotBakeIntoStyleDefinition",
@@ -150,7 +150,7 @@
       "scenarioId": "replaceTextInsideTableCellPreservesStructure",
       "capabilityId": "word.tables.cells",
       "axis": "preserve",
-      "oracleClasses": ["metamorphic-invariant", "normative-prose"]
+      "oracleClasses": ["normative-prose"]
     },
     {
       "scenarioId": "replaceTextInsideTableCellPreservesStructure",

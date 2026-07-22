@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { Ajv2020 } from 'ajv/dist/2020.js';
 import {
   buildCapabilitySummary,
   buildScenarioCoverage,
@@ -11,6 +12,8 @@ import {
 } from './capability-registry.js';
 import { loadAllScenarios, REPO_ROOT } from './scenarios.js';
 import type { ResultsDocument } from './types.js';
+import { gradeAssertionResults } from './oracle-grading.js';
+import { RESULTS_SCHEMA } from './results-schema.js';
 
 let failed = false;
 
@@ -138,6 +141,37 @@ expectThrows('canonical XML without serialization oracle is rejected', /serializ
   validateCapabilityRelationships(registry, missingSerializationOracle, profiles, scenarios)
 );
 
+const mixedMetamorphicOracle = structuredClone(mappings);
+const appendInvariant = mixedMetamorphicOracle.mappings.find(
+  (mapping) => mapping.scenarioId === 'appendParagraphPreservesExistingContent'
+)!;
+appendInvariant.oracleClasses.push('normative-prose');
+expectThrows('mixed metamorphic/conformance scenario is rejected', /mixes metamorphic-invariant/, () =>
+  validateCapabilityRelationships(registry, mixedMetamorphicOracle, profiles, scenarios)
+);
+
+check(
+  'metamorphic assertion failure grades invariant-fail, not ECMA fail',
+  gradeAssertionResults(
+    [{ assertionKind: 'xpathQueryCount', passed: false, detail: 'sentinel missing' }],
+    'metamorphic-invariant'
+  ) === 'invariant-fail'
+);
+check(
+  'metamorphic assertion success grades invariant-pass',
+  gradeAssertionResults(
+    [{ assertionKind: 'xpathQueryCount', passed: true, detail: 'sentinel retained' }],
+    'metamorphic-invariant'
+  ) === 'invariant-pass'
+);
+check(
+  'metamorphic canonical assertion failure grades invariant-fail',
+  gradeAssertionResults(
+    [{ assertionKind: 'canonicalXmlEquals', passed: false, detail: 'serialization changed' }],
+    'metamorphic-invariant'
+  ) === 'invariant-fail'
+);
+
 const unknownProfileCapability = structuredClone(profiles);
 unknownProfileCapability.profiles[0].capabilityIds.push('word.unknown.capability');
 expectThrows('unknown profile capability is rejected', /references unknown capability/, () =>
@@ -183,6 +217,97 @@ check(
   summary.capabilities.every((capability) =>
     Object.values(capability.outcomes).every((outcome) => outcome.denominator > 0)
   )
+);
+
+const oracleResults = structuredClone(results);
+oracleResults.implementations.push({
+  adapterName: 'oracle-test-adapter',
+  adapterVersion: 'synthetic',
+});
+oracleResults.results.push(
+  {
+    scenarioGroup: 'content-controls',
+    scenarioId: 'unrelatedTextEditPreservesInlineContentControlStructure',
+    scenarioTitle: 'normative structure',
+    oracleKind: 'ecma-conformance',
+    specCitation: scenarios.find(
+      (scenario) =>
+        scenario.manifest.scenarioId ===
+        'unrelatedTextEditPreservesInlineContentControlStructure'
+    )!.manifest.specCitation,
+    outcomes: {
+      'safe-docx': { status: 'pass' },
+      'oracle-test-adapter': { status: 'pass' },
+    },
+  },
+  {
+    scenarioGroup: 'content-controls',
+    scenarioId: 'unrelatedTextEditPreservesOpaqueInlineContentControl',
+    scenarioTitle: 'opaque invariant',
+    oracleKind: 'metamorphic-invariant',
+    specCitation: scenarios.find(
+      (scenario) =>
+        scenario.manifest.scenarioId ===
+        'unrelatedTextEditPreservesOpaqueInlineContentControl'
+    )!.manifest.specCitation,
+    outcomes: {
+      'safe-docx': { status: 'invariant-pass' },
+      'oracle-test-adapter': { status: 'invariant-fail' },
+    },
+  }
+);
+const oracleSummary = buildCapabilitySummary(loaded, oracleResults) as {
+  capabilities: Array<{
+    capabilityId: string;
+    axis: string;
+    oracleKind: string;
+    scenarioIds: string[];
+    outcomes: Record<string, { counts: Record<string, number> }>;
+  }>;
+};
+const contentControlRows = oracleSummary.capabilities.filter(
+  (row) => row.capabilityId === 'word.content-controls.inline' && row.axis === 'preserve'
+);
+check(
+  'capability aggregation separates conformance from invariant outcomes',
+  contentControlRows.some(
+    (row) =>
+      row.oracleKind === 'ecma-conformance' &&
+      row.outcomes['oracle-test-adapter']?.counts.pass === 1
+  ) &&
+    contentControlRows.some(
+      (row) =>
+        row.oracleKind === 'metamorphic-invariant' &&
+        row.outcomes['oracle-test-adapter']?.counts['invariant-fail'] === 1
+    )
+);
+const textEditRows = oracleSummary.capabilities.filter(
+  (row) => row.capabilityId === 'word.text.find-replace' && row.axis === 'edit'
+);
+check(
+  'opaque invariant does not contaminate word.text.find-replace edit evidence',
+  textEditRows.every(
+    (row) => !row.scenarioIds.includes('unrelatedTextEditPreservesOpaqueInlineContentControl')
+  )
+);
+const wrongInvariantStatus = structuredClone(oracleResults);
+wrongInvariantStatus.results.find(
+  (result) => result.scenarioId === 'unrelatedTextEditPreservesOpaqueInlineContentControl'
+)!.outcomes['oracle-test-adapter']!.status = 'fail';
+expectThrows('aggregation rejects ECMA fail status on invariant evidence', /invalid for metamorphic-invariant/, () =>
+  buildCapabilitySummary(loaded, wrongInvariantStatus)
+);
+const validateResultsSchema = new Ajv2020({ strict: true }).compile(RESULTS_SCHEMA);
+check(
+  'results schema rejects ECMA fail status on invariant evidence',
+  !validateResultsSchema(wrongInvariantStatus)
+);
+const wrongOracleKind = structuredClone(oracleResults);
+wrongOracleKind.results.find(
+  (result) => result.scenarioId === 'unrelatedTextEditPreservesOpaqueInlineContentControl'
+)!.oracleKind = 'ecma-conformance';
+expectThrows('aggregation rejects result oracle kind drift', /does not match registry/, () =>
+  buildCapabilitySummary(loaded, wrongOracleKind)
 );
 
 const sparseResults = structuredClone(results);

@@ -1,7 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { strToU8, zipSync } from 'fflate';
-import { evaluateAssertion, projectBodyText } from './assertions.js';
+import {
+  evaluateAssertion,
+  preprocessIgnorableMarkupForSchema,
+  projectBodyText,
+} from './assertions.js';
 import { packageFromParts, packDocx, packMinimalDocx, loadPackage } from './docx.js';
 import type { ScenarioAssertion, ScenarioManifest } from './types.js';
 
@@ -37,153 +41,182 @@ const projected = projectBodyText(replaced);
 console.log('projection:', JSON.stringify(projected), 'sixty at', projected.indexOf('sixty'));
 check('projection finds sixty', projected.indexOf('sixty') !== -1);
 
-// The inline-content-control preservation oracle is intentionally sentinel
-// based. Prove every critical XPath detects removal or reordering of the fact
-// it carries, without relying on canonical serialization.
-const inlineSdtDir = join(
-  '..',
-  'scenarios',
-  'content-controls',
+const contentControlRoot = join('..', 'scenarios', 'content-controls');
+const normativeSdtDir = join(
+  contentControlRoot,
+  'unrelatedTextEditPreservesInlineContentControlStructure'
+);
+const invariantSdtDir = join(
+  contentControlRoot,
   'unrelatedTextEditPreservesOpaqueInlineContentControl'
 );
-const inlineSdtManifest = JSON.parse(
-  readFileSync(join(inlineSdtDir, 'scenario.json'), 'utf8')
+const normativeSdtManifest = JSON.parse(
+  readFileSync(join(normativeSdtDir, 'scenario.json'), 'utf8')
 ) as ScenarioManifest;
-const inlineSdtOutput = readFileSync(join(inlineSdtDir, 'input', 'document.xml'), 'utf8').replace(
-  'thirty',
-  'sixty'
-);
-const inlineSdtPackage = packageFromParts({ 'word/document.xml': inlineSdtOutput });
+const invariantSdtManifest = JSON.parse(
+  readFileSync(join(invariantSdtDir, 'scenario.json'), 'utf8')
+) as ScenarioManifest;
+const inlineSdtOutput = readFileSync(
+  join(normativeSdtDir, 'input', 'document.xml'),
+  'utf8'
+).replace('thirty', 'sixty');
+
+function assertionPasses(
+  manifest: ScenarioManifest,
+  scenarioDir: string,
+  xml: string,
+  assertionIndex: number
+): boolean {
+  return evaluateAssertion(
+    manifest.assertionList[assertionIndex],
+    packageFromParts({ 'word/document.xml': xml }),
+    scenarioDir
+  ).passed;
+}
+
 check(
-  'inline SDT reference output satisfies every assertion',
-  inlineSdtManifest.assertionList.every(
-    (assertion) => evaluateAssertion(assertion, inlineSdtPackage, inlineSdtDir).passed
+  'normative inline SDT reference output satisfies every assertion',
+  normativeSdtManifest.assertionList.every((assertion) =>
+    evaluateAssertion(
+      assertion,
+      packageFromParts({ 'word/document.xml': inlineSdtOutput }),
+      normativeSdtDir
+    ).passed
+  )
+);
+check(
+  'metamorphic inline SDT reference output satisfies every assertion',
+  invariantSdtManifest.assertionList.every((assertion) =>
+    evaluateAssertion(
+      assertion,
+      packageFromParts({ 'word/document.xml': inlineSdtOutput }),
+      invariantSdtDir
+    ).passed
   )
 );
 
-const inlineSdtMutations: Array<{
+const splitRuns = inlineSdtOutput
+  .replace(
+    '<w:r><w:t xml:space="preserve">Edit target: sixty days. </w:t></w:r>',
+    '<w:r><w:t>Edit target: six</w:t></w:r><w:r><w:t xml:space="preserve">ty days. </w:t></w:r>'
+  )
+  .replace(
+    '<w:r><w:t>Controlled text sentinel</w:t></w:r>',
+    '<w:r><w:t>Controlled </w:t></w:r><w:r><w:t>text sentinel</w:t></w:r>'
+  );
+check(
+  'legal run splits satisfy paragraph and controlled-content text assertions',
+  assertionPasses(normativeSdtManifest, normativeSdtDir, splitRuns, 0) &&
+    assertionPasses(normativeSdtManifest, normativeSdtDir, splitRuns, 5) &&
+    assertionPasses(invariantSdtManifest, invariantSdtDir, splitRuns, 0)
+);
+
+const targetSdt = inlineSdtOutput.match(/<w:sdt ext:opaqueAttribute[\s\S]*?<\/w:sdt>/)![0];
+const duplicatedSdt = inlineSdtOutput.replace(targetSdt, `${targetSdt}${targetSdt}`);
+check(
+  'total SDT duplication is rejected by both oracle scenarios',
+  !assertionPasses(normativeSdtManifest, normativeSdtDir, duplicatedSdt, 1) &&
+    !assertionPasses(invariantSdtManifest, invariantSdtDir, duplicatedSdt, 1)
+);
+
+const opaqueChild = inlineSdtOutput.match(/\s*<ext:opaqueExtension[\s\S]*?<\/ext:opaqueExtension>/)![0];
+const cleanedTargetSdt = targetSdt
+  .replace(' ext:opaqueAttribute="opaque-attribute-sentinel"', '')
+  .replace(opaqueChild.trim(), '');
+const otherSdt = targetSdt
+  .replace('w:val="54"', 'w:val="99"')
+  .replace('dpt-inline-sdt', 'other-sdt')
+  .replace('Controlled text sentinel', 'Other control');
+const relocatedOpaque = inlineSdtOutput.replace(targetSdt, cleanedTargetSdt + otherSdt);
+check(
+  'opaque sentinels relocated to another SDT do not satisfy target-scoped assertions',
+  !assertionPasses(invariantSdtManifest, invariantSdtDir, relocatedOpaque, 4) &&
+    !assertionPasses(invariantSdtManifest, invariantSdtDir, relocatedOpaque, 5)
+);
+
+const reorderedKnownProperties = inlineSdtOutput.replace(
+  /(<w:tag w:val="dpt-inline-sdt"\/>)([\s\S]*?<\/ext:opaqueExtension>)(\s*)(<w:id w:val="54"\/>)/,
+  '$4$2$3$1'
+);
+check(
+  'schema-invalid known sdtPr child order is rejected',
+  !assertionPasses(normativeSdtManifest, normativeSdtDir, reorderedKnownProperties, 4)
+);
+
+const reorderedOpaqueChild = inlineSdtOutput.replace(
+  /(<w:tag w:val="dpt-inline-sdt"\/>)([\s\S]*?<\/ext:opaqueExtension>)(\s*)(<w:id w:val="54"\/>)/,
+  '$1$3$4$2'
+);
+check(
+  'opaque child relative-position change is rejected as an invariant',
+  !assertionPasses(invariantSdtManifest, invariantSdtDir, reorderedOpaqueChild, 5)
+);
+check(
+  'opaque child removal is rejected as an invariant',
+  !assertionPasses(
+    invariantSdtManifest,
+    invariantSdtDir,
+    inlineSdtOutput.replace(opaqueChild, ''),
+    5
+  )
+);
+
+const aliasedPrefix = inlineSdtOutput
+  .replace('xmlns:ext=', 'xmlns:opaque=')
+  .replace('mc:Ignorable="ext"', 'mc:Ignorable="opaque"')
+  .replaceAll('ext:', 'opaque:');
+check(
+  'foreign prefix alias rename preserves namespace-semantic assertions',
+  invariantSdtManifest.assertionList.every((assertion) =>
+    evaluateAssertion(
+      assertion,
+      packageFromParts({ 'word/document.xml': aliasedPrefix }),
+      invariantSdtDir
+    ).passed
+  )
+);
+
+const sentinelMutations: Array<{
   label: string;
+  manifest: ScenarioManifest;
+  scenarioDir: string;
   assertionIndex: number;
   mutate: (xml: string) => string;
 }> = [
-  {
-    label: 'replacement text sentinel',
-    assertionIndex: 0,
-    mutate: (xml) => xml.replace('sixty', 'thirty'),
-  },
-  {
-    label: 'removed source text sentinel',
-    assertionIndex: 1,
-    mutate: (xml) => xml.replace('sixty', 'thirty'),
-  },
-  {
-    label: 'same-paragraph inline SDT',
-    assertionIndex: 2,
-    mutate: (xml) => xml.replace(/\s*<w:sdt[\s\S]*?<\/w:sdt>/, ''),
-  },
-  {
-    label: 'SDT alias property',
-    assertionIndex: 3,
-    mutate: (xml) => xml.replace(/\s*<w:alias[^>]*\/>/, ''),
-  },
-  {
-    label: 'SDT tag property',
-    assertionIndex: 3,
-    mutate: (xml) => xml.replace(/\s*<w:tag[^>]*\/>/, ''),
-  },
-  {
-    label: 'SDT id property',
-    assertionIndex: 3,
-    mutate: (xml) => xml.replace(/\s*<w:id[^>]*\/>/, ''),
-  },
-  {
-    label: 'SDT properties container',
-    assertionIndex: 4,
-    mutate: (xml) => xml.replace(/\s*<w:sdtPr>[\s\S]*?<\/w:sdtPr>/, ''),
-  },
-  {
-    label: 'SDT content container',
-    assertionIndex: 4,
-    mutate: (xml) => xml.replace(/\s*<w:sdtContent>[\s\S]*?<\/w:sdtContent>/, ''),
-  },
-  {
-    label: 'SDT property/content order',
-    assertionIndex: 4,
-    mutate: (xml) =>
-      xml.replace(
-        /(<w:sdtPr>[\s\S]*?<\/w:sdtPr>)(\s*)(<w:sdtContent>[\s\S]*?<\/w:sdtContent>)/,
-        '$3$2$1'
-      ),
-  },
-  {
-    label: 'controlled text sentinel',
-    assertionIndex: 5,
-    mutate: (xml) => xml.replace('<w:t>Controlled text sentinel</w:t>', ''),
-  },
-  {
-    label: 'ignorable namespace declaration',
-    assertionIndex: 6,
-    mutate: (xml) => xml.replace(/\s+mc:Ignorable="dpt"/, ''),
-  },
-  {
-    label: 'foreign extension attribute',
-    assertionIndex: 7,
-    mutate: (xml) => xml.replace(/\s+dpt:opaqueAttribute="opaque-attribute-sentinel"/, ''),
-  },
-  {
-    label: 'foreign extension child',
-    assertionIndex: 8,
-    mutate: (xml) => xml.replace(/\s*<dpt:opaqueExtension[\s\S]*?<\/dpt:opaqueExtension>/, ''),
-  },
-  {
-    label: 'foreign extension child sentinel',
-    assertionIndex: 8,
-    mutate: (xml) => xml.replace(/\s+dpt:sentinel="extension-child-sentinel"/, ''),
-  },
-  {
-    label: 'nested extension payload',
-    assertionIndex: 9,
-    mutate: (xml) => xml.replace(/\s*<dpt:nested[\s\S]*?<\/dpt:nested>/, ''),
-  },
-  {
-    label: 'nested extension payload sentinel',
-    assertionIndex: 9,
-    mutate: (xml) => xml.replace(/\s+dpt:sentinel="nested-payload-sentinel"/, ''),
-  },
-  {
-    label: 'first nested child sentinel',
-    assertionIndex: 10,
-    mutate: (xml) => xml.replace(/\s+dpt:sentinel="first-child-sentinel"/, ''),
-  },
-  {
-    label: 'last nested child sentinel',
-    assertionIndex: 10,
-    mutate: (xml) => xml.replace(/\s+dpt:sentinel="last-child-sentinel"/, ''),
-  },
-  {
-    label: 'nested extension child order',
-    assertionIndex: 10,
-    mutate: (xml) =>
-      xml.replace(
-        /(<dpt:before[^>]*\/>)(\s*<dpt:payload>[\s\S]*?<\/dpt:payload>\s*)(<dpt:after[^>]*\/>)/,
-        '$3$2$1'
-      ),
-  },
+  { label: 'edited paragraph text', manifest: normativeSdtManifest, scenarioDir: normativeSdtDir, assertionIndex: 0, mutate: (xml) => xml.replace('sixty', 'thirty') },
+  { label: 'SDT alias', manifest: normativeSdtManifest, scenarioDir: normativeSdtDir, assertionIndex: 4, mutate: (xml) => xml.replace('Opaque inline control', 'Changed alias') },
+  { label: 'SDT id', manifest: normativeSdtManifest, scenarioDir: normativeSdtDir, assertionIndex: 2, mutate: (xml) => xml.replace('w:val="54"', 'w:val="55"') },
+  { label: 'SDT tag', manifest: normativeSdtManifest, scenarioDir: normativeSdtDir, assertionIndex: 2, mutate: (xml) => xml.replace('dpt-inline-sdt', 'other-sdt') },
+  { label: 'controlled content', manifest: normativeSdtManifest, scenarioDir: normativeSdtDir, assertionIndex: 5, mutate: (xml) => xml.replace('Controlled text sentinel', 'Changed controlled text') },
+  { label: 'mc:Ignorable namespace', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 3, mutate: (xml) => xml.replace('mc:Ignorable="ext"', '') },
+  { label: 'opaque attribute', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 4, mutate: (xml) => xml.replace('opaque-attribute-sentinel', 'changed') },
+  { label: 'opaque child', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 5, mutate: (xml) => xml.replace('extension-child-sentinel', 'changed') },
+  { label: 'nested payload attribute', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 6, mutate: (xml) => xml.replace('nested-payload-sentinel', 'changed') },
+  { label: 'nested payload text', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 6, mutate: (xml) => xml.replace('opaque payload sentinel', 'changed payload') },
+  { label: 'first child', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 7, mutate: (xml) => xml.replace('first-child-sentinel', 'changed') },
+  { label: 'last child', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 7, mutate: (xml) => xml.replace('last-child-sentinel', 'changed') },
 ];
-
-for (const mutation of inlineSdtMutations) {
+for (const mutation of sentinelMutations) {
   const mutated = mutation.mutate(inlineSdtOutput);
-  const assertion = inlineSdtManifest.assertionList[mutation.assertionIndex];
   check(
-    `inline SDT XPath rejects missing/reordered ${mutation.label}`,
+    `inline SDT assertion rejects changed ${mutation.label} sentinel`,
     mutated !== inlineSdtOutput &&
-      !evaluateAssertion(
-        assertion,
-        packageFromParts({ 'word/document.xml': mutated }),
-        inlineSdtDir
-      ).passed
+      !assertionPasses(
+        mutation.manifest,
+        mutation.scenarioDir,
+        mutated,
+        mutation.assertionIndex
+      )
   );
 }
+
+const mceProcessed = preprocessIgnorableMarkupForSchema(inlineSdtOutput);
+check(
+  'MCE preprocessing removes ignorable extension markup before WML schema validation',
+  !mceProcessed.includes('opaqueAttribute') &&
+    !mceProcessed.includes('opaqueExtension') &&
+    /<w:alias[^>]*\/>[\s\S]*<w:tag[^>]*\/>[\s\S]*<w:id[^>]*\/>/.test(mceProcessed)
+);
 
 // --- DSL 1.3: multi-part assertion machinery ---
 

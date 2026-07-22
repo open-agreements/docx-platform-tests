@@ -7,6 +7,7 @@ import type {
   MicrosoftExtensionCitation,
   OutcomeStatus,
   ResultsDocument,
+  ScenarioOracleKind,
   SpecCitation,
 } from './types.js';
 
@@ -83,6 +84,20 @@ export interface LoadedCapabilityRegistry {
   registry: CapabilityRegistry;
   mappings: ScenarioCapabilityMapping[];
   profiles: CapabilityProfile[];
+}
+
+export function scenarioOracleKind(
+  mappings: ScenarioCapabilityMapping[],
+  scenarioId: string
+): ScenarioOracleKind {
+  const classes = new Set(
+    mappings
+      .filter((mapping) => mapping.scenarioId === scenarioId)
+      .flatMap((mapping) => mapping.oracleClasses)
+  );
+  return classes.has('metamorphic-invariant')
+    ? 'metamorphic-invariant'
+    : 'ecma-conformance';
 }
 
 const REGISTRY_ROOT = join(REPO_ROOT, 'registry');
@@ -256,6 +271,11 @@ export function validateCapabilityRelationships(
       }
     }
     const oracleClasses = new Set(mappings.flatMap((mapping) => mapping.oracleClasses));
+    if (oracleClasses.has('metamorphic-invariant') && oracleClasses.size !== 1) {
+      throw new Error(
+        `${scenarioId} mixes metamorphic-invariant with conformance oracle classes; split the scenario`
+      );
+    }
     const scenarioExtensionCitations = scenario.manifest.microsoftExtensionCitations ?? [];
     for (const citation of scenarioExtensionCitations) {
       assertMicrosoftExtensionCitation(citation, `${scenarioId}.microsoftExtensionCitations`);
@@ -363,6 +383,8 @@ const OUTCOME_STATUSES: OutcomeStatus[] = [
   'pass',
   'pass-divergent',
   'fail',
+  'invariant-pass',
+  'invariant-fail',
   'unsupported',
   'error',
   'protocol-mismatch',
@@ -372,6 +394,25 @@ export function buildCapabilitySummary(
   loaded: LoadedCapabilityRegistry,
   results: ResultsDocument
 ): object {
+  for (const result of results.results) {
+    const expectedOracleKind = scenarioOracleKind(loaded.mappings, result.scenarioId);
+    if (result.oracleKind !== expectedOracleKind) {
+      throw new Error(
+        `${result.scenarioId} result oracleKind ${result.oracleKind} does not match registry ${expectedOracleKind}`
+      );
+    }
+    for (const [adapterName, outcome] of Object.entries(result.outcomes)) {
+      const invalidStatus =
+        expectedOracleKind === 'metamorphic-invariant'
+          ? ['pass', 'pass-divergent', 'fail'].includes(outcome.status)
+          : ['invariant-pass', 'invariant-fail'].includes(outcome.status);
+      if (invalidStatus) {
+        throw new Error(
+          `${result.scenarioId} ${adapterName} status ${outcome.status} is invalid for ${expectedOracleKind}`
+        );
+      }
+    }
+  }
   const resultsByScenario = new Map(results.results.map((result) => [result.scenarioId, result]));
   const capabilitiesById = new Map(
     loaded.registry.capabilities.map((capability) => [capability.id, capability])
@@ -398,13 +439,18 @@ export function buildCapabilitySummary(
   }
   const grouped = new Map<string, ScenarioCapabilityMapping[]>();
   for (const mapping of measuredMappings) {
-    const key = `${mapping.capabilityId}|${mapping.axis}`;
+    const oracleKind = scenarioOracleKind(loaded.mappings, mapping.scenarioId);
+    const key = `${mapping.capabilityId}|${mapping.axis}|${oracleKind}`;
     grouped.set(key, [...(grouped.get(key) ?? []), mapping]);
   }
   const capabilities = [...grouped.entries()]
     .sort(([left], [right]) => left.localeCompare(right))
     .map(([key, mappings]) => {
-      const [capabilityId, axis] = key.split('|') as [string, CapabilityAxis];
+      const [capabilityId, axis, oracleKind] = key.split('|') as [
+        string,
+        CapabilityAxis,
+        ScenarioOracleKind,
+      ];
       const scenarioIds = [...new Set(mappings.map((mapping) => mapping.scenarioId))].sort();
       const outcomes = Object.fromEntries(
         results.implementations.flatMap((implementation) => {
@@ -425,7 +471,8 @@ export function buildCapabilitySummary(
             implementation.adapterName,
             {
               denominator: adapterScenarioIds.length,
-              passLike: counts.pass + counts['pass-divergent'],
+              passLike:
+                counts.pass + counts['pass-divergent'] + counts['invariant-pass'],
               counts: nonzeroCounts,
             },
           ] as const];
@@ -434,6 +481,7 @@ export function buildCapabilitySummary(
       return {
         capabilityId,
         axis,
+        oracleKind,
         scenarioIds,
         outcomes,
       };
