@@ -9,10 +9,13 @@
     "suite": "tsx src/run.ts",
     "typecheck": "tsc --noEmit",
     "sanity": "tsx src/__sanity.ts",
+    "capability-sanity": "tsx src/__capability-sanity.ts",
     "pack-fixtures": "tsx src/pack-fixtures.ts",
     "check-fixtures": "tsx src/pack-fixtures.ts --check",
     "write-results-schema": "tsx src/write-results-schema.ts",
     "check-results-schema": "tsx src/write-results-schema.ts --check",
+    "write-capability-index": "tsx src/check-capability-registry.ts",
+    "check-capability-index": "tsx src/check-capability-registry.ts --check",
     "validate-results": "tsx src/validate-results.ts",
     "render-matrix": "tsx src/render-matrix.ts"
   },

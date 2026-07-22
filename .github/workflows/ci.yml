@@ -26,6 +26,10 @@ jobs:
         working-directory: runner
         run: npm run typecheck
 
+      - name: Verify capability registry and generated indexes
+        working-directory: runner
+        run: npm run check-capability-index
+
   sanity:
     runs-on: ubuntu-latest
     steps:
@@ -43,4 +47,4 @@ jobs:
 
       - name: Assertion-engine sanity checks
         working-directory: runner
-        run: npm run sanity
+        run: npm run sanity && npm run capability-sanity

@@ -1,0 +1,774 @@
+{
+  "schemaVersion": 1,
+  "registryVersion": 1,
+  "totals": {
+    "capabilities": 21,
+    "scenarios": 37,
+    "mappings": 41,
+    "coveredAxes": 26,
+    "applicableAxes": 131,
+    "uncoveredAxes": 105
+  },
+  "unclassifiedScenarioIds": [],
+  "capabilities": [
+    {
+      "capabilityId": "word.comments.anchors",
+      "family": "comments",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "addCommentBracketsRangeWithMatchingIds"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 5
+    },
+    {
+      "capabilityId": "word.comments.content",
+      "family": "comments",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "commentPartRecordsAuthorInitialsAndText"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 6
+    },
+    {
+      "capabilityId": "word.comments.removal",
+      "family": "comments",
+      "axes": [
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "removeAllCommentsStripsAnchorsKeepsText"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 2
+    },
+    {
+      "capabilityId": "word.footers.default",
+      "family": "stories",
+      "axes": [
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "setDefaultFooterTextAddsFooterReference"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 4
+    },
+    {
+      "capabilityId": "word.headers.default",
+      "family": "stories",
+      "axes": [
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": [
+            "composeHeaderTextAddsSectionHeaderReference"
+          ]
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": []
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 4
+    },
+    {
+      "capabilityId": "word.hyperlinks.external",
+      "family": "hyperlinks",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": [
+            "composeHyperlinkCreatesRelationshipReferencedLink"
+          ]
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": []
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 6
+    },
+    {
+      "capabilityId": "word.numbering.paragraph",
+      "family": "numbering",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": [
+            "composeNumberedListResolvesToDecimalFormat"
+          ]
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "applyNumberingToParagraphAttachesNumPr"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 2,
+      "applicableAxisCount": 7
+    },
+    {
+      "capabilityId": "word.paragraphs.structure",
+      "family": "paragraphs",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": [
+            "appendParagraphPreservesExistingContent"
+          ]
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": [
+            "appendParagraphPreservesExistingContent",
+            "composeParagraphsProduceTextRuns"
+          ]
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "insertParagraphAfterAnchorShiftsSubsequent"
+          ]
+        },
+        {
+          "axis": "compare",
+          "scenarioIds": []
+        },
+        {
+          "axis": "acceptReject",
+          "scenarioIds": []
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 3,
+      "applicableAxisCount": 9
+    },
+    {
+      "capabilityId": "word.revisions.content",
+      "family": "revisions",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "compare",
+          "scenarioIds": []
+        },
+        {
+          "axis": "acceptReject",
+          "scenarioIds": [
+            "acceptDeletedTableRowRemovesEntireRow",
+            "acceptDeletionsRemovesDelContent",
+            "acceptInsertionsUnwrapsInsWrappers",
+            "acceptNestedDeletionInsideInsertion",
+            "rejectDeletionsRestoresDelContent",
+            "rejectInsertedTableRowRemovesEntireRow",
+            "rejectInsertionsRemovesInsContent",
+            "rejectNestedDeletionInsideInsertion"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 7
+    },
+    {
+      "capabilityId": "word.revisions.moves",
+      "family": "revisions",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "compare",
+          "scenarioIds": []
+        },
+        {
+          "axis": "acceptReject",
+          "scenarioIds": [
+            "acceptMoveRemovesSourceAndUnwrapsDestination",
+            "rejectMoveRestoresSourceRemovesDestination"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 7
+    },
+    {
+      "capabilityId": "word.revisions.paragraph-mark",
+      "family": "revisions",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "compare",
+          "scenarioIds": []
+        },
+        {
+          "axis": "acceptReject",
+          "scenarioIds": [
+            "acceptDeletedParagraphMarkMergesParagraphs",
+            "rejectInsertedParagraphMarkMergesParagraphs"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 7
+    },
+    {
+      "capabilityId": "word.revisions.paragraph-properties",
+      "family": "revisions",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "acceptReject",
+          "scenarioIds": [
+            "rejectParagraphPropertiesChangeRestoresPrior"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 6
+    },
+    {
+      "capabilityId": "word.revisions.run-properties",
+      "family": "revisions",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "acceptReject",
+          "scenarioIds": [
+            "acceptFormattingChangeKeepsNewRunProperties",
+            "rejectFormattingChangeRestoresPriorRunProperties"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 6
+    },
+    {
+      "capabilityId": "word.revisions.table-rows",
+      "family": "revisions",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "acceptReject",
+          "scenarioIds": [
+            "acceptDeletedTableRowRemovesEntireRow",
+            "rejectInsertedTableRowRemovesEntireRow"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 6
+    },
+    {
+      "capabilityId": "word.runs.formatting",
+      "family": "formatting",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": [
+            "composeFormattedRunCarriesBoldItalicSize"
+          ]
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "directFormattingDoesNotBakeIntoStyleDefinition"
+          ]
+        },
+        {
+          "axis": "compare",
+          "scenarioIds": []
+        },
+        {
+          "axis": "acceptReject",
+          "scenarioIds": []
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 2,
+      "applicableAxisCount": 9
+    },
+    {
+      "capabilityId": "word.styles.paragraph",
+      "family": "styles",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "applyNamedParagraphStyleSetsPStyleReference"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 7
+    },
+    {
+      "capabilityId": "word.tables.cells",
+      "family": "tables",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": [
+            "replaceTextInsideTableCellPreservesStructure"
+          ]
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "setTableCellTextReplacesCellContentOnly"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 2,
+      "applicableAxisCount": 6
+    },
+    {
+      "capabilityId": "word.tables.horizontal-merge",
+      "family": "tables",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "horizontalMergeSetsGridSpanKeepingGrid"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 7
+    },
+    {
+      "capabilityId": "word.tables.rows",
+      "family": "tables",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "appendTableRowExtendsRowCountKeepingGrid",
+            "deleteTableRowRemovesRowAndContent"
+          ]
+        },
+        {
+          "axis": "acceptReject",
+          "scenarioIds": []
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 7
+    },
+    {
+      "capabilityId": "word.tables.structure",
+      "family": "tables",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": [
+            "composeTableProducesGridMatchingCellMatrix"
+          ]
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": []
+        },
+        {
+          "axis": "compare",
+          "scenarioIds": []
+        },
+        {
+          "axis": "acceptReject",
+          "scenarioIds": []
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 9
+    },
+    {
+      "capabilityId": "word.text.find-replace",
+      "family": "text",
+      "axes": [
+        {
+          "axis": "preserve",
+          "scenarioIds": []
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": [
+            "replaceFirstOccurrencePreservesOffsets",
+            "replaceTextAcrossRunBoundary",
+            "replaceTextInsideTableCellPreservesStructure"
+          ]
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 4
+    }
+  ]
+}
