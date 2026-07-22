@@ -78,32 +78,6 @@ export interface LoadedCapabilityRegistry {
   profiles: CapabilityProfile[];
 }
 
-function effectiveMappings(loaded: LoadedCapabilityRegistry): ScenarioCapabilityMapping[] {
-  const capabilitiesById = new Map(
-    loaded.registry.capabilities.map((capability) => [capability.id, capability])
-  );
-  const mappings = [...loaded.mappings];
-  for (const mapping of loaded.mappings) {
-    const capability = capabilitiesById.get(mapping.capabilityId);
-    if (mapping.axis === 'crossPlatform' || !capability?.applicableAxes.includes('crossPlatform')) continue;
-    mappings.push({
-      scenarioId: mapping.scenarioId,
-      capabilityId: mapping.capabilityId,
-      axis: 'crossPlatform',
-      oracleClasses: ['cross-implementation-evidence'],
-    });
-  }
-  return mappings.filter(
-    (mapping, index) =>
-      mappings.findIndex(
-        (candidate) =>
-          candidate.scenarioId === mapping.scenarioId &&
-          candidate.capabilityId === mapping.capabilityId &&
-          candidate.axis === mapping.axis
-      ) === index
-  );
-}
-
 const REGISTRY_ROOT = join(REPO_ROOT, 'registry');
 
 function readJson(path: string): unknown {
@@ -203,6 +177,13 @@ export function validateCapabilityRelationships(
     if (!capability.applicableAxes.includes(mapping.axis)) {
       throw new Error(`${mapping.scenarioId} maps ${mapping.capabilityId} to inapplicable axis ${mapping.axis}`);
     }
+    const scenarioCitationKeys = new Set([
+      citationKey(scenario.manifest.specCitation),
+      ...(scenario.manifest.secondarySpecCitations ?? []).map(citationKey),
+    ]);
+    if (!capability.standards.some((citation) => scenarioCitationKeys.has(citationKey(citation)))) {
+      throw new Error(`${mapping.scenarioId} mapping to ${mapping.capabilityId} has no shared citation`);
+    }
   }
 
   const mappingsByScenario = new Map<string, ScenarioCapabilityMapping[]>();
@@ -257,13 +238,12 @@ export function validateCapabilityRelationships(
 export function buildScenarioCoverage(loaded: LoadedCapabilityRegistry): object {
   const scenarios = loadAllScenarios();
   const mappedScenarioIds = new Set(loaded.mappings.map((mapping) => mapping.scenarioId));
-  const coverageMappings = effectiveMappings(loaded);
   const capabilities = [...loaded.registry.capabilities]
     .sort((a, b) => a.id.localeCompare(b.id))
     .map((capability) => {
       const axes = capability.applicableAxes.map((axis) => ({
         axis,
-        scenarioIds: coverageMappings
+        scenarioIds: loaded.mappings
           .filter((mapping) => mapping.capabilityId === capability.id && mapping.axis === axis)
           .map((mapping) => mapping.scenarioId)
           .sort(),
@@ -285,7 +265,6 @@ export function buildScenarioCoverage(loaded: LoadedCapabilityRegistry): object 
       capabilities: loaded.registry.capabilities.length,
       scenarios: scenarios.length,
       mappings: loaded.mappings.length,
-      effectiveMappings: coverageMappings.length,
       coveredAxes: coveredAxisCount,
       applicableAxes: applicableAxisCount,
       uncoveredAxes: applicableAxisCount - coveredAxisCount,
@@ -312,8 +291,31 @@ export function buildCapabilitySummary(
   results: ResultsDocument
 ): object {
   const resultsByScenario = new Map(results.results.map((result) => [result.scenarioId, result]));
+  const capabilitiesById = new Map(
+    loaded.registry.capabilities.map((capability) => [capability.id, capability])
+  );
+  const measuredMappings = loaded.mappings.filter((mapping) => resultsByScenario.has(mapping.scenarioId));
+  for (const mapping of [...measuredMappings]) {
+    const capability = capabilitiesById.get(mapping.capabilityId);
+    const scenarioResult = resultsByScenario.get(mapping.scenarioId);
+    const measuredAdapterCount = results.implementations.filter(
+      (implementation) => scenarioResult?.outcomes[implementation.adapterName] !== undefined
+    ).length;
+    if (
+      mapping.axis !== 'crossPlatform' &&
+      capability?.applicableAxes.includes('crossPlatform') &&
+      measuredAdapterCount >= 2
+    ) {
+      measuredMappings.push({
+        scenarioId: mapping.scenarioId,
+        capabilityId: mapping.capabilityId,
+        axis: 'crossPlatform',
+        oracleClasses: ['cross-implementation-evidence'],
+      });
+    }
+  }
   const grouped = new Map<string, ScenarioCapabilityMapping[]>();
-  for (const mapping of effectiveMappings(loaded)) {
+  for (const mapping of measuredMappings) {
     const key = `${mapping.capabilityId}|${mapping.axis}`;
     grouped.set(key, [...(grouped.get(key) ?? []), mapping]);
   }
@@ -322,11 +324,10 @@ export function buildCapabilitySummary(
     .map(([key, mappings]) => {
       const [capabilityId, axis] = key.split('|') as [string, CapabilityAxis];
       const scenarioIds = [...new Set(mappings.map((mapping) => mapping.scenarioId))].sort();
-      const resultScenarioIds = scenarioIds.filter((scenarioId) => resultsByScenario.has(scenarioId));
       const outcomes = Object.fromEntries(
         results.implementations.map((implementation) => {
           const counts = Object.fromEntries(OUTCOME_STATUSES.map((status) => [status, 0])) as Record<OutcomeStatus, number>;
-          for (const scenarioId of resultScenarioIds) {
+          for (const scenarioId of scenarioIds) {
             const status = resultsByScenario.get(scenarioId)?.outcomes[implementation.adapterName]?.status;
             if (status) counts[status] += 1;
           }
@@ -336,7 +337,7 @@ export function buildCapabilitySummary(
           return [
             implementation.adapterName,
             {
-              denominator: resultScenarioIds.length,
+              denominator: scenarioIds.length,
               passLike: counts.pass + counts['pass-divergent'],
               counts: nonzeroCounts,
             },
@@ -347,8 +348,6 @@ export function buildCapabilitySummary(
         capabilityId,
         axis,
         scenarioIds,
-        resultScenarioIds,
-        missingScenarioIds: scenarioIds.filter((scenarioId) => !resultsByScenario.has(scenarioId)),
         outcomes,
       };
     });
@@ -361,6 +360,11 @@ export function buildCapabilitySummary(
       scenarioCount: results.results.length,
       implementations: results.implementations,
     },
+    unmeasuredScenarioIds: [...new Set(
+      loaded.mappings
+        .map((mapping) => mapping.scenarioId)
+        .filter((scenarioId) => !resultsByScenario.has(scenarioId))
+    )].sort(),
     capabilities,
   };
 }

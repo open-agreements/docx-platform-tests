@@ -56,9 +56,9 @@ The registry keeps these dimensions independent:
 
 An applicable axis with no mapped scenario remains visible as uncovered. This
 prevents a broad feature label from implying that every operation is tested.
-Because every scenario is executed unchanged against every registered adapter,
-the generated index derives `crossPlatform` coverage from each authored mapping.
-The output reports authored and effective mapping counts separately.
+The scenario index does not infer `crossPlatform` evidence from eligibility to
+run. The result aggregation derives that axis only for scenarios present in the
+versioned result snapshot with outcomes from at least two registered adapters.
 
 ## Oracle classes
 

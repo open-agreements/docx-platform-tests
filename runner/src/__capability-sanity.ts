@@ -77,8 +77,19 @@ const commentMapping = wrongCitation.mappings.find(
   (mapping) => mapping.scenarioId === 'commentPartRecordsAuthorInitialsAndText'
 )!;
 commentMapping.capabilityId = 'word.paragraphs.structure';
-expectThrows('citation absent from mapped capability is rejected', /absent from its mapped capabilities/, () =>
+expectThrows('citation absent from mapped capability is rejected', /has no shared citation/, () =>
   validateCapabilityRelationships(registry, wrongCitation, profiles, scenarios)
+);
+
+const unrelatedExtraMapping = structuredClone(mappings);
+unrelatedExtraMapping.mappings.push({
+  scenarioId: 'commentPartRecordsAuthorInitialsAndText',
+  capabilityId: 'word.paragraphs.structure',
+  axis: 'edit',
+  oracleClasses: ['normative-prose'],
+});
+expectThrows('each mapping must share a scenario citation', /has no shared citation/, () =>
+  validateCapabilityRelationships(registry, unrelatedExtraMapping, profiles, scenarios)
 );
 
 const missingSerializationOracle = structuredClone(mappings);
@@ -98,29 +109,44 @@ expectThrows('unknown profile capability is rejected', /references unknown capab
 );
 
 const coverage = buildScenarioCoverage(loaded) as {
-  totals: { scenarios: number; mappings: number; effectiveMappings: number };
+  totals: { scenarios: number; mappings: number };
   unclassifiedScenarioIds: string[];
   capabilities: Array<{ capabilityId: string; axes: Array<{ axis: string; scenarioIds: string[] }> }>;
 };
 check('coverage retains raw scenario denominator', coverage.totals.scenarios === scenarios.length);
 check('coverage retains raw mapping denominator', coverage.totals.mappings === loaded.mappings.length);
-check('coverage distinguishes derived cross-platform mappings', coverage.totals.effectiveMappings > coverage.totals.mappings);
 check('coverage has no unclassified scenarios', coverage.unclassifiedScenarioIds.length === 0);
 check(
-  'cross-platform coverage is derived from neutral scenario execution',
+  'scenario registry does not claim cross-platform measurement',
   coverage.capabilities.every((capability) => {
     const axis = capability.axes.find((candidate) => candidate.axis === 'crossPlatform');
-    return !axis || axis.scenarioIds.length > 0;
+    return !axis || axis.scenarioIds.length === 0;
   })
 );
 
 const results = JSON.parse(
   readFileSync(join(REPO_ROOT, 'results', 'latest.json'), 'utf8')
 ) as ResultsDocument;
-const firstSummary = JSON.stringify(buildCapabilitySummary(loaded, results));
+const summary = buildCapabilitySummary(loaded, results) as {
+  capabilities: Array<{
+    axis: string;
+    outcomes: Record<string, { denominator: number }>;
+  }>;
+};
+const firstSummary = JSON.stringify(summary);
 const secondSummary = JSON.stringify(buildCapabilitySummary(loaded, results));
 check('capability aggregation is deterministic', firstSummary === secondSummary);
 check('capability aggregation retains scenario IDs', firstSummary.includes('scenarioIds'));
 check('capability aggregation retains denominators', firstSummary.includes('denominator'));
+check(
+  'cross-platform evidence is derived only from measured results',
+  summary.capabilities.some((capability) => capability.axis === 'crossPlatform')
+);
+check(
+  'result aggregation has no zero-denominator rows',
+  summary.capabilities.every((capability) =>
+    Object.values(capability.outcomes).every((outcome) => outcome.denominator > 0)
+  )
+);
 
 if (failed) process.exit(1);

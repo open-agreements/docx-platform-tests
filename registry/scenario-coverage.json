@@ -5,10 +5,9 @@
     "capabilities": 21,
     "scenarios": 37,
     "mappings": 41,
-    "effectiveMappings": 81,
-    "coveredAxes": 47,
+    "coveredAxes": 26,
     "applicableAxes": 131,
-    "uncoveredAxes": 84
+    "uncoveredAxes": 105
   },
   "unclassifiedScenarioIds": [],
   "capabilities": [
@@ -36,12 +35,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "addCommentBracketsRangeWithMatchingIds"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 5
     },
     {
@@ -72,12 +69,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "commentPartRecordsAuthorInitialsAndText"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 6
     },
     {
@@ -92,12 +87,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "removeAllCommentsStripsAnchorsKeepsText"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 2
     },
     {
@@ -120,12 +113,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "setDefaultFooterTextAddsFooterReference"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 4
     },
     {
@@ -148,12 +139,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "composeHeaderTextAddsSectionHeaderReference"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 4
     },
     {
@@ -184,12 +173,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "composeHyperlinkCreatesRelationshipReferencedLink"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 6
     },
     {
@@ -226,13 +213,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "applyNumberingToParagraphAttachesNumPr",
-            "composeNumberedListResolvesToDecimalFormat"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 3,
+      "coveredAxisCount": 2,
       "applicableAxisCount": 7
     },
     {
@@ -280,14 +264,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "appendParagraphPreservesExistingContent",
-            "composeParagraphsProduceTextRuns",
-            "insertParagraphAfterAnchorShiftsSubsequent"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 4,
+      "coveredAxisCount": 3,
       "applicableAxisCount": 9
     },
     {
@@ -329,19 +309,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "acceptDeletedTableRowRemovesEntireRow",
-            "acceptDeletionsRemovesDelContent",
-            "acceptInsertionsUnwrapsInsWrappers",
-            "acceptNestedDeletionInsideInsertion",
-            "rejectDeletionsRestoresDelContent",
-            "rejectInsertedTableRowRemovesEntireRow",
-            "rejectInsertionsRemovesInsContent",
-            "rejectNestedDeletionInsideInsertion"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 7
     },
     {
@@ -377,13 +348,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "acceptMoveRemovesSourceAndUnwrapsDestination",
-            "rejectMoveRestoresSourceRemovesDestination"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 7
     },
     {
@@ -419,13 +387,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "acceptDeletedParagraphMarkMergesParagraphs",
-            "rejectInsertedParagraphMarkMergesParagraphs"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 7
     },
     {
@@ -456,12 +421,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "rejectParagraphPropertiesChangeRestoresPrior"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 6
     },
     {
@@ -493,13 +456,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "acceptFormattingChangeKeepsNewRunProperties",
-            "rejectFormattingChangeRestoresPriorRunProperties"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 6
     },
     {
@@ -531,13 +491,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "acceptDeletedTableRowRemovesEntireRow",
-            "rejectInsertedTableRowRemovesEntireRow"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 6
     },
     {
@@ -582,13 +539,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "composeFormattedRunCarriesBoldItalicSize",
-            "directFormattingDoesNotBakeIntoStyleDefinition"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 3,
+      "coveredAxisCount": 2,
       "applicableAxisCount": 9
     },
     {
@@ -623,12 +577,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "applyNamedParagraphStyleSetsPStyleReference"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 7
     },
     {
@@ -661,13 +613,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "replaceTextInsideTableCellPreservesStructure",
-            "setTableCellTextReplacesCellContentOnly"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 3,
+      "coveredAxisCount": 2,
       "applicableAxisCount": 6
     },
     {
@@ -702,12 +651,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "horizontalMergeSetsGridSpanKeepingGrid"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 7
     },
     {
@@ -743,13 +690,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "appendTableRowExtendsRowCountKeepingGrid",
-            "deleteTableRowRemovesRowAndContent"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 7
     },
     {
@@ -792,12 +736,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "composeTableProducesGridMatchingCellMatrix"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 9
     },
     {
@@ -822,14 +764,10 @@
         },
         {
           "axis": "crossPlatform",
-          "scenarioIds": [
-            "replaceFirstOccurrencePreservesOffsets",
-            "replaceTextAcrossRunBoundary",
-            "replaceTextInsideTableCellPreservesStructure"
-          ]
+          "scenarioIds": []
         }
       ],
-      "coveredAxisCount": 2,
+      "coveredAxisCount": 1,
       "applicableAxisCount": 4
     }
   ]

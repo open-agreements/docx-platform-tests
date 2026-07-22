@@ -59,7 +59,6 @@ docs/        scenario DSL and adapter protocol specifications (versioned)
 scenarios/   one directory per scenario: scenario.json + input/ + expected/
 adapters/    one directory per registered implementation adapter
 runner/      the neutral runner (Node, @xmldom/xmldom; no implementation deps)
-registry/    adapters.json — registered adapters and their invocation commands
 results/     latest results plus generated capability-axis aggregation
 registry/    adapters, neutral capability identities, profiles, and scenario mappings
 ```
