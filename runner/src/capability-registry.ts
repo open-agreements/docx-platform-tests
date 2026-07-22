@@ -325,23 +325,28 @@ export function buildCapabilitySummary(
       const [capabilityId, axis] = key.split('|') as [string, CapabilityAxis];
       const scenarioIds = [...new Set(mappings.map((mapping) => mapping.scenarioId))].sort();
       const outcomes = Object.fromEntries(
-        results.implementations.map((implementation) => {
+        results.implementations.flatMap((implementation) => {
+          const adapterScenarioIds = scenarioIds.filter(
+            (scenarioId) =>
+              resultsByScenario.get(scenarioId)?.outcomes[implementation.adapterName] !== undefined
+          );
+          if (adapterScenarioIds.length === 0) return [];
           const counts = Object.fromEntries(OUTCOME_STATUSES.map((status) => [status, 0])) as Record<OutcomeStatus, number>;
-          for (const scenarioId of scenarioIds) {
+          for (const scenarioId of adapterScenarioIds) {
             const status = resultsByScenario.get(scenarioId)?.outcomes[implementation.adapterName]?.status;
             if (status) counts[status] += 1;
           }
           const nonzeroCounts = Object.fromEntries(
             OUTCOME_STATUSES.filter((status) => counts[status] > 0).map((status) => [status, counts[status]])
           );
-          return [
+          return [[
             implementation.adapterName,
             {
-              denominator: scenarioIds.length,
+              denominator: adapterScenarioIds.length,
               passLike: counts.pass + counts['pass-divergent'],
               counts: nonzeroCounts,
             },
-          ];
+          ] as const];
         })
       );
       return {

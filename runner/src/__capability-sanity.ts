@@ -149,4 +149,15 @@ check(
   )
 );
 
+const sparseResults = structuredClone(results);
+const omittedAdapter = sparseResults.implementations.at(-1)!.adapterName;
+for (const scenario of sparseResults.results) delete scenario.outcomes[omittedAdapter];
+const sparseSummary = buildCapabilitySummary(loaded, sparseResults) as {
+  capabilities: Array<{ outcomes: Record<string, { denominator: number }> }>;
+};
+check(
+  'adapter without scenario outcomes is omitted from per-axis denominators',
+  sparseSummary.capabilities.every((capability) => capability.outcomes[omittedAdapter] === undefined)
+);
+
 if (failed) process.exit(1);
