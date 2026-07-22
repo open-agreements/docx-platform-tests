@@ -77,6 +77,15 @@ both the scenario and mapped capability. Observed Word behavior is not silently 
 canonical serialization check does not turn valid XML freedom into a semantic
 failure. Existing outcome grading remains unchanged.
 
+An ECMA-376 Part 3 citation can provide MCE context for a
+`metamorphic-invariant` without making preservation of ignorable foreign
+markup a normative ECMA oracle. In particular, an application that does not
+understand ignorable markup may discard it. A preservation scenario therefore
+asserts only its declared sentinels and classifies that evidence as
+`metamorphic-invariant`, not `normative-prose`. The same scenario can classify
+its separate SDT structure assertions as `normative-prose`; that classification
+does not extend to retention of the foreign markup.
+
 ## Repository boundary
 
 This repository owns neutral capability definitions, neutral scenario mappings,

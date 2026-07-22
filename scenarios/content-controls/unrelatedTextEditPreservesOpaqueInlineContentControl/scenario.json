@@ -1,0 +1,120 @@
+{
+  "dslVersion": "1.7",
+  "scenarioId": "unrelatedTextEditPreservesOpaqueInlineContentControl",
+  "scenarioTitle": "An unrelated text edit preserves an opaque inline content control in the same paragraph",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.5.2.31",
+    "clauseTitle": "sdt (Inline-Level Structured Document Tag)"
+  },
+  "secondarySpecCitations": [
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.5.2.36",
+      "clauseTitle": "sdtContent (Inline-Level Structured Document Tag Content)"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.5.2.38",
+      "clauseTitle": "sdtPr (Structured Document Tag Properties)"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.3.3.31",
+      "clauseTitle": "t (Text)"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 3,
+      "section": "7.2",
+      "clauseTitle": "Ignorable Attribute"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 3,
+      "section": "9.2",
+      "clauseTitle": "Step 1: Processing the Ignorable and ProcessContent Attributes"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 3,
+      "section": "9.4",
+      "clauseTitle": "Step 3: Processing the MustUnderstand Attribute and Creating the Output Document"
+    }
+  ],
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "replaceFirstTextOccurrence",
+    "findText": "thirty",
+    "replaceText": "sixty"
+  },
+  "assertionList": [
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p/w:r/w:t[contains(., 'Edit target: sixty days.')]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p//w:t[contains(., 'Edit target: thirty days.')]",
+      "expectedCount": 0
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p[w:r/w:t[contains(., 'Edit target: sixty days.')]]/w:sdt",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:sdt/w:sdtPr[w:alias[@w:val='Opaque inline control'] and w:tag[@w:val='dpt-inline-sdt'] and w:id[@w:val='54']]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:sdt/w:sdtPr[following-sibling::*[1][self::w:sdtContent]]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:sdt/w:sdtContent/w:r/w:t[.='Controlled text sentinel']",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "/w:document[@*[local-name()='Ignorable' and namespace-uri()='http://schemas.openxmlformats.org/markup-compatibility/2006' and contains(concat(' ', normalize-space(.), ' '), ' dpt ')]]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:sdt[@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='opaque-attribute-sentinel']]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='extension-child-sentinel']]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='nested-payload-sentinel'] and normalize-space(.)='opaque payload sentinel']",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='last-child-sentinel']]]",
+      "expectedCount": 1
+    }
+  ]
+}

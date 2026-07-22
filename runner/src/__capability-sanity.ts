@@ -42,7 +42,7 @@ const profiles: CapabilityProfiles = {
   profiles: loaded.profiles,
 };
 
-check('committed registry validates', loaded.registry.capabilities.length === 22);
+check('committed registry validates', loaded.registry.capabilities.length === 23);
 check('every committed scenario is mapped', new Set(loaded.mappings.map((mapping) => mapping.scenarioId)).size === scenarios.length);
 
 const withoutScenario = structuredClone(mappings);

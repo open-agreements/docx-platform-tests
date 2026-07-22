@@ -3,6 +3,18 @@
   "registryVersion": 1,
   "mappings": [
     {
+      "scenarioId": "unrelatedTextEditPreservesOpaqueInlineContentControl",
+      "capabilityId": "word.content-controls.inline",
+      "axis": "preserve",
+      "oracleClasses": ["normative-prose", "metamorphic-invariant"]
+    },
+    {
+      "scenarioId": "unrelatedTextEditPreservesOpaqueInlineContentControl",
+      "capabilityId": "word.text.find-replace",
+      "axis": "edit",
+      "oracleClasses": ["normative-prose"]
+    },
+    {
       "scenarioId": "addCommentBracketsRangeWithMatchingIds",
       "capabilityId": "word.comments.anchors",
       "axis": "edit",

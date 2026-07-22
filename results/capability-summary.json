@@ -62,7 +62,8 @@
     "removeAllCommentsStripsAnchorsKeepsText",
     "replaceTextInsideTableCellPreservesStructure",
     "setDefaultFooterTextAddsFooterReference",
-    "setTableCellTextReplacesCellContentOnly"
+    "setTableCellTextReplacesCellContentOnly",
+    "unrelatedTextEditPreservesOpaqueInlineContentControl"
   ],
   "capabilities": [
     {
