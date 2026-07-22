@@ -3,12 +3,12 @@
   "registryVersion": 1,
   "sourceResults": {
     "schemaVersion": 2,
-    "runTimestamp": "2026-07-22T03:05:23.915Z",
-    "scenarioCount": 37,
+    "runTimestamp": "2026-07-22T13:05:13.581Z",
+    "scenarioCount": 38,
     "implementations": [
       {
         "adapterName": "safe-docx",
-        "adapterVersion": "0.16.0+git.72ed7f4d48ee"
+        "adapterVersion": "0.16.0+git.96ae994cbdf0"
       },
       {
         "adapterName": "python-docx",
@@ -2024,6 +2024,122 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.settings.compatibility-mode",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "composeCompatibilityMode15WritesCompatSetting"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.settings.compatibility-mode",
+      "axis": "generate",
+      "scenarioIds": [
+        "composeCompatibilityMode15WritesCompatSetting"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
           }
         },
         "dolanmiu-docx": {

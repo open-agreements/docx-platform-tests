@@ -1,12 +1,12 @@
 {
   "schemaVersion": 2,
-  "runTimestamp": "2026-07-22T03:05:23.915Z",
-  "dslVersion": "1.6",
+  "runTimestamp": "2026-07-22T13:05:13.581Z",
+  "dslVersion": "1.7",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.16.0+git.72ed7f4d48ee"
+      "adapterVersion": "0.16.0+git.96ae994cbdf0"
     },
     {
       "adapterName": "python-docx",
@@ -1162,6 +1162,77 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "generation",
+      "scenarioId": "composeCompatibilityMode15WritesCompatSetting",
+      "scenarioTitle": "Composing compatibility mode 15 writes the matching settings entry",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.15.3.4",
+        "clauseTitle": "compatSetting (Custom Compatibility Setting)"
+      },
+      "microsoftExtensionCitations": [
+        {
+          "standard": "MS-DOCX",
+          "section": "2.3.5",
+          "clauseTitle": "compatibilityMode"
+        }
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "status": "unsupported",
+          "reason": "safe-docx adapter does not implement operation 'composeDocumentWithCompatibilityMode'"
+        },
+        "python-docx": {
+          "status": "unsupported",
+          "reason": "python-docx adapter does not implement operation 'composeDocumentWithCompatibilityMode'"
+        },
+        "libreoffice": {
+          "status": "unsupported",
+          "reason": "libreoffice adapter does not implement operation 'composeDocumentWithCompatibilityMode'"
+        },
+        "openxml-sdk": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "/w:settings/w:compat/w:compatSetting[@w:name='compatibilityMode' and @w:uri='http://schemas.microsoft.com/office/word' and @w:val='15'] matched 1 node(s) in word/settings.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Compatibility mode 15' found at offset 0"
+            }
+          ]
+        },
+        "dolanmiu-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "/w:settings/w:compat/w:compatSetting[@w:name='compatibilityMode' and @w:uri='http://schemas.microsoft.com/office/word' and @w:val='15'] matched 1 node(s) in word/settings.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Compatibility mode 15' found at offset 0"
+            }
+          ]
+        },
+        "superdoc-sdk": {
+          "status": "unsupported",
+          "reason": "superdoc-sdk adapter does not implement operation 'composeDocumentWithCompatibilityMode'"
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs adapter does not implement operation 'composeDocumentWithCompatibilityMode'"
         }
       }
     },
