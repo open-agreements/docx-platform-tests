@@ -1,0 +1,2828 @@
+{
+  "schemaVersion": 1,
+  "registryVersion": 1,
+  "sourceResults": {
+    "schemaVersion": 2,
+    "runTimestamp": "2026-07-22T03:05:23.915Z",
+    "scenarioCount": 37,
+    "implementations": [
+      {
+        "adapterName": "safe-docx",
+        "adapterVersion": "0.16.0+git.72ed7f4d48ee"
+      },
+      {
+        "adapterName": "python-docx",
+        "adapterVersion": "1.2.0"
+      },
+      {
+        "adapterName": "libreoffice",
+        "adapterVersion": "LibreOffice 24.2.7.2 420(Build:2)"
+      },
+      {
+        "adapterName": "openxml-sdk",
+        "adapterVersion": "DocumentFormat.OpenXml 3.5.1"
+      },
+      {
+        "adapterName": "dolanmiu-docx",
+        "adapterVersion": "9.7.1"
+      },
+      {
+        "adapterName": "superdoc-sdk",
+        "adapterVersion": "1.16.1"
+      },
+      {
+        "adapterName": "docx-rs",
+        "adapterVersion": "docx-rs 0.4.20"
+      }
+    ]
+  },
+  "unmeasuredScenarioIds": [],
+  "capabilities": [
+    {
+      "capabilityId": "word.comments.anchors",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "addCommentBracketsRangeWithMatchingIds"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.comments.anchors",
+      "axis": "edit",
+      "scenarioIds": [
+        "addCommentBracketsRangeWithMatchingIds"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.comments.content",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "commentPartRecordsAuthorInitialsAndText"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.comments.content",
+      "axis": "edit",
+      "scenarioIds": [
+        "commentPartRecordsAuthorInitialsAndText"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.comments.removal",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "removeAllCommentsStripsAnchorsKeepsText"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.comments.removal",
+      "axis": "edit",
+      "scenarioIds": [
+        "removeAllCommentsStripsAnchorsKeepsText"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.footers.default",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "setDefaultFooterTextAddsFooterReference"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "error": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.footers.default",
+      "axis": "edit",
+      "scenarioIds": [
+        "setDefaultFooterTextAddsFooterReference"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "error": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.headers.default",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "composeHeaderTextAddsSectionHeaderReference"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.headers.default",
+      "axis": "generate",
+      "scenarioIds": [
+        "composeHeaderTextAddsSectionHeaderReference"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.hyperlinks.external",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "composeHyperlinkCreatesRelationshipReferencedLink"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.hyperlinks.external",
+      "axis": "generate",
+      "scenarioIds": [
+        "composeHyperlinkCreatesRelationshipReferencedLink"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.numbering.paragraph",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "applyNumberingToParagraphAttachesNumPr",
+        "composeNumberedListResolvesToDecimalFormat"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.numbering.paragraph",
+      "axis": "edit",
+      "scenarioIds": [
+        "applyNumberingToParagraphAttachesNumPr"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.numbering.paragraph",
+      "axis": "generate",
+      "scenarioIds": [
+        "composeNumberedListResolvesToDecimalFormat"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.paragraphs.structure",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "appendParagraphPreservesExistingContent",
+        "composeParagraphsProduceTextRuns",
+        "insertParagraphAfterAnchorShiftsSubsequent"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 3,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 3
+          }
+        },
+        "python-docx": {
+          "denominator": 3,
+          "passLike": 3,
+          "counts": {
+            "pass": 3
+          }
+        },
+        "libreoffice": {
+          "denominator": 3,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 3
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 3,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 3
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 3,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 3,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 3
+          }
+        },
+        "docx-rs": {
+          "denominator": 3,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 3
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.paragraphs.structure",
+      "axis": "edit",
+      "scenarioIds": [
+        "insertParagraphAfterAnchorShiftsSubsequent"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.paragraphs.structure",
+      "axis": "generate",
+      "scenarioIds": [
+        "appendParagraphPreservesExistingContent",
+        "composeParagraphsProduceTextRuns"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.paragraphs.structure",
+      "axis": "preserve",
+      "scenarioIds": [
+        "appendParagraphPreservesExistingContent"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.content",
+      "axis": "acceptReject",
+      "scenarioIds": [
+        "acceptDeletedTableRowRemovesEntireRow",
+        "acceptDeletionsRemovesDelContent",
+        "acceptInsertionsUnwrapsInsWrappers",
+        "acceptNestedDeletionInsideInsertion",
+        "rejectDeletionsRestoresDelContent",
+        "rejectInsertedTableRowRemovesEntireRow",
+        "rejectInsertionsRemovesInsContent",
+        "rejectNestedDeletionInsideInsertion"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 8,
+          "passLike": 6,
+          "counts": {
+            "pass": 6,
+            "fail": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 8,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 8
+          }
+        },
+        "libreoffice": {
+          "denominator": 8,
+          "passLike": 8,
+          "counts": {
+            "pass": 2,
+            "pass-divergent": 6
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 8,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 8
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 8,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 8
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 8,
+          "passLike": 6,
+          "counts": {
+            "pass": 2,
+            "pass-divergent": 4,
+            "error": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 8,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 8
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.content",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "acceptDeletedTableRowRemovesEntireRow",
+        "acceptDeletionsRemovesDelContent",
+        "acceptInsertionsUnwrapsInsWrappers",
+        "acceptNestedDeletionInsideInsertion",
+        "rejectDeletionsRestoresDelContent",
+        "rejectInsertedTableRowRemovesEntireRow",
+        "rejectInsertionsRemovesInsContent",
+        "rejectNestedDeletionInsideInsertion"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 8,
+          "passLike": 6,
+          "counts": {
+            "pass": 6,
+            "fail": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 8,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 8
+          }
+        },
+        "libreoffice": {
+          "denominator": 8,
+          "passLike": 8,
+          "counts": {
+            "pass": 2,
+            "pass-divergent": 6
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 8,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 8
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 8,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 8
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 8,
+          "passLike": 6,
+          "counts": {
+            "pass": 2,
+            "pass-divergent": 4,
+            "error": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 8,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 8
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.moves",
+      "axis": "acceptReject",
+      "scenarioIds": [
+        "acceptMoveRemovesSourceAndUnwrapsDestination",
+        "rejectMoveRestoresSourceRemovesDestination"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "fail": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.moves",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "acceptMoveRemovesSourceAndUnwrapsDestination",
+        "rejectMoveRestoresSourceRemovesDestination"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "fail": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.paragraph-mark",
+      "axis": "acceptReject",
+      "scenarioIds": [
+        "acceptDeletedParagraphMarkMergesParagraphs",
+        "rejectInsertedParagraphMarkMergesParagraphs"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.paragraph-mark",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "acceptDeletedParagraphMarkMergesParagraphs",
+        "rejectInsertedParagraphMarkMergesParagraphs"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.paragraph-properties",
+      "axis": "acceptReject",
+      "scenarioIds": [
+        "rejectParagraphPropertiesChangeRestoresPrior"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "fail": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "fail": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.paragraph-properties",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "rejectParagraphPropertiesChangeRestoresPrior"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "fail": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "fail": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.run-properties",
+      "axis": "acceptReject",
+      "scenarioIds": [
+        "acceptFormattingChangeKeepsNewRunProperties",
+        "rejectFormattingChangeRestoresPriorRunProperties"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.run-properties",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "acceptFormattingChangeKeepsNewRunProperties",
+        "rejectFormattingChangeRestoresPriorRunProperties"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.table-rows",
+      "axis": "acceptReject",
+      "scenarioIds": [
+        "acceptDeletedTableRowRemovesEntireRow",
+        "rejectInsertedTableRowRemovesEntireRow"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "fail": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "error": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.revisions.table-rows",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "acceptDeletedTableRowRemovesEntireRow",
+        "rejectInsertedTableRowRemovesEntireRow"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "fail": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "error": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.runs.formatting",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "composeFormattedRunCarriesBoldItalicSize",
+        "directFormattingDoesNotBakeIntoStyleDefinition"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.runs.formatting",
+      "axis": "edit",
+      "scenarioIds": [
+        "directFormattingDoesNotBakeIntoStyleDefinition"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.runs.formatting",
+      "axis": "generate",
+      "scenarioIds": [
+        "composeFormattedRunCarriesBoldItalicSize"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.styles.paragraph",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "applyNamedParagraphStyleSetsPStyleReference"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.styles.paragraph",
+      "axis": "edit",
+      "scenarioIds": [
+        "applyNamedParagraphStyleSetsPStyleReference"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.tables.cells",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "replaceTextInsideTableCellPreservesStructure",
+        "setTableCellTextReplacesCellContentOnly"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "fail": 1,
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "error": 2
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.tables.cells",
+      "axis": "edit",
+      "scenarioIds": [
+        "setTableCellTextReplacesCellContentOnly"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "error": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.tables.cells",
+      "axis": "preserve",
+      "scenarioIds": [
+        "replaceTextInsideTableCellPreservesStructure"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "fail": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "error": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.tables.horizontal-merge",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "horizontalMergeSetsGridSpanKeepingGrid"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.tables.horizontal-merge",
+      "axis": "edit",
+      "scenarioIds": [
+        "horizontalMergeSetsGridSpanKeepingGrid"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.tables.rows",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "appendTableRowExtendsRowCountKeepingGrid",
+        "deleteTableRowRemovesRowAndContent"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.tables.rows",
+      "axis": "edit",
+      "scenarioIds": [
+        "appendTableRowExtendsRowCountKeepingGrid",
+        "deleteTableRowRemovesRowAndContent"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "python-docx": {
+          "denominator": 2,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        },
+        "docx-rs": {
+          "denominator": 2,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 2
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.tables.structure",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "composeTableProducesGridMatchingCellMatrix"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.tables.structure",
+      "axis": "generate",
+      "scenarioIds": [
+        "composeTableProducesGridMatchingCellMatrix"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.text.find-replace",
+      "axis": "crossPlatform",
+      "scenarioIds": [
+        "replaceFirstOccurrencePreservesOffsets",
+        "replaceTextAcrossRunBoundary",
+        "replaceTextInsideTableCellPreservesStructure"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 3,
+          "passLike": 2,
+          "counts": {
+            "pass": 2,
+            "fail": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 3,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 1,
+            "error": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 3,
+          "passLike": 3,
+          "counts": {
+            "pass": 3
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 3,
+          "passLike": 2,
+          "counts": {
+            "pass": 2,
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 3,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 3
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 3,
+          "passLike": 3,
+          "counts": {
+            "pass": 3
+          }
+        },
+        "docx-rs": {
+          "denominator": 3,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 3
+          }
+        }
+      }
+    },
+    {
+      "capabilityId": "word.text.find-replace",
+      "axis": "edit",
+      "scenarioIds": [
+        "replaceFirstOccurrencePreservesOffsets",
+        "replaceTextAcrossRunBoundary",
+        "replaceTextInsideTableCellPreservesStructure"
+      ],
+      "outcomes": {
+        "safe-docx": {
+          "denominator": 3,
+          "passLike": 2,
+          "counts": {
+            "pass": 2,
+            "fail": 1
+          }
+        },
+        "python-docx": {
+          "denominator": 3,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 1,
+            "error": 1
+          }
+        },
+        "libreoffice": {
+          "denominator": 3,
+          "passLike": 3,
+          "counts": {
+            "pass": 3
+          }
+        },
+        "openxml-sdk": {
+          "denominator": 3,
+          "passLike": 2,
+          "counts": {
+            "pass": 2,
+            "unsupported": 1
+          }
+        },
+        "dolanmiu-docx": {
+          "denominator": 3,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 3
+          }
+        },
+        "superdoc-sdk": {
+          "denominator": 3,
+          "passLike": 3,
+          "counts": {
+            "pass": 3
+          }
+        },
+        "docx-rs": {
+          "denominator": 3,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 3
+          }
+        }
+      }
+    }
+  ]
+}
