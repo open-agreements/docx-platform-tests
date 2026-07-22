@@ -6,6 +6,12 @@ export interface SpecCitation {
   clauseTitle: string;
 }
 
+export interface MicrosoftExtensionCitation {
+  standard: 'MS-DOCX';
+  section: string;
+  clauseTitle: string;
+}
+
 export interface OperationDescriptor {
   operationName: string;
   [parameter: string]: unknown;
@@ -19,10 +25,14 @@ export interface OperationDescriptor {
  * (styles.xml, header1.xml vs header3.xml, …) are implementation-chosen.
  */
 export type AssertedPart =
-  | { partResolution: 'mainDocumentPart' }
-  | { partResolution: 'relationshipFromMainPart'; relationshipTypeUri: string }
-  | { partResolution: 'headerReference'; headerReferenceType: string }
-  | { partResolution: 'footerReference'; footerReferenceType: string };
+  | { partResolution: 'mainDocumentPart'; expectedContentType?: string }
+  | {
+      partResolution: 'relationshipFromMainPart';
+      relationshipTypeUri: string;
+      expectedContentType?: string;
+    }
+  | { partResolution: 'headerReference'; headerReferenceType: string; expectedContentType?: string }
+  | { partResolution: 'footerReference'; footerReferenceType: string; expectedContentType?: string };
 
 export interface ScenarioAssertion {
   assertionKind:
@@ -60,6 +70,7 @@ export interface ScenarioManifest {
   scenarioTitle: string;
   specCitation: SpecCitation;
   secondarySpecCitations?: SpecCitation[];
+  microsoftExtensionCitations?: MicrosoftExtensionCitation[];
   wordBehaviorNote: string | null;
   inputDocumentPath: string;
   operationDescriptor: OperationDescriptor;
@@ -113,6 +124,7 @@ export interface ResultsDocument {
     scenarioId: string;
     scenarioTitle: string;
     specCitation: SpecCitation;
+    microsoftExtensionCitations?: MicrosoftExtensionCitation[];
     outcomes: Record<string, ScenarioOutcome>;
   }>;
 }

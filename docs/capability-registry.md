@@ -66,12 +66,14 @@ Scenario mappings distinguish:
 
 - `normative-schema`;
 - `normative-prose`;
+- `normative-microsoft-extension`;
 - `metamorphic-invariant`;
 - `observed-word-behavior`;
 - `cross-implementation-evidence`; and
 - `serialization-specific`.
 
-Observed Word behavior is not silently promoted to an ECMA requirement, and a
+`normative-microsoft-extension` requires a structured `MS-DOCX` citation on
+both the scenario and mapped capability. Observed Word behavior is not silently promoted to an ECMA requirement, and a
 canonical serialization check does not turn valid XML freedom into a semantic
 failure. Existing outcome grading remains unchanged.
 

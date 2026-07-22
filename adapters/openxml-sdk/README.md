@@ -10,6 +10,9 @@ Word itself.
 **What is library API vs glue:** the SDK is a strongly-typed DOM over the
 package, not a document editor.
 
+- `composeDocumentWithCompatibilityMode`: creates the main and settings parts
+  with the SDK's typed `DocumentSettingsPart`, `Compatibility`, and
+  `CompatibilitySetting` APIs. The adapter only maps descriptor values.
 - `replaceFirstTextOccurrence`: opening the package, walking paragraphs in
   document order, and rewriting a single `w:t` are all library API; locating
   the first matching paragraph and the `w:t` containing the whole match is

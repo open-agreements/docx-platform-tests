@@ -148,6 +148,16 @@ if (operationName === 'composeDocumentWithHeaderText') {
   process.exit(0);
 }
 
+if (operationName === 'composeDocumentWithCompatibilityMode') {
+  await writeDocument(
+    new Document({
+      compatabilityModeVersion: operation.compatibilityMode,
+      sections: [{ children: [new Paragraph(operation.bodyText)] }],
+    })
+  );
+  process.exit(0);
+}
+
 if (operationName === 'composeDocumentWithNumberedList') {
   if (operation.numberFormat !== 'decimal') {
     unsupported('dolanmiu-docx adapter only maps decimal numbered lists');

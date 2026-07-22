@@ -2,7 +2,13 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { Ajv2020 } from 'ajv/dist/2020.js';
 import { loadAllScenarios, REPO_ROOT } from './scenarios.js';
-import type { LoadedScenario, OutcomeStatus, ResultsDocument, SpecCitation } from './types.js';
+import type {
+  LoadedScenario,
+  MicrosoftExtensionCitation,
+  OutcomeStatus,
+  ResultsDocument,
+  SpecCitation,
+} from './types.js';
 
 export const CAPABILITY_AXES = [
   'detect',
@@ -22,6 +28,7 @@ export type CapabilityAxis = (typeof CAPABILITY_AXES)[number];
 export type OracleClass =
   | 'normative-schema'
   | 'normative-prose'
+  | 'normative-microsoft-extension'
   | 'metamorphic-invariant'
   | 'observed-word-behavior'
   | 'cross-implementation-evidence'
@@ -33,7 +40,7 @@ export interface Capability {
   family: string;
   description: string;
   standards: Array<Pick<SpecCitation, 'standard' | 'edition' | 'part' | 'section'>>;
-  microsoftExtensions?: string[];
+  microsoftExtensions?: MicrosoftExtensionCitation[];
   dependencies: string[];
   applicableAxes: CapabilityAxis[];
   packageParts: string[];
@@ -99,6 +106,25 @@ function citationKey(citation: Pick<SpecCitation, 'standard' | 'edition' | 'part
   return `${citation.standard}|${citation.edition}|${citation.part}|${citation.section}`;
 }
 
+function extensionCitationKey(
+  citation: Pick<MicrosoftExtensionCitation, 'standard' | 'section'>
+): string {
+  return `${citation.standard}|${citation.section}`;
+}
+
+function assertMicrosoftExtensionCitation(
+  citation: MicrosoftExtensionCitation,
+  label: string
+): void {
+  if (
+    citation.standard !== 'MS-DOCX' ||
+    !/^\d+(?:\.\d+)*$/.test(citation.section) ||
+    !citation.clauseTitle
+  ) {
+    throw new Error(`${label} is not a valid MS-DOCX extension citation`);
+  }
+}
+
 function assertUnique(values: string[], label: string): void {
   const duplicates = values.filter((value, index) => values.indexOf(value) !== index);
   if (duplicates.length > 0) {
@@ -155,6 +181,13 @@ export function validateCapabilityRelationships(
     assertUnique(capability.applicableAxes, `${capability.id}.applicableAxes`);
     assertUnique(capability.packageParts, `${capability.id}.packageParts`);
     assertUnique(capability.standards.map(citationKey), `${capability.id}.standards`);
+    assertUnique(
+      (capability.microsoftExtensions ?? []).map(extensionCitationKey),
+      `${capability.id}.microsoftExtensions`
+    );
+    for (const citation of capability.microsoftExtensions ?? []) {
+      assertMicrosoftExtensionCitation(citation, `${capability.id}.microsoftExtensions`);
+    }
     for (const dependency of capability.dependencies) {
       if (!capabilitiesById.has(dependency)) {
         throw new Error(`${capability.id} has unknown dependency ${dependency}`);
@@ -184,6 +217,20 @@ export function validateCapabilityRelationships(
     if (!capability.standards.some((citation) => scenarioCitationKeys.has(citationKey(citation)))) {
       throw new Error(`${mapping.scenarioId} mapping to ${mapping.capabilityId} has no shared citation`);
     }
+    if (mapping.oracleClasses.includes('normative-microsoft-extension')) {
+      const scenarioExtensionKeys = new Set(
+        (scenario.manifest.microsoftExtensionCitations ?? []).map(extensionCitationKey)
+      );
+      if (
+        !(capability.microsoftExtensions ?? []).some((citation) =>
+          scenarioExtensionKeys.has(extensionCitationKey(citation))
+        )
+      ) {
+        throw new Error(
+          `${mapping.scenarioId} mapping to ${mapping.capabilityId} has no shared Microsoft extension citation`
+        );
+      }
+    }
   }
 
   const mappingsByScenario = new Map<string, ScenarioCapabilityMapping[]>();
@@ -209,6 +256,41 @@ export function validateCapabilityRelationships(
       }
     }
     const oracleClasses = new Set(mappings.flatMap((mapping) => mapping.oracleClasses));
+    const scenarioExtensionCitations = scenario.manifest.microsoftExtensionCitations ?? [];
+    for (const citation of scenarioExtensionCitations) {
+      assertMicrosoftExtensionCitation(citation, `${scenarioId}.microsoftExtensionCitations`);
+    }
+    const mappedExtensionCitations = new Set(
+      mappings
+        .flatMap(
+          (mapping) => capabilitiesById.get(mapping.capabilityId)?.microsoftExtensions ?? []
+        )
+        .map(extensionCitationKey)
+    );
+    for (const citation of scenarioExtensionCitations) {
+      if (!mappedExtensionCitations.has(extensionCitationKey(citation))) {
+        throw new Error(
+          `${scenarioId} Microsoft extension citation ${extensionCitationKey(citation)} ` +
+          'is absent from its mapped capabilities'
+        );
+      }
+    }
+    if (
+      scenarioExtensionCitations.length > 0 &&
+      !oracleClasses.has('normative-microsoft-extension')
+    ) {
+      throw new Error(
+        `${scenarioId} has Microsoft extension citations without normative-microsoft-extension classification`
+      );
+    }
+    if (
+      oracleClasses.has('normative-microsoft-extension') &&
+      scenarioExtensionCitations.length === 0
+    ) {
+      throw new Error(
+        `${scenarioId} uses normative-microsoft-extension without Microsoft extension citations`
+      );
+    }
     const assertionKinds = new Set(scenario.manifest.assertionList.map((assertion) => assertion.assertionKind));
     if (assertionKinds.has('canonicalXmlEquals') && !oracleClasses.has('serialization-specific')) {
       throw new Error(`${scenarioId} uses canonicalXmlEquals without serialization-specific classification`);

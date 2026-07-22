@@ -42,7 +42,7 @@ const profiles: CapabilityProfiles = {
   profiles: loaded.profiles,
 };
 
-check('committed registry validates', loaded.registry.capabilities.length === 21);
+check('committed registry validates', loaded.registry.capabilities.length === 22);
 check('every committed scenario is mapped', new Set(loaded.mappings.map((mapping) => mapping.scenarioId)).size === scenarios.length);
 
 const withoutScenario = structuredClone(mappings);
@@ -90,6 +90,42 @@ unrelatedExtraMapping.mappings.push({
 });
 expectThrows('each mapping must share a scenario citation', /has no shared citation/, () =>
   validateCapabilityRelationships(registry, unrelatedExtraMapping, profiles, scenarios)
+);
+
+const missingExtensionTraceability = structuredClone(scenarios);
+const compatibilityScenario = missingExtensionTraceability.find(
+  (scenario) => scenario.manifest.scenarioId === 'composeCompatibilityMode15WritesCompatSetting'
+)!;
+delete compatibilityScenario.manifest.microsoftExtensionCitations;
+expectThrows(
+  'Microsoft extension oracle without scenario citation is rejected',
+  /no shared Microsoft extension citation/,
+  () =>
+    validateCapabilityRelationships(
+      registry,
+      mappings,
+      profiles,
+      missingExtensionTraceability
+    )
+);
+
+const missingExtensionClassification = structuredClone(mappings);
+const compatibilityMapping = missingExtensionClassification.mappings.find(
+  (mapping) => mapping.scenarioId === 'composeCompatibilityMode15WritesCompatSetting'
+)!;
+compatibilityMapping.oracleClasses = compatibilityMapping.oracleClasses.filter(
+  (oracleClass) => oracleClass !== 'normative-microsoft-extension'
+);
+expectThrows(
+  'Microsoft extension citation without oracle classification is rejected',
+  /without normative-microsoft-extension classification/,
+  () =>
+    validateCapabilityRelationships(
+      registry,
+      missingExtensionClassification,
+      profiles,
+      scenarios
+    )
 );
 
 const missingSerializationOracle = structuredClone(mappings);

@@ -1,0 +1,32 @@
+{
+  "dslVersion": "1.7",
+  "scenarioId": "composeCompatibilityMode15WritesCompatSetting",
+  "scenarioTitle": "Composing compatibility mode 15 writes the matching settings entry",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.15.3.4", "clauseTitle": "compatSetting (Custom Compatibility Setting)" },
+  "secondarySpecCitations": [
+    { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "11.3.3", "clauseTitle": "Document Settings Part" },
+    { "standard": "ECMA-376", "edition": 5, "part": 4, "section": "9.2.3", "clauseTitle": "Document Settings Part (Part 1, section 11.3.3)" }
+  ],
+  "microsoftExtensionCitations": [
+    { "standard": "MS-DOCX", "section": "2.3.5", "clauseTitle": "compatibilityMode" }
+  ],
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "composeDocumentWithCompatibilityMode",
+    "compatibilityMode": 15,
+    "bodyText": "Compatibility mode 15"
+  },
+  "assertionList": [
+    {
+      "assertionKind": "xpathQueryExists",
+      "xpathExpression": "/w:settings/w:compat/w:compatSetting[@w:name='compatibilityMode' and @w:uri='http://schemas.microsoft.com/office/word' and @w:val='15']",
+      "assertedPart": {
+        "partResolution": "relationshipFromMainPart",
+        "relationshipTypeUri": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings",
+        "expectedContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml"
+      }
+    },
+    { "assertionKind": "documentTextContainsAtOffset", "expectedSubstring": "Compatibility mode 15", "expectedOffset": 0 }
+  ]
+}

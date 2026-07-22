@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { strToU8, zipSync } from 'fflate';
 import { evaluateAssertion, projectBodyText } from './assertions.js';
 import { packageFromParts, packDocx, packMinimalDocx, loadPackage } from './docx.js';
 import type { ScenarioAssertion, ScenarioManifest } from './types.js';
@@ -43,6 +44,9 @@ const HYPERLINK_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/re
 const HEADER_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/header';
 const COMMENTS_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments';
 const NUMBERING_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering';
+const SETTINGS_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings';
+const SETTINGS_CONTENT_TYPE =
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml';
 
 // A package whose main document references a styles part and an external
 // hyperlink, plus a default-type header, all by relationship (arbitrary rIds).
@@ -130,6 +134,128 @@ check(
     expectedTargetUrl: 'https://example.com/',
   }) === false
 );
+
+// Package graph resolution: neither the main document nor settings part uses
+// the conventional word/document.xml and word/settings.xml names.
+function settingsGraphPackage(settingsContentType: string | null) {
+  const settingsOverride = settingsContentType
+    ? `<Override PartName="/config/preferences.xml" ContentType="${settingsContentType}"/>`
+    : '';
+  return packageFromParts({
+    '[Content_Types].xml': `<?xml version="1.0"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Override PartName="/documents/main.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+  ${settingsOverride}
+</Types>`,
+    '_rels/.rels': `<?xml version="1.0"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rootDoc" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="documents/main.xml"/>
+</Relationships>`,
+    'documents/main.xml': `<?xml version="1.0"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:r><w:t>Graph-aware body</w:t></w:r></w:p></w:body></w:document>`,
+    'documents/_rels/main.xml.rels': `<?xml version="1.0"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="settings-any-id" Type="${SETTINGS_TYPE}" Target="../config/preferences.xml"/>
+</Relationships>`,
+    'config/preferences.xml': `<?xml version="1.0"?>
+<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:compat><w:compatSetting w:name="compatibilityMode" w:uri="http://schemas.microsoft.com/office/word" w:val="15"/></w:compat></w:settings>`,
+  });
+}
+
+const settingsAssertion: ScenarioAssertion = {
+  assertionKind: 'xpathQueryExists',
+  xpathExpression:
+    "/w:settings/w:compat/w:compatSetting[@w:name='compatibilityMode' and @w:val='15']",
+  assertedPart: {
+    partResolution: 'relationshipFromMainPart',
+    relationshipTypeUri: SETTINGS_TYPE,
+    expectedContentType: SETTINGS_CONTENT_TYPE,
+  },
+};
+check(
+  'package graph resolves noncanonical main document and settings part',
+  evaluateAssertion(settingsAssertion, settingsGraphPackage(SETTINGS_CONTENT_TYPE), dir).passed
+);
+check(
+  'package graph main document drives body projection',
+  evaluateAssertion(
+    {
+      assertionKind: 'documentTextContainsAtOffset',
+      expectedSubstring: 'Graph-aware body',
+      expectedOffset: 0,
+    },
+    settingsGraphPackage(SETTINGS_CONTENT_TYPE),
+    dir
+  ).passed
+);
+check(
+  'wrong related-part content type fails',
+  !evaluateAssertion(settingsAssertion, settingsGraphPackage('application/xml'), dir).passed
+);
+check(
+  'missing related-part content type fails',
+  !evaluateAssertion(settingsAssertion, settingsGraphPackage(null), dir).passed
+);
+
+const arbitraryExtensionZip = loadPackage(
+  zipSync({
+    '[Content_Types].xml': strToU8(`<?xml version="1.0"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Override PartName="/payload/main.part" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+  <Override PartName="/state/settings.part" ContentType="${SETTINGS_CONTENT_TYPE}"/>
+</Types>`),
+    '_rels/.rels': strToU8(`<?xml version="1.0"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="root-arbitrary" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="payload/main.part"/>
+</Relationships>`),
+    'payload/main.part': strToU8(`<?xml version="1.0"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:r><w:t>ZIP graph body</w:t></w:r></w:p></w:body></w:document>`),
+    'payload/_rels/main.part.rels': strToU8(`<?xml version="1.0"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="settings-arbitrary" Type="${SETTINGS_TYPE}" Target="../state/settings.part"/>
+</Relationships>`),
+    'state/settings.part': strToU8(`<?xml version="1.0"?>
+<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:compat><w:compatSetting w:name="compatibilityMode" w:uri="http://schemas.microsoft.com/office/word" w:val="15"/></w:compat></w:settings>`),
+    'media/binary.dat': new Uint8Array([0, 255, 1, 254, 2, 253]),
+  })
+);
+check(
+  'ZIP loader resolves non-XML-extension main and settings parts',
+  evaluateAssertion(settingsAssertion, arbitraryExtensionZip, dir).passed
+);
+check(
+  'ZIP loader projects body from non-XML-extension main part',
+  evaluateAssertion(
+    {
+      assertionKind: 'documentTextContainsAtOffset',
+      expectedSubstring: 'ZIP graph body',
+      expectedOffset: 0,
+    },
+    arbitraryExtensionZip,
+    dir
+  ).passed
+);
+check(
+  'ZIP loader does not decode unrelated binary media',
+  arbitraryExtensionZip.rawParts.has('media/binary.dat') &&
+    !arbitraryExtensionZip.parts.has('media/binary.dat')
+);
+
+let missingMainTargetRejected = false;
+try {
+  loadPackage(
+    zipSync({
+      '_rels/.rels': strToU8(`<?xml version="1.0"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="missing" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="absent/main.part"/>
+</Relationships>`),
+    })
+  );
+} catch (error) {
+  missingMainTargetRejected =
+    error instanceof Error && error.message.includes('resolves to missing part absent/main.part');
+}
+check('ZIP loader rejects a missing officeDocument target', missingMainTargetRejected);
 
 // A headerReference whose r:id joins to a non-header relationship type is
 // malformed and must NOT resolve (even though the id and part both exist).
