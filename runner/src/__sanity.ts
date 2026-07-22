@@ -1,7 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { strToU8, zipSync } from 'fflate';
-import { evaluateAssertion, projectBodyText } from './assertions.js';
+import {
+  evaluateAssertion,
+  preprocessIgnorableMarkupForSchema,
+  projectBodyText,
+} from './assertions.js';
 import { packageFromParts, packDocx, packMinimalDocx, loadPackage } from './docx.js';
 import type { ScenarioAssertion, ScenarioManifest } from './types.js';
 
@@ -36,6 +40,214 @@ const replaced = `<?xml version="1.0"?>
 const projected = projectBodyText(replaced);
 console.log('projection:', JSON.stringify(projected), 'sixty at', projected.indexOf('sixty'));
 check('projection finds sixty', projected.indexOf('sixty') !== -1);
+
+const contentControlRoot = join('..', 'scenarios', 'content-controls');
+const normativeSdtDir = join(
+  contentControlRoot,
+  'unrelatedTextEditPreservesInlineContentControlStructure'
+);
+const invariantSdtDir = join(
+  contentControlRoot,
+  'unrelatedTextEditPreservesOpaqueInlineContentControl'
+);
+const normativeSdtManifest = JSON.parse(
+  readFileSync(join(normativeSdtDir, 'scenario.json'), 'utf8')
+) as ScenarioManifest;
+const invariantSdtManifest = JSON.parse(
+  readFileSync(join(invariantSdtDir, 'scenario.json'), 'utf8')
+) as ScenarioManifest;
+const inlineSdtOutput = readFileSync(
+  join(normativeSdtDir, 'input', 'document.xml'),
+  'utf8'
+).replace('thirty', 'sixty');
+
+function assertionPasses(
+  manifest: ScenarioManifest,
+  scenarioDir: string,
+  xml: string,
+  assertionIndex: number
+): boolean {
+  return evaluateAssertion(
+    manifest.assertionList[assertionIndex],
+    packageFromParts({ 'word/document.xml': xml }),
+    scenarioDir
+  ).passed;
+}
+
+check(
+  'normative inline SDT reference output satisfies every assertion',
+  normativeSdtManifest.assertionList.every((assertion) =>
+    evaluateAssertion(
+      assertion,
+      packageFromParts({ 'word/document.xml': inlineSdtOutput }),
+      normativeSdtDir
+    ).passed
+  )
+);
+check(
+  'metamorphic inline SDT reference output satisfies every assertion',
+  invariantSdtManifest.assertionList.every((assertion) =>
+    evaluateAssertion(
+      assertion,
+      packageFromParts({ 'word/document.xml': inlineSdtOutput }),
+      invariantSdtDir
+    ).passed
+  )
+);
+
+const splitRuns = inlineSdtOutput
+  .replace(
+    '<w:r><w:t xml:space="preserve">Edit target: sixty days. </w:t></w:r>',
+    '<w:r><w:t>Edit target: six</w:t></w:r><w:r><w:t xml:space="preserve">ty days. </w:t></w:r>'
+  )
+  .replace(
+    '<w:r><w:t>Controlled text sentinel</w:t></w:r>',
+    '<w:r><w:t>Controlled </w:t></w:r><w:r><w:t>text sentinel</w:t></w:r>'
+  );
+check(
+  'legal run splits satisfy paragraph and controlled-content text assertions',
+  assertionPasses(normativeSdtManifest, normativeSdtDir, splitRuns, 0) &&
+    assertionPasses(normativeSdtManifest, normativeSdtDir, splitRuns, 5) &&
+    assertionPasses(invariantSdtManifest, invariantSdtDir, splitRuns, 0)
+);
+
+const targetSdt = inlineSdtOutput.match(/<w:sdt ext:opaqueAttribute[\s\S]*?<\/w:sdt>/)![0];
+const duplicatedSdt = inlineSdtOutput.replace(targetSdt, `${targetSdt}${targetSdt}`);
+check(
+  'total SDT duplication is rejected by both oracle scenarios',
+  !assertionPasses(normativeSdtManifest, normativeSdtDir, duplicatedSdt, 1) &&
+    !assertionPasses(invariantSdtManifest, invariantSdtDir, duplicatedSdt, 1)
+);
+
+const opaqueChild = inlineSdtOutput.match(/\s*<ext:opaqueExtension[\s\S]*?<\/ext:opaqueExtension>/)![0];
+const cleanedTargetSdt = targetSdt
+  .replace(' ext:opaqueAttribute="opaque-attribute-sentinel"', '')
+  .replace(opaqueChild.trim(), '');
+const otherSdt = targetSdt
+  .replace('w:val="54"', 'w:val="99"')
+  .replace('dpt-inline-sdt', 'other-sdt')
+  .replace('Controlled text sentinel', 'Other control');
+const relocatedOpaque = inlineSdtOutput.replace(targetSdt, cleanedTargetSdt + otherSdt);
+check(
+  'opaque sentinels relocated to another SDT do not satisfy target-scoped assertions',
+  !assertionPasses(invariantSdtManifest, invariantSdtDir, relocatedOpaque, 4) &&
+    !assertionPasses(invariantSdtManifest, invariantSdtDir, relocatedOpaque, 5)
+);
+
+const reorderedKnownProperties = inlineSdtOutput.replace(
+  /(<w:tag w:val="dpt-inline-sdt"\/>)([\s\S]*?<\/ext:opaqueExtension>)(\s*)(<w:id w:val="54"\/>)/,
+  '$4$2$3$1'
+);
+check(
+  'schema-invalid known sdtPr child order is rejected',
+  !assertionPasses(normativeSdtManifest, normativeSdtDir, reorderedKnownProperties, 4)
+);
+
+const reorderedOpaqueChild = inlineSdtOutput.replace(
+  /(<w:tag w:val="dpt-inline-sdt"\/>)([\s\S]*?<\/ext:opaqueExtension>)(\s*)(<w:id w:val="54"\/>)/,
+  '$1$3$4$2'
+);
+check(
+  'opaque child relative-position change is rejected as an invariant',
+  !assertionPasses(invariantSdtManifest, invariantSdtDir, reorderedOpaqueChild, 5)
+);
+check(
+  'opaque child removal is rejected as an invariant',
+  !assertionPasses(
+    invariantSdtManifest,
+    invariantSdtDir,
+    inlineSdtOutput.replace(opaqueChild, ''),
+    5
+  )
+);
+
+const aliasedPrefix = inlineSdtOutput
+  .replace('xmlns:ext=', 'xmlns:opaque=')
+  .replace('mc:Ignorable="ext"', 'mc:Ignorable="opaque"')
+  .replaceAll('ext:', 'opaque:');
+check(
+  'foreign prefix alias rename preserves namespace-semantic assertions',
+  invariantSdtManifest.assertionList.every((assertion) =>
+    evaluateAssertion(
+      assertion,
+      packageFromParts({ 'word/document.xml': aliasedPrefix }),
+      invariantSdtDir
+    ).passed
+  )
+);
+const extensionNamespace =
+  'urn:open-agreements:docx-platform-tests:inline-content-control';
+const locallyDeclaredIgnorable = inlineSdtOutput
+  .replace(`\n  xmlns:ext="${extensionNamespace}"`, '')
+  .replace('\n  mc:Ignorable="ext"', '')
+  .replace(
+    '<w:sdt ext:opaqueAttribute=',
+    `<w:sdt xmlns:ext="${extensionNamespace}" mc:Ignorable="ext" ext:opaqueAttribute=`
+  );
+check(
+  'target-local ignorable namespace declaration is equivalent',
+  assertionPasses(invariantSdtManifest, invariantSdtDir, locallyDeclaredIgnorable, 3)
+);
+const siblingOnlyIgnorable = inlineSdtOutput
+  .replace('\n  mc:Ignorable="ext"', '')
+  .replace('<w:r><w:t xml:space="preserve">Edit target:', '<w:r mc:Ignorable="ext"><w:t xml:space="preserve">Edit target:');
+check(
+  'out-of-scope sibling mc:Ignorable declaration is rejected',
+  !assertionPasses(invariantSdtManifest, invariantSdtDir, siblingOnlyIgnorable, 3)
+);
+const mismatchedIgnorable = inlineSdtOutput
+  .replace('xmlns:ext=', 'xmlns:other="urn:wrong-extension" xmlns:ext=')
+  .replace('mc:Ignorable="ext"', 'mc:Ignorable="other"');
+check(
+  'mismatched ignorable namespace binding is rejected',
+  !assertionPasses(invariantSdtManifest, invariantSdtDir, mismatchedIgnorable, 3)
+);
+
+const sentinelMutations: Array<{
+  label: string;
+  manifest: ScenarioManifest;
+  scenarioDir: string;
+  assertionIndex: number;
+  mutate: (xml: string) => string;
+}> = [
+  { label: 'edited paragraph text', manifest: normativeSdtManifest, scenarioDir: normativeSdtDir, assertionIndex: 0, mutate: (xml) => xml.replace('sixty', 'thirty') },
+  { label: 'SDT alias', manifest: normativeSdtManifest, scenarioDir: normativeSdtDir, assertionIndex: 4, mutate: (xml) => xml.replace('Opaque inline control', 'Changed alias') },
+  { label: 'SDT id', manifest: normativeSdtManifest, scenarioDir: normativeSdtDir, assertionIndex: 2, mutate: (xml) => xml.replace('w:val="54"', 'w:val="55"') },
+  { label: 'SDT tag', manifest: normativeSdtManifest, scenarioDir: normativeSdtDir, assertionIndex: 2, mutate: (xml) => xml.replace('dpt-inline-sdt', 'other-sdt') },
+  { label: 'controlled content', manifest: normativeSdtManifest, scenarioDir: normativeSdtDir, assertionIndex: 5, mutate: (xml) => xml.replace('Controlled text sentinel', 'Changed controlled text') },
+  { label: 'mc:Ignorable namespace', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 3, mutate: (xml) => xml.replace('mc:Ignorable="ext"', '') },
+  { label: 'opaque attribute', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 4, mutate: (xml) => xml.replace('opaque-attribute-sentinel', 'changed') },
+  { label: 'opaque child', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 5, mutate: (xml) => xml.replace('extension-child-sentinel', 'changed') },
+  { label: 'nested payload attribute', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 6, mutate: (xml) => xml.replace('nested-payload-sentinel', 'changed') },
+  { label: 'nested payload text', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 6, mutate: (xml) => xml.replace('opaque payload sentinel', 'changed payload') },
+  { label: 'first child', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 7, mutate: (xml) => xml.replace('first-child-sentinel', 'changed') },
+  { label: 'last child', manifest: invariantSdtManifest, scenarioDir: invariantSdtDir, assertionIndex: 7, mutate: (xml) => xml.replace('last-child-sentinel', 'changed') },
+];
+for (const mutation of sentinelMutations) {
+  const mutated = mutation.mutate(inlineSdtOutput);
+  check(
+    `inline SDT assertion rejects changed ${mutation.label} sentinel`,
+    mutated !== inlineSdtOutput &&
+      !assertionPasses(
+        mutation.manifest,
+        mutation.scenarioDir,
+        mutated,
+        mutation.assertionIndex
+      )
+  );
+}
+
+const mceProcessed = preprocessIgnorableMarkupForSchema(inlineSdtOutput);
+const localMceProcessed = preprocessIgnorableMarkupForSchema(locallyDeclaredIgnorable);
+check(
+  'MCE preprocessing removes inherited and target-local ignorable extension markup',
+  !mceProcessed.includes('opaqueAttribute') &&
+    !mceProcessed.includes('opaqueExtension') &&
+    !localMceProcessed.includes('opaqueAttribute') &&
+    !localMceProcessed.includes('opaqueExtension') &&
+    /<w:alias[^>]*\/>[\s\S]*<w:tag[^>]*\/>[\s\S]*<w:id[^>]*\/>/.test(mceProcessed) &&
+    /<w:alias[^>]*\/>[\s\S]*<w:tag[^>]*\/>[\s\S]*<w:id[^>]*\/>/.test(localMceProcessed)
+);
 
 // --- DSL 1.3: multi-part assertion machinery ---
 

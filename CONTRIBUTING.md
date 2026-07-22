@@ -2,13 +2,18 @@
 
 ## Scenarios
 
-A scenario is accepted when its assertion is derivable from a cited
-ECMA-376 clause — not from the behavior of any particular implementation.
+A conformance scenario is accepted when its assertion is derivable from a
+cited ECMA-376 clause — not from any particular implementation. A pure
+metamorphic scenario may test a narrowly declared preservation property, but
+it is reported and aggregated separately from ECMA conformance.
 Requirements:
 
 - `specCitation` names edition, part, and section; the PR description should
   quote nothing from the spec (cite by number only) but must explain the
   derivation.
+- Do not mix conformance and metamorphic assertions in one scenario. Split
+  them so invariant loss cannot grade an ECMA failure or contaminate another
+  capability's evidence.
 - Follow the assertion-strength rule in `docs/scenario-dsl.md`: weakest
   assertion that captures the claim; `canonicalXmlEquals` always paired with
   weaker assertions.

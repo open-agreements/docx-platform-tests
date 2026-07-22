@@ -75,7 +75,33 @@ Scenario mappings distinguish:
 `normative-microsoft-extension` requires a structured `MS-DOCX` citation on
 both the scenario and mapped capability. Observed Word behavior is not silently promoted to an ECMA requirement, and a
 canonical serialization check does not turn valid XML freedom into a semantic
-failure. Existing outcome grading remains unchanged.
+failure.
+
+An ECMA-376 Part 3 citation can provide MCE context for a
+`metamorphic-invariant` without making preservation of ignorable foreign
+markup a normative ECMA oracle. In particular, an application that does not
+understand ignorable markup may discard it. A preservation scenario therefore
+asserts only its declared sentinels and classifies that evidence as
+`metamorphic-invariant`, not `normative-prose`. Normative SDT structure and
+opaque preservation belong in separate scenarios.
+
+Mixed metamorphic/conformance scenarios are rejected. Result aggregation
+groups by capability, axis, and `oracleKind`, so invariant failures cannot
+enter conformance denominators or another capability's mapped evidence.
+
+### Oracle-purity migration
+
+An audit of every pre-existing mapping for the oracle-aware results contract
+found two mixed scenarios. They were split without discarding their
+preservation-oriented IDs:
+
+| Historical scenario ID | Retained meaning | Normative companion |
+| --- | --- | --- |
+| `appendParagraphPreservesExistingContent` | prior paragraph preservation invariant | `appendParagraphAddsTrailingParagraph` |
+| `replaceTextInsideTableCellPreservesStructure` | table and neighboring-cell preservation invariant | `replaceTextInsideTableCellUpdatesTargetText` |
+
+The companions run the same operations against equivalent fixtures. This
+keeps historical links stable while ensuring each result has one oracle kind.
 
 ## Repository boundary
 

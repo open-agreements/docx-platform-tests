@@ -1,0 +1,77 @@
+{
+  "dslVersion": "1.8",
+  "scenarioId": "unrelatedTextEditPreservesOpaqueInlineContentControl",
+  "scenarioTitle": "An unrelated text edit preserves declared opaque sentinels on one inline content control",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 3,
+    "section": "7.2",
+    "clauseTitle": "Ignorable Attribute"
+  },
+  "secondarySpecCitations": [
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 3,
+      "section": "9.2",
+      "clauseTitle": "Step 1: Processing the Ignorable and ProcessContent Attributes"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 3,
+      "section": "9.4",
+      "clauseTitle": "Step 3: Processing the MustUnderstand Attribute and Creating the Output Document"
+    }
+  ],
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "replaceFirstTextOccurrence",
+    "findText": "thirty",
+    "replaceText": "sixty"
+  },
+  "assertionList": [
+    {
+      "assertionKind": "xpathElementTextEquals",
+      "xpathExpression": "/w:document/w:body/w:p",
+      "expectedText": "Edit target: sixty days. Controlled text sentinel Paragraph tail."
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body//w:sdt",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "ignorableNamespaceDeclared",
+      "xpathExpression": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]",
+      "expectedNamespaceUri": "urn:open-agreements:docx-platform-tests:inline-content-control"
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='opaque-attribute-sentinel']]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-inline-sdt']]][following-sibling::*[1][self::w:id[@w:val='54']]]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='nested-payload-sentinel'] and normalize-space(.)='opaque payload sentinel']",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='last-child-sentinel']]]",
+      "expectedCount": 1
+    }
+  ]
+}

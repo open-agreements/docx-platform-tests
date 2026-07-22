@@ -38,6 +38,8 @@ export interface ScenarioAssertion {
   assertionKind:
     | 'xpathQueryCount'
     | 'xpathQueryExists'
+    | 'xpathElementTextEquals'
+    | 'ignorableNamespaceDeclared'
     | 'documentTextContainsAtOffset'
     | 'canonicalXmlEquals'
     | 'schemaValidAgainstWml'
@@ -46,6 +48,8 @@ export interface ScenarioAssertion {
     | 'paragraphNumberingResolvesToFormat';
   xpathExpression?: string;
   expectedCount?: number;
+  expectedText?: string;
+  expectedNamespaceUri?: string;
   expectedSubstring?: string;
   expectedOffset?: number;
   expectedDocumentPath?: string;
@@ -97,6 +101,8 @@ export type OutcomeStatus =
   | 'pass'
   | 'pass-divergent'
   | 'fail'
+  | 'invariant-pass'
+  | 'invariant-fail'
   | 'unsupported'
   | 'error'
   | 'protocol-mismatch';
@@ -106,6 +112,8 @@ export interface AssertionResult {
   passed: boolean;
   detail: string;
 }
+
+export type ScenarioOracleKind = 'ecma-conformance' | 'metamorphic-invariant';
 
 export interface ScenarioOutcome {
   status: OutcomeStatus;
@@ -123,6 +131,7 @@ export interface ResultsDocument {
     scenarioGroup: string;
     scenarioId: string;
     scenarioTitle: string;
+    oracleKind: ScenarioOracleKind;
     specCitation: SpecCitation;
     microsoftExtensionCitations?: MicrosoftExtensionCitation[];
     outcomes: Record<string, ScenarioOutcome>;

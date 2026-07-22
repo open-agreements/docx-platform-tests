@@ -57,6 +57,21 @@ Pages. Consumers should treat the top-level `schemaVersion` as the results
 format version and validate against `results/results.schema.json` (draft
 2020-12), published alongside the data. CI checks that the committed schema is
 current and validates every emitted `latest.json` before publication.
+Each scenario result declares `oracleKind`. ECMA conformance uses `pass`,
+`pass-divergent`, and `fail`; suite-declared metamorphic preservation evidence
+uses `invariant-pass` and `invariant-fail` and is not an ECMA failure signal.
+
+Schema-v2 snapshots did not carry `oracleKind`. The command
+`npm run migrate-results -- --input <v2.json> --output <v3.json>` performs the
+deterministic migration. It
+accepts only the immutable snapshot vendored under `results/history/` and
+authenticated by raw-fixture and canonical JSON SHA-256 digests, ordered
+adapter/scenario identities, and cardinalities in
+`registry/results-history.json`. After authentication it
+infers `ecma-conformance` only when the current mapping remains pure normative
+evidence. Missing, extra, duplicate, reordered, altered, or invariant-injected
+rows are rejected rather than guessed. The history entry records the source
+commit from which the fixture was vendored.
 
 ## Versioning
 

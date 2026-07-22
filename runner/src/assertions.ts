@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { DOMParser } from '@xmldom/xmldom';
+import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 import xpath from 'xpath';
 import { canonicalizeDocumentXml, WML_NS } from './canonicalize.js';
 import {
@@ -15,6 +15,7 @@ import {
 import type { AssertedPart, AssertionResult, ScenarioAssertion } from './types.js';
 
 const XML_NS = 'http://www.w3.org/XML/1998/namespace';
+const MCE_NS = 'http://schemas.openxmlformats.org/markup-compatibility/2006';
 const OFFICE_REL_NS =
   'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
 const COMMENTS_REL_TYPE = `${OFFICE_REL_NS}/comments`;
@@ -105,11 +106,14 @@ function resolveAssertedPart(
   return resolution;
 }
 
-function validateAgainstWmlSchema(documentXml: string): AssertionResult {
+function validateAgainstWmlSchema(
+  documentXml: string,
+  assertionKind: ScenarioAssertion['assertionKind']
+): AssertionResult {
   const schemaPath = process.env[WML_SCHEMA_PATH_ENV];
   if (!schemaPath) {
     return {
-      assertionKind: 'schemaValidAgainstWml',
+      assertionKind,
       passed: false,
       detail: `schema validation requires ${WML_SCHEMA_PATH_ENV} pointing to a WordprocessingML XSD entry point`,
     };
@@ -123,20 +127,89 @@ function validateAgainstWmlSchema(documentXml: string): AssertionResult {
   });
   if (result.error) {
     return {
-      assertionKind: 'schemaValidAgainstWml',
+      assertionKind,
       passed: false,
       detail: `${xmllint} failed to run: ${String(result.error)}`,
     };
   }
   const output = `${result.stdout}${result.stderr}`.trim();
   return {
-    assertionKind: 'schemaValidAgainstWml',
+    assertionKind,
     passed: result.status === 0,
     detail:
       result.status === 0
         ? `valid against ${schemaPath}`
         : `xmllint exit ${result.status}: ${output.slice(0, 2000) || 'no diagnostics'}`,
   };
+}
+
+/**
+ * Apply the subset of ECMA-376 Part 3 processing needed before WML XSD
+ * validation: resolve mc:Ignorable prefixes by namespace, remove attributes
+ * and whole elements in those namespaces, then remove MCE attributes. The
+ * suite rejects ProcessContent here rather than silently approximating it.
+ */
+export function preprocessIgnorableMarkupForSchema(documentXml: string): string {
+  const dom = parseDom(documentXml);
+
+  function visit(element: Element, inheritedIgnorable: Set<string>): void {
+    const ignorable = new Set(inheritedIgnorable);
+    const declared = element.getAttributeNS(MCE_NS, 'Ignorable');
+    for (const prefix of declared?.trim().split(/\s+/).filter(Boolean) ?? []) {
+      const namespace = element.lookupNamespaceURI(prefix);
+      if (!namespace) throw new Error(`mc:Ignorable prefix '${prefix}' is not namespace-bound`);
+      ignorable.add(namespace);
+    }
+    if (element.hasAttributeNS(MCE_NS, 'ProcessContent')) {
+      throw new Error('MCE-aware schema validation does not support mc:ProcessContent');
+    }
+
+    for (let i = element.attributes.length - 1; i >= 0; i--) {
+      const attribute = element.attributes.item(i)!;
+      if (attribute.namespaceURI === MCE_NS || ignorable.has(attribute.namespaceURI ?? '')) {
+        element.removeAttributeNode(attribute);
+      }
+    }
+
+    for (let child = element.firstChild; child; ) {
+      const next = child.nextSibling;
+      if (child.nodeType === 1) {
+        const childElement = child as Element;
+        if (ignorable.has(childElement.namespaceURI ?? '')) {
+          element.removeChild(childElement);
+        } else {
+          visit(childElement, ignorable);
+        }
+      }
+      child = next;
+    }
+  }
+
+  visit(dom.documentElement, new Set());
+  return new XMLSerializer().serializeToString(dom as never);
+}
+
+const REVISION_HIDDEN_TEXT_CONTAINERS = new Set(['del', 'moveFrom']);
+
+function visibleDescendantText(element: Element): string {
+  let text = '';
+  function visit(node: Node): void {
+    if (node.nodeType !== 1) return;
+    const child = node as Element;
+    if (
+      child.namespaceURI === WML_NS &&
+      REVISION_HIDDEN_TEXT_CONTAINERS.has(child.localName)
+    ) {
+      return;
+    }
+    if (child.namespaceURI === WML_NS && child.localName === 't') {
+      text += child.textContent ?? '';
+      return;
+    }
+    for (let nested = child.firstChild; nested; nested = nested.nextSibling) visit(nested);
+  }
+  visit(element);
+  return text;
 }
 
 function hyperlinkText(hyperlink: Element): string {
@@ -463,6 +536,73 @@ export function evaluateAssertion(
         detail: `${assertion.xpathExpression} matched ${nodes.length} node(s) in ${part.partName}; expected at least 1`,
       };
     }
+    case 'xpathElementTextEquals': {
+      const part = resolveAssertedPart(pkg, assertion.assertedPart);
+      if (!part.ok) {
+        return { assertionKind: assertion.assertionKind, passed: false, detail: part.error };
+      }
+      const nodes = selectRefs(
+        assertion.xpathExpression!,
+        parseDom(part.xml) as never
+      ) as unknown[];
+      const elements = nodes.filter(
+        (node): node is Element => Boolean(node && typeof node === 'object' && (node as Node).nodeType === 1)
+      );
+      const actualText = elements.length === 1 ? visibleDescendantText(elements[0]) : null;
+      const passed = elements.length === 1 && actualText === assertion.expectedText;
+      return {
+        assertionKind: assertion.assertionKind,
+        passed,
+        detail:
+          elements.length !== 1
+            ? `${assertion.xpathExpression} selected ${elements.length} element(s) in ${part.partName}; expected exactly 1`
+            : `visible descendant w:t text ${JSON.stringify(actualText)}; expected ${JSON.stringify(assertion.expectedText)}`,
+      };
+    }
+    case 'ignorableNamespaceDeclared': {
+      const part = resolveAssertedPart(pkg, assertion.assertedPart);
+      if (!part.ok) {
+        return { assertionKind: assertion.assertionKind, passed: false, detail: part.error };
+      }
+      const dom = parseDom(part.xml);
+      const nodes = selectRefs(assertion.xpathExpression!, dom as never) as unknown[];
+      const targets = nodes.filter(
+        (node): node is Element =>
+          Boolean(node && typeof node === 'object' && (node as Node).nodeType === 1)
+      );
+      if (targets.length !== 1) {
+        return {
+          assertionKind: assertion.assertionKind,
+          passed: false,
+          detail: `${assertion.xpathExpression} selected ${targets.length} element(s) in ${part.partName}; expected exactly 1`,
+        };
+      }
+      const declarations: Array<{ prefix: string; namespace: string | null }> = [];
+      for (let scope: Element | null = targets[0]; scope; ) {
+        const prefixes =
+          scope
+            .getAttributeNS(MCE_NS, 'Ignorable')
+            ?.trim()
+            .split(/\s+/)
+            .filter(Boolean) ?? [];
+        declarations.push(
+          ...prefixes.map((prefix) => ({ prefix, namespace: scope!.lookupNamespaceURI(prefix) }))
+        );
+        scope = scope.parentNode?.nodeType === 1 ? (scope.parentNode as Element) : null;
+      }
+      const passed = declarations.some(
+        ({ namespace }) => namespace === assertion.expectedNamespaceUri
+      );
+      return {
+        assertionKind: assertion.assertionKind,
+        passed,
+        detail: passed
+          ? `target or ancestor mc:Ignorable resolves ${assertion.expectedNamespaceUri}`
+          : `target or ancestor mc:Ignorable declarations [${declarations
+              .map(({ prefix, namespace }) => `${prefix}=${namespace ?? 'unbound'}`)
+              .join(', ')}]; expected ${assertion.expectedNamespaceUri}`,
+      };
+    }
     case 'documentTextContainsAtOffset': {
       const projection = projectBodyText(pkg.mainDocumentXml);
       const actualOffset = projection.indexOf(assertion.expectedSubstring!);
@@ -498,7 +638,7 @@ export function evaluateAssertion(
       if (!part.ok) {
         return { assertionKind: assertion.assertionKind, passed: false, detail: part.error };
       }
-      return validateAgainstWmlSchema(part.xml);
+      return validateAgainstWmlSchema(part.xml, assertion.assertionKind);
     }
     case 'hyperlinkResolvesToExternalUrl': {
       return evaluateHyperlinkResolvesToExternalUrl(assertion, pkg);

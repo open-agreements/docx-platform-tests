@@ -2,12 +2,12 @@
   "schemaVersion": 1,
   "registryVersion": 1,
   "totals": {
-    "capabilities": 22,
-    "scenarios": 38,
-    "mappings": 42,
-    "coveredAxes": 27,
-    "applicableAxes": 138,
-    "uncoveredAxes": 111
+    "capabilities": 23,
+    "scenarios": 42,
+    "mappings": 45,
+    "coveredAxes": 28,
+    "applicableAxes": 145,
+    "uncoveredAxes": 117
   },
   "unclassifiedScenarioIds": [],
   "capabilities": [
@@ -92,6 +92,45 @@
       ],
       "coveredAxisCount": 1,
       "applicableAxisCount": 2
+    },
+    {
+      "capabilityId": "word.content-controls.inline",
+      "family": "content-controls",
+      "axes": [
+        {
+          "axis": "detect",
+          "scenarioIds": []
+        },
+        {
+          "axis": "preserve",
+          "scenarioIds": [
+            "unrelatedTextEditPreservesInlineContentControlStructure",
+            "unrelatedTextEditPreservesOpaqueInlineContentControl"
+          ]
+        },
+        {
+          "axis": "parse",
+          "scenarioIds": []
+        },
+        {
+          "axis": "validate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "generate",
+          "scenarioIds": []
+        },
+        {
+          "axis": "edit",
+          "scenarioIds": []
+        },
+        {
+          "axis": "crossPlatform",
+          "scenarioIds": []
+        }
+      ],
+      "coveredAxisCount": 1,
+      "applicableAxisCount": 7
     },
     {
       "capabilityId": "word.footers.default",
@@ -244,7 +283,7 @@
         {
           "axis": "generate",
           "scenarioIds": [
-            "appendParagraphPreservesExistingContent",
+            "appendParagraphAddsTrailingParagraph",
             "composeParagraphsProduceTextRuns"
           ]
         },
@@ -797,7 +836,8 @@
           "scenarioIds": [
             "replaceFirstOccurrencePreservesOffsets",
             "replaceTextAcrossRunBoundary",
-            "replaceTextInsideTableCellPreservesStructure"
+            "replaceTextInsideTableCellUpdatesTargetText",
+            "unrelatedTextEditPreservesInlineContentControlStructure"
           ]
         },
         {

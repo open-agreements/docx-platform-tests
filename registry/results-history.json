@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "legacySchemas": {
+    "2": {
+      "sourceCommit": "19f051ed645cbc8613a5967e02d7f87ef7824454",
+      "fixturePath": "results/history/results-v2-2026-07-06.json",
+      "fixtureSha256": "e093eda4ba4cc9d4abc91aef57e86e021cc4ec79c94ae098ef0c5080a27fcb30",
+      "canonicalSha256": "bdd3bcb7387f30b76808498b9b8bde246d3644fbee3f6b82028ba820dcd84dc9",
+      "expectedImplementationCount": 7,
+      "expectedAdapterNames": [
+        "safe-docx",
+        "python-docx",
+        "libreoffice",
+        "openxml-sdk",
+        "dolanmiu-docx",
+        "superdoc-sdk",
+        "docx-rs"
+      ],
+      "expectedScenarioCount": 12,
+      "expectedScenarioIds": [
+        "acceptDeletedParagraphMarkMergesParagraphs",
+        "acceptDeletionsRemovesDelContent",
+        "acceptFormattingChangeKeepsNewRunProperties",
+        "acceptInsertionsUnwrapsInsWrappers",
+        "acceptNestedDeletionInsideInsertion",
+        "rejectDeletionsRestoresDelContent",
+        "rejectFormattingChangeRestoresPriorRunProperties",
+        "rejectInsertedParagraphMarkMergesParagraphs",
+        "rejectInsertionsRemovesInsContent",
+        "rejectNestedDeletionInsideInsertion",
+        "replaceFirstOccurrencePreservesOffsets",
+        "replaceTextAcrossRunBoundary"
+      ],
+      "oracleKindByScenario": {
+        "acceptDeletedParagraphMarkMergesParagraphs": "ecma-conformance",
+        "acceptDeletionsRemovesDelContent": "ecma-conformance",
+        "acceptFormattingChangeKeepsNewRunProperties": "ecma-conformance",
+        "acceptInsertionsUnwrapsInsWrappers": "ecma-conformance",
+        "acceptNestedDeletionInsideInsertion": "ecma-conformance",
+        "rejectDeletionsRestoresDelContent": "ecma-conformance",
+        "rejectFormattingChangeRestoresPriorRunProperties": "ecma-conformance",
+        "rejectInsertedParagraphMarkMergesParagraphs": "ecma-conformance",
+        "rejectInsertionsRemovesInsContent": "ecma-conformance",
+        "rejectNestedDeletionInsideInsertion": "ecma-conformance",
+        "replaceFirstOccurrencePreservesOffsets": "ecma-conformance",
+        "replaceTextAcrossRunBoundary": "ecma-conformance"
+      }
+    }
+  }
+}

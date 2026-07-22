@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:ext="urn:open-agreements:docx-platform-tests:inline-content-control"
+  mc:Ignorable="ext">
+  <w:body>
+    <w:p>
+      <w:r><w:t xml:space="preserve">Edit target: thirty days. </w:t></w:r>
+      <w:sdt ext:opaqueAttribute="opaque-attribute-sentinel">
+        <w:sdtPr>
+          <w:alias w:val="Opaque inline control"/>
+          <w:tag w:val="dpt-inline-sdt"/>
+          <ext:opaqueExtension ext:sentinel="extension-child-sentinel">
+            <ext:before ext:sentinel="first-child-sentinel"/>
+            <ext:payload>
+              <ext:nested ext:sentinel="nested-payload-sentinel">opaque payload sentinel</ext:nested>
+            </ext:payload>
+            <ext:after ext:sentinel="last-child-sentinel"/>
+          </ext:opaqueExtension>
+          <w:id w:val="54"/>
+        </w:sdtPr>
+        <w:sdtContent>
+          <w:r><w:t>Controlled text sentinel</w:t></w:r>
+        </w:sdtContent>
+      </w:sdt>
+      <w:r><w:t xml:space="preserve"> Paragraph tail.</w:t></w:r>
+    </w:p>
+  </w:body>
+</w:document>

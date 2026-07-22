@@ -1,0 +1,13 @@
+{
+  "dslVersion": "1.8",
+  "scenarioId": "replaceTextInsideTableCellUpdatesTargetText",
+  "scenarioTitle": "Replacing text inside a table cell updates the target text",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.3.31", "clauseTitle": "t (Text)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "replaceFirstTextOccurrence", "findText": "thirty", "replaceText": "sixty" },
+  "assertionList": [
+    { "assertionKind": "xpathElementTextEquals", "xpathExpression": "//w:tbl/w:tr/w:tc[1]", "expectedText": "Invoice total sixty dollars" },
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:body//w:t[contains(., 'Invoice total thirty dollars')]", "expectedCount": 0 }
+  ]
+}

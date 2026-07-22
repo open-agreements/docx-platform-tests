@@ -1,0 +1,13 @@
+{
+  "dslVersion": "1.8",
+  "scenarioId": "appendParagraphAddsTrailingParagraph",
+  "scenarioTitle": "Appending a paragraph adds one trailing paragraph with the requested text",
+  "specCitation": { "standard": "ECMA-376", "edition": 5, "part": 1, "section": "17.3.1.22", "clauseTitle": "p (Paragraph)" },
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": { "operationName": "appendParagraphWithText", "paragraphText": "Appended closing paragraph" },
+  "assertionList": [
+    { "assertionKind": "xpathQueryCount", "xpathExpression": "//w:body/w:p[.//w:t]", "expectedCount": 2 },
+    { "assertionKind": "xpathElementTextEquals", "xpathExpression": "//w:body/w:p[last()]", "expectedText": "Appended closing paragraph" }
+  ]
+}

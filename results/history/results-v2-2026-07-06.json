@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 2,
   "runTimestamp": "2026-07-06T11:04:32.667Z",
   "dslVersion": "1.2",
   "protocolVersion": 1,
@@ -106,8 +106,7 @@
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       },
-      "scenarioGroup": "tracked-changes",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "acceptDeletionsRemovesDelContent",
@@ -212,8 +211,7 @@
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       },
-      "scenarioGroup": "tracked-changes",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "acceptFormattingChangeKeepsNewRunProperties",
@@ -333,8 +331,7 @@
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       },
-      "scenarioGroup": "tracked-changes",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "acceptInsertionsUnwrapsInsWrappers",
@@ -424,8 +421,7 @@
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       },
-      "scenarioGroup": "tracked-changes",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "acceptNestedDeletionInsideInsertion",
@@ -575,8 +571,7 @@
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       },
-      "scenarioGroup": "tracked-changes",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "rejectDeletionsRestoresDelContent",
@@ -681,8 +676,7 @@
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       },
-      "scenarioGroup": "tracked-changes",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "rejectFormattingChangeRestoresPriorRunProperties",
@@ -802,8 +796,7 @@
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       },
-      "scenarioGroup": "tracked-changes",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "rejectInsertedParagraphMarkMergesParagraphs",
@@ -877,8 +870,7 @@
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       },
-      "scenarioGroup": "tracked-changes",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "rejectInsertionsRemovesInsContent",
@@ -983,8 +975,7 @@
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       },
-      "scenarioGroup": "tracked-changes",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "rejectNestedDeletionInsideInsertion",
@@ -1134,8 +1125,7 @@
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
         }
       },
-      "scenarioGroup": "tracked-changes",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "tracked-changes"
     },
     {
       "scenarioId": "replaceFirstOccurrencePreservesOffsets",
@@ -1257,8 +1247,7 @@
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
         }
       },
-      "scenarioGroup": "find-replace",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "find-replace"
     },
     {
       "scenarioId": "replaceTextAcrossRunBoundary",
@@ -1348,8 +1337,7 @@
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
         }
       },
-      "scenarioGroup": "find-replace",
-      "oracleKind": "ecma-conformance"
+      "scenarioGroup": "find-replace"
     }
   ]
 }

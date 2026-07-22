@@ -1,4 +1,9 @@
-# Scenario DSL, version 1.7
+# Scenario DSL, version 1.8
+
+Changes in 1.8: `xpathElementTextEquals` compares concatenated visible
+descendant `w:t` text without constraining run splits;
+`ignorableNamespaceDeclared` resolves `mc:Ignorable` prefixes to namespace
+URIs; and pure metamorphic scenarios use invariant-specific result statuses.
 
 Changes in 1.7: `composeDocumentWithCompatibilityMode` is added for generating
 a document whose settings part declares a requested Word compatibility mode;
@@ -95,6 +100,9 @@ fragment — fails CI. Unrecognized `input/*.xml` files are rejected outright.
 ## scenario.json
 
 All keys are deliberately self-disambiguating (3–4-word camelCase).
+The runner validates each assertion kind against the DSL version in which it
+was introduced; a manifest cannot use a newer assertion while declaring an
+older `dslVersion`.
 
 ```json
 {
@@ -132,8 +140,10 @@ All keys are deliberately self-disambiguating (3–4-word camelCase).
 ```
 
 - `specCitation` is mandatory and is the primary clause the scenario is
-  organized around. Every scenario must be defensible against the cited
-  ECMA-376 clause, not against any implementation.
+  organized around. Conformance assertions must be derivable from the cited
+  ECMA-376 clause. A pure metamorphic scenario may cite the ECMA context for
+  the construct while explicitly testing a narrower suite-declared invariant;
+  it is not an ECMA conformance oracle.
 - `secondarySpecCitations` is optional. Use it when a composed scenario's
   assertions also derive from additional clauses (for example, nested
   `w:del` content inside a `w:ins` wrapper). Single-clause scenarios omit it,
@@ -149,7 +159,7 @@ All keys are deliberately self-disambiguating (3–4-word camelCase).
   the suite treats documented Word behavior as canonical and the note says so
   explicitly. `null` when no deviation is known.
 
-## Operations (v1.0-1.7 — closed enum)
+## Operations (v1.0-1.8 — closed enum)
 
 | `operationName` | Parameters | `inputContract` | Meaning |
 | --- | --- | --- | --- |
@@ -195,6 +205,8 @@ assertion failing never masks a lenient one passing.
 | --- | --- | --- |
 | `xpathQueryCount` | `xpathExpression`, `expectedCount` | the raw output DOM |
 | `xpathQueryExists` | `xpathExpression` | the raw output DOM (sugar for count ≥ 1) |
+| `xpathElementTextEquals` | `xpathExpression`, `expectedText` | exactly one selected element; concatenated visible descendant `w:t` text must equal `expectedText` |
+| `ignorableNamespaceDeclared` | `xpathExpression`, `expectedNamespaceUri` | exactly one selected target; `mc:Ignorable` tokens on that element or its ancestors, resolved in declaration scope |
 | `documentTextContainsAtOffset` | `expectedSubstring`, `expectedOffset` | the body text projection (below) |
 | `canonicalXmlEquals` | `expectedDocumentPath` | the canonicalized output vs the canonicalized expected document |
 | `schemaValidAgainstWml` | — | the output `word/document.xml` validated with `xmllint --schema` against `DPT_WML_SCHEMA_PATH` |
@@ -211,6 +223,17 @@ never hardcode them; where a claim spans two parts (a reference resolving to a
 target), a purpose-built assertion such as `hyperlinkResolvesToExternalUrl`,
 `commentExistsWithTextAndAnchor`, or `paragraphNumberingResolvesToFormat`
 performs the id join inside the runner.
+
+`xpathElementTextEquals` ignores run boundaries. It walks the selected element
+in document order, concatenates descendant `w:t` values, and excludes `w:t`
+inside revision-hidden `w:del` and `w:moveFrom` containers. Exactly one element
+must be selected, so duplication cannot pass accidentally.
+
+`ignorableNamespaceDeclared` compares namespace URIs, not literal prefix
+spelling. It selects exactly one target and walks only that element's ancestor
+chain. Each `mc:Ignorable` token is resolved using the effective namespace
+binding where the attribute is declared. Equivalent local declarations pass;
+sibling declarations and mismatched or out-of-scope bindings do not.
 
 ### Asserted part (`assertedPart`)
 
@@ -301,7 +324,18 @@ assertion (`xpathQueryCount` / `xpathQueryExists` /
 reference serialization for audit and regression visibility, always
 alongside the semantic assertions that carry the claim.
 
-### Outcome grading (v1.1)
+### Oracle kinds and outcome grading (v1.8)
+
+Oracle classes are declared in `registry/scenario-capabilities.json`. A
+scenario containing `metamorphic-invariant` may contain no conformance oracle
+class; mixed scenarios are rejected and must be split. Published scenario
+results carry `oracleKind`:
+
+- `ecma-conformance` uses `pass`, `pass-divergent`, and `fail`;
+- `metamorphic-invariant` uses `invariant-pass` and `invariant-fail`.
+
+Capability-axis aggregation includes `oracleKind` in its grouping key. An
+`invariant-fail` is never counted in an ECMA-conformance row.
 
 A scenario cell is graded from the per-assertion results:
 
@@ -310,6 +344,8 @@ A scenario cell is graded from the per-assertion results:
 | `pass` | every assertion passed |
 | `pass-divergent` | every assertion **except** `canonicalXmlEquals` passed |
 | `fail` | any non-`canonicalXmlEquals` assertion failed |
+| `invariant-pass` | every assertion in a pure metamorphic scenario passed |
+| `invariant-fail` | any assertion in a pure metamorphic scenario failed |
 
 The conformance claim is carried by the semantic assertions (xpath and
 text-projection); `canonicalXmlEquals` pins serialization granularity beyond

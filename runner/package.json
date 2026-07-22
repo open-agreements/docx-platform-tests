@@ -13,10 +13,12 @@
     "pack-fixtures": "tsx src/pack-fixtures.ts",
     "check-fixtures": "tsx src/pack-fixtures.ts --check",
     "write-results-schema": "tsx src/write-results-schema.ts",
-    "check-results-schema": "tsx src/write-results-schema.ts --check",
+    "check-results-schema": "tsx src/write-results-schema.ts --check && tsx src/normalize-results.ts --check",
     "write-capability-index": "tsx src/check-capability-registry.ts",
     "check-capability-index": "tsx src/check-capability-registry.ts --check",
     "validate-results": "tsx src/validate-results.ts",
+    "migrate-results": "tsx src/normalize-results.ts",
+    "check-results-migration": "tsx src/normalize-results.ts --check",
     "render-matrix": "tsx src/render-matrix.ts"
   },
   "dependencies": {
