@@ -1,12 +1,12 @@
 {
   "schemaVersion": 3,
-  "runTimestamp": "2026-07-22T18:53:07.651Z",
+  "runTimestamp": "2026-07-23T00:42:39.338Z",
   "dslVersion": "1.8",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.17.0+git.7e08d64ca258"
+      "adapterVersion": "0.17.0+git.3615e2132672"
     },
     {
       "adapterName": "python-docx",
@@ -3347,6 +3347,279 @@
     },
     {
       "scenarioGroup": "content-controls",
+      "scenarioId": "unrelatedTextEditPreservesBlockContentControlStructure",
+      "scenarioTitle": "An unrelated text edit preserves one block content control with two controlled paragraphs",
+      "oracleKind": "ecma-conformance",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 1,
+        "section": "17.5.2.29",
+        "clauseTitle": "sdt (Block-Level Structured Document Tag)"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days.\"; expected \"Edit target: sixty days.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:tag)=1 and count(w:id)=1]/w:alias[@w:val='Opaque block control'][following-sibling::w:tag[1][@w:val='dpt-block-sdt' and following-sibling::w:id[1][@w:val='56']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtContent[count(*)=2 and count(w:p)=2 and *[1][self::w:p] and *[2][self::w:p]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled first paragraph sentinel\"; expected \"Controlled first paragraph sentinel\""
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled second paragraph sentinel\"; expected \"Controlled second paragraph sentinel\""
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Body tail sentinel.\"; expected \"Body tail sentinel.\""
+            }
+          ]
+        },
+        "python-docx": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days.\"; expected \"Edit target: sixty days.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:tag)=1 and count(w:id)=1]/w:alias[@w:val='Opaque block control'][following-sibling::w:tag[1][@w:val='dpt-block-sdt' and following-sibling::w:id[1][@w:val='56']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtContent[count(*)=2 and count(w:p)=2 and *[1][self::w:p] and *[2][self::w:p]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled first paragraph sentinel\"; expected \"Controlled first paragraph sentinel\""
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled second paragraph sentinel\"; expected \"Controlled second paragraph sentinel\""
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Body tail sentinel.\"; expected \"Body tail sentinel.\""
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "fail",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days.\"; expected \"Edit target: sixty days.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:tag)=1 and count(w:id)=1]/w:alias[@w:val='Opaque block control'][following-sibling::w:tag[1][@w:val='dpt-block-sdt' and following-sibling::w:id[1][@w:val='56']]] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtContent[count(*)=2 and count(w:p)=2 and *[1][self::w:p] and *[2][self::w:p]] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtContent/w:p[1] selected 0 element(s) in word/document.xml; expected exactly 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtContent/w:p[2] selected 0 element(s) in word/document.xml; expected exactly 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": false,
+              "detail": "visible descendant w:t text \"Controlled first paragraph sentinel\"; expected \"Body tail sentinel.\""
+            }
+          ]
+        },
+        "openxml-sdk": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days.\"; expected \"Edit target: sixty days.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:tag)=1 and count(w:id)=1]/w:alias[@w:val='Opaque block control'][following-sibling::w:tag[1][@w:val='dpt-block-sdt' and following-sibling::w:id[1][@w:val='56']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtContent[count(*)=2 and count(w:p)=2 and *[1][self::w:p] and *[2][self::w:p]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled first paragraph sentinel\"; expected \"Controlled first paragraph sentinel\""
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled second paragraph sentinel\"; expected \"Controlled second paragraph sentinel\""
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Body tail sentinel.\"; expected \"Body tail sentinel.\""
+            }
+          ]
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx patchDocument targets explicit patch placeholders; protocol requires arbitrary paragraph-local literal search, which would be an adapter-side algorithm"
+        },
+        "superdoc-sdk": {
+          "status": "fail",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days.\"; expected \"Edit target: sixty days.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:tag)=1 and count(w:id)=1]/w:alias[@w:val='Opaque block control'][following-sibling::w:tag[1][@w:val='dpt-block-sdt' and following-sibling::w:id[1][@w:val='56']]] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtContent[count(*)=2 and count(w:p)=2 and *[1][self::w:p] and *[2][self::w:p]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled first paragraph sentinel\"; expected \"Controlled first paragraph sentinel\""
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled second paragraph sentinel\"; expected \"Controlled second paragraph sentinel\""
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Body tail sentinel.\"; expected \"Body tail sentinel.\""
+            }
+          ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "content-controls",
       "scenarioId": "unrelatedTextEditPreservesInlineContentControlStructure",
       "scenarioTitle": "An unrelated text edit preserves one inline content control with valid known structure",
       "oracleKind": "ecma-conformance",
@@ -3534,6 +3807,229 @@
               "assertionKind": "xpathElementTextEquals",
               "passed": true,
               "detail": "visible descendant w:t text \"Controlled text sentinel\"; expected \"Controlled text sentinel\""
+            }
+          ]
+        },
+        "docx-rs": {
+          "status": "unsupported",
+          "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        }
+      }
+    },
+    {
+      "scenarioGroup": "content-controls",
+      "scenarioId": "unrelatedTextEditPreservesOpaqueBlockContentControl",
+      "scenarioTitle": "Suite-declared non-normative preservation of opaque sentinels on one block content control",
+      "oracleKind": "metamorphic-invariant",
+      "specCitation": {
+        "standard": "ECMA-376",
+        "edition": 5,
+        "part": 3,
+        "section": "7.2",
+        "clauseTitle": "Ignorable Attribute"
+      },
+      "outcomes": {
+        "safe-docx": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": true,
+              "detail": "target or ancestor mc:Ignorable resolves urn:open-agreements:docx-platform-tests:block-content-control"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-opaque-attribute-sentinel']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-block-sdt']]][following-sibling::*[1][self::w:id[@w:val='56']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-nested-payload-sentinel'] and normalize-space(.)='block opaque payload sentinel'] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-last-child-sentinel']]] matched 1 node(s) in word/document.xml; expected 1"
+            }
+          ]
+        },
+        "python-docx": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": true,
+              "detail": "target or ancestor mc:Ignorable resolves urn:open-agreements:docx-platform-tests:block-content-control"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-opaque-attribute-sentinel']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-block-sdt']]][following-sibling::*[1][self::w:id[@w:val='56']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-nested-payload-sentinel'] and normalize-space(.)='block opaque payload sentinel'] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-last-child-sentinel']]] matched 1 node(s) in word/document.xml; expected 1"
+            }
+          ]
+        },
+        "libreoffice": {
+          "status": "invariant-fail",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] selected 0 element(s) in word/document.xml; expected exactly 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-opaque-attribute-sentinel']] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-block-sdt']]][following-sibling::*[1][self::w:id[@w:val='56']]] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-nested-payload-sentinel'] and normalize-space(.)='block opaque payload sentinel'] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-last-child-sentinel']]] matched 0 node(s) in word/document.xml; expected 1"
+            }
+          ]
+        },
+        "openxml-sdk": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": true,
+              "detail": "target or ancestor mc:Ignorable resolves urn:open-agreements:docx-platform-tests:block-content-control"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-opaque-attribute-sentinel']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-block-sdt']]][following-sibling::*[1][self::w:id[@w:val='56']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-nested-payload-sentinel'] and normalize-space(.)='block opaque payload sentinel'] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-last-child-sentinel']]] matched 1 node(s) in word/document.xml; expected 1"
+            }
+          ]
+        },
+        "dolanmiu-docx": {
+          "status": "unsupported",
+          "reason": "dolanmiu/docx patchDocument targets explicit patch placeholders; protocol requires arbitrary paragraph-local literal search, which would be an adapter-side algorithm"
+        },
+        "superdoc-sdk": {
+          "status": "invariant-fail",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": true,
+              "detail": "target or ancestor mc:Ignorable resolves urn:open-agreements:docx-platform-tests:block-content-control"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-opaque-attribute-sentinel']] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": false,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-block-sdt']]][following-sibling::*[1][self::w:id[@w:val='56']]] matched 0 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-nested-payload-sentinel'] and normalize-space(.)='block opaque payload sentinel'] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-last-child-sentinel']]] matched 1 node(s) in word/document.xml; expected 1"
             }
           ]
         },
