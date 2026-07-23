@@ -1,0 +1,89 @@
+{
+  "dslVersion": "1.8",
+  "scenarioId": "unrelatedTextEditPreservesBlockContentControlStructure",
+  "scenarioTitle": "An unrelated text edit preserves one block content control with two controlled paragraphs",
+  "specCitation": {
+    "standard": "ECMA-376",
+    "edition": 5,
+    "part": 1,
+    "section": "17.5.2.29",
+    "clauseTitle": "sdt (Block-Level Structured Document Tag)"
+  },
+  "secondarySpecCitations": [
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.5.2.34",
+      "clauseTitle": "sdtContent (Block-Level Structured Document Tag Content)"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.5.2.38",
+      "clauseTitle": "sdtPr (Structured Document Tag Properties)"
+    },
+    {
+      "standard": "ECMA-376",
+      "edition": 5,
+      "part": 1,
+      "section": "17.3.3.31",
+      "clauseTitle": "t (Text)"
+    }
+  ],
+  "wordBehaviorNote": null,
+  "inputDocumentPath": "input.docx",
+  "operationDescriptor": {
+    "operationName": "replaceFirstTextOccurrence",
+    "findText": "thirty",
+    "replaceText": "sixty"
+  },
+  "assertionList": [
+    {
+      "assertionKind": "xpathElementTextEquals",
+      "xpathExpression": "/w:document/w:body/w:p[1]",
+      "expectedText": "Edit target: sixty days."
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "/w:document/w:body//w:sdt",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:tag)=1 and count(w:id)=1]/w:alias[@w:val='Opaque block control'][following-sibling::w:tag[1][@w:val='dpt-block-sdt' and following-sibling::w:id[1][@w:val='56']]]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathQueryCount",
+      "xpathExpression": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtContent[count(*)=2 and count(w:p)=2 and *[1][self::w:p] and *[2][self::w:p]]",
+      "expectedCount": 1
+    },
+    {
+      "assertionKind": "xpathElementTextEquals",
+      "xpathExpression": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtContent/w:p[1]",
+      "expectedText": "Controlled first paragraph sentinel"
+    },
+    {
+      "assertionKind": "xpathElementTextEquals",
+      "xpathExpression": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtContent/w:p[2]",
+      "expectedText": "Controlled second paragraph sentinel"
+    },
+    {
+      "assertionKind": "xpathElementTextEquals",
+      "xpathExpression": "/w:document/w:body/w:p[2]",
+      "expectedText": "Body tail sentinel."
+    }
+  ]
+}

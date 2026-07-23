@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:ext="urn:open-agreements:docx-platform-tests:block-content-control"
+  mc:Ignorable="ext">
+  <w:body>
+    <w:p>
+      <w:r><w:t>Edit target: thirty days.</w:t></w:r>
+    </w:p>
+    <w:sdt ext:opaqueAttribute="block-opaque-attribute-sentinel">
+      <w:sdtPr>
+        <w:alias w:val="Opaque block control"/>
+        <w:tag w:val="dpt-block-sdt"/>
+        <ext:opaqueExtension ext:sentinel="block-extension-child-sentinel">
+          <ext:before ext:sentinel="block-first-child-sentinel"/>
+          <ext:payload>
+            <ext:nested ext:sentinel="block-nested-payload-sentinel">block opaque payload sentinel</ext:nested>
+          </ext:payload>
+          <ext:after ext:sentinel="block-last-child-sentinel"/>
+        </ext:opaqueExtension>
+        <w:id w:val="56"/>
+      </w:sdtPr>
+      <w:sdtContent>
+        <w:p><w:r><w:t>Controlled first paragraph sentinel</w:t></w:r></w:p>
+        <w:p><w:r><w:t>Controlled second paragraph sentinel</w:t></w:r></w:p>
+      </w:sdtContent>
+    </w:sdt>
+    <w:p><w:r><w:t>Body tail sentinel.</w:t></w:r></w:p>
+  </w:body>
+</w:document>

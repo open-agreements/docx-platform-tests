@@ -52,7 +52,7 @@ const profiles: CapabilityProfiles = {
   profiles: loaded.profiles,
 };
 
-check('committed registry validates', loaded.registry.capabilities.length === 23);
+check('committed registry validates', loaded.registry.capabilities.length === 24);
 check('every committed scenario is mapped', new Set(loaded.mappings.map((mapping) => mapping.scenarioId)).size === scenarios.length);
 const understatedDslScenario = structuredClone(
   scenarios.find(
@@ -73,8 +73,24 @@ check(
   isDeepStrictEqual(auditedInvariantScenarioIds, [
     'appendParagraphPreservesExistingContent',
     'replaceTextInsideTableCellPreservesStructure',
+    'unrelatedTextEditPreservesOpaqueBlockContentControl',
     'unrelatedTextEditPreservesOpaqueInlineContentControl',
   ])
+);
+const opaqueBlockMappings = loaded.mappings.filter(
+  (mapping) => mapping.scenarioId === 'unrelatedTextEditPreservesOpaqueBlockContentControl'
+);
+check(
+  'opaque block invariant maps only to block preservation evidence',
+  opaqueBlockMappings.length === 1 &&
+    opaqueBlockMappings[0].capabilityId === 'word.content-controls.block' &&
+    opaqueBlockMappings[0].axis === 'preserve' &&
+    isDeepStrictEqual(opaqueBlockMappings[0].oracleClasses, ['metamorphic-invariant']) &&
+    loaded.mappings.every(
+      (mapping) =>
+        mapping.scenarioId !== 'unrelatedTextEditPreservesOpaqueBlockContentControl' ||
+        mapping.capabilityId !== 'word.text.find-replace'
+    )
 );
 
 const withoutScenario = structuredClone(mappings);
