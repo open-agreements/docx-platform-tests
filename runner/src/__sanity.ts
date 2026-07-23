@@ -249,6 +249,279 @@ check(
     /<w:alias[^>]*\/>[\s\S]*<w:tag[^>]*\/>[\s\S]*<w:id[^>]*\/>/.test(localMceProcessed)
 );
 
+const normativeBlockSdtDir = join(
+  contentControlRoot,
+  'unrelatedTextEditPreservesBlockContentControlStructure'
+);
+const invariantBlockSdtDir = join(
+  contentControlRoot,
+  'unrelatedTextEditPreservesOpaqueBlockContentControl'
+);
+const normativeBlockSdtManifest = JSON.parse(
+  readFileSync(join(normativeBlockSdtDir, 'scenario.json'), 'utf8')
+) as ScenarioManifest;
+const invariantBlockSdtManifest = JSON.parse(
+  readFileSync(join(invariantBlockSdtDir, 'scenario.json'), 'utf8')
+) as ScenarioManifest;
+const blockSdtOutput = readFileSync(
+  join(normativeBlockSdtDir, 'input', 'document.xml'),
+  'utf8'
+).replace('thirty', 'sixty');
+
+check(
+  'normative block SDT reference output satisfies every assertion',
+  normativeBlockSdtManifest.assertionList.every((assertion) =>
+    evaluateAssertion(
+      assertion,
+      packageFromParts({ 'word/document.xml': blockSdtOutput }),
+      normativeBlockSdtDir
+    ).passed
+  )
+);
+check(
+  'metamorphic block SDT reference output satisfies every assertion',
+  invariantBlockSdtManifest.assertionList.every((assertion) =>
+    evaluateAssertion(
+      assertion,
+      packageFromParts({ 'word/document.xml': blockSdtOutput }),
+      invariantBlockSdtDir
+    ).passed
+  )
+);
+
+const splitBlockRuns = blockSdtOutput
+  .replace(
+    '<w:r><w:t>Edit target: sixty days.</w:t></w:r>',
+    '<w:r><w:t>Edit target: six</w:t></w:r><w:r><w:t>ty days.</w:t></w:r>'
+  )
+  .replace(
+    '<w:r><w:t>Controlled first paragraph sentinel</w:t></w:r>',
+    '<w:r><w:t>Controlled first </w:t></w:r><w:r><w:t>paragraph sentinel</w:t></w:r>'
+  )
+  .replace(
+    '<w:r><w:t>Controlled second paragraph sentinel</w:t></w:r>',
+    '<w:r><w:t>Controlled second </w:t></w:r><w:r><w:t>paragraph sentinel</w:t></w:r>'
+  );
+check(
+  'legal run splits satisfy block SDT text assertions',
+  [0, 6, 7, 8].every((assertionIndex) =>
+    assertionPasses(
+      normativeBlockSdtManifest,
+      normativeBlockSdtDir,
+      splitBlockRuns,
+      assertionIndex
+    )
+  )
+);
+
+const blockTargetSdt = blockSdtOutput.match(
+  /<w:sdt ext:opaqueAttribute="block-opaque-attribute-sentinel">[\s\S]*?<\/w:sdt>/
+)![0];
+const secondBlockSdt = blockTargetSdt
+  .replace('w:val="56"', 'w:val="99"')
+  .replace('dpt-block-sdt', 'other-block-sdt')
+  .replace('Controlled first paragraph sentinel', 'Other first paragraph')
+  .replace('Controlled second paragraph sentinel', 'Other second paragraph');
+const blockWithSecondSdt = blockSdtOutput.replace(
+  blockTargetSdt,
+  `${blockTargetSdt}${secondBlockSdt}`
+);
+check(
+  'a second block SDT is rejected by exact total cardinality',
+  !assertionPasses(normativeBlockSdtManifest, normativeBlockSdtDir, blockWithSecondSdt, 1) &&
+    !assertionPasses(invariantBlockSdtManifest, invariantBlockSdtDir, blockWithSecondSdt, 0)
+);
+const duplicatedBlockTarget = blockSdtOutput.replace(
+  blockTargetSdt,
+  `${blockTargetSdt}${blockTargetSdt}`
+);
+check(
+  'duplicate block target is rejected by exact total and target cardinality',
+  !assertionPasses(normativeBlockSdtManifest, normativeBlockSdtDir, duplicatedBlockTarget, 1) &&
+    !assertionPasses(normativeBlockSdtManifest, normativeBlockSdtDir, duplicatedBlockTarget, 2) &&
+    !assertionPasses(invariantBlockSdtManifest, invariantBlockSdtDir, duplicatedBlockTarget, 0) &&
+    !assertionPasses(invariantBlockSdtManifest, invariantBlockSdtDir, duplicatedBlockTarget, 1)
+);
+
+const blockOpaqueChild = blockSdtOutput.match(
+  /\s*<ext:opaqueExtension[\s\S]*?<\/ext:opaqueExtension>/
+)![0];
+const cleanedBlockTarget = blockTargetSdt
+  .replace(' ext:opaqueAttribute="block-opaque-attribute-sentinel"', '')
+  .replace(blockOpaqueChild.trim(), '');
+const blockCrossSdtRelocation = blockSdtOutput.replace(
+  blockTargetSdt,
+  cleanedBlockTarget + secondBlockSdt
+);
+check(
+  'opaque block sentinels relocated to another SDT fail target-scoped assertions',
+  !assertionPasses(
+    invariantBlockSdtManifest,
+    invariantBlockSdtDir,
+    blockCrossSdtRelocation,
+    3
+  ) &&
+    !assertionPasses(
+      invariantBlockSdtManifest,
+      invariantBlockSdtDir,
+      blockCrossSdtRelocation,
+      4
+    )
+);
+
+const reorderedBlockKnownProperties = blockSdtOutput.replace(
+  /(<w:tag w:val="dpt-block-sdt"\/>)([\s\S]*?<\/ext:opaqueExtension>)(\s*)(<w:id w:val="56"\/>)/,
+  '$4$2$3$1'
+);
+check(
+  'schema-invalid known block sdtPr child order is rejected',
+  !assertionPasses(
+    normativeBlockSdtManifest,
+    normativeBlockSdtDir,
+    reorderedBlockKnownProperties,
+    4
+  )
+);
+
+const reorderedBlockOpaqueChild = blockSdtOutput.replace(
+  /(<w:tag w:val="dpt-block-sdt"\/>)([\s\S]*?<\/ext:opaqueExtension>)(\s*)(<w:id w:val="56"\/>)/,
+  '$1$3$4$2'
+);
+check(
+  'block extension relative-position change is rejected as an invariant',
+  !assertionPasses(
+    invariantBlockSdtManifest,
+    invariantBlockSdtDir,
+    reorderedBlockOpaqueChild,
+    4
+  )
+);
+check(
+  'block extension removal is rejected as an invariant',
+  !assertionPasses(
+    invariantBlockSdtManifest,
+    invariantBlockSdtDir,
+    blockSdtOutput.replace(blockOpaqueChild, ''),
+    4
+  )
+);
+const reorderedBlockExtensionChildren = blockSdtOutput.replace(
+  /(\s*<ext:before[^>]*\/>)(\s*<ext:payload>[\s\S]*?<\/ext:payload>)(\s*<ext:after[^>]*\/>)/,
+  '$3$2$1'
+);
+check(
+  'block extension child order change is rejected as an invariant',
+  !assertionPasses(
+    invariantBlockSdtManifest,
+    invariantBlockSdtDir,
+    reorderedBlockExtensionChildren,
+    6
+  )
+);
+
+const blockExtensionNamespace =
+  'urn:open-agreements:docx-platform-tests:block-content-control';
+const aliasedBlockPrefix = blockSdtOutput
+  .replace('xmlns:ext=', 'xmlns:opaque=')
+  .replace('mc:Ignorable="ext"', 'mc:Ignorable="opaque"')
+  .replaceAll('ext:', 'opaque:');
+check(
+  'block foreign prefix alias rename preserves namespace-semantic assertions',
+  invariantBlockSdtManifest.assertionList.every((assertion) =>
+    evaluateAssertion(
+      assertion,
+      packageFromParts({ 'word/document.xml': aliasedBlockPrefix }),
+      invariantBlockSdtDir
+    ).passed
+  )
+);
+const locallyDeclaredBlockIgnorable = blockSdtOutput
+  .replace(`\n  xmlns:ext="${blockExtensionNamespace}"`, '')
+  .replace('\n  mc:Ignorable="ext"', '')
+  .replace(
+    '<w:sdt ext:opaqueAttribute=',
+    `<w:sdt xmlns:ext="${blockExtensionNamespace}" mc:Ignorable="ext" ext:opaqueAttribute=`
+  );
+check(
+  'target-local block ignorable namespace declaration is equivalent to root scope',
+  assertionPasses(
+    invariantBlockSdtManifest,
+    invariantBlockSdtDir,
+    locallyDeclaredBlockIgnorable,
+    2
+  )
+);
+check(
+  'removing the root block mc:Ignorable declaration is rejected',
+  !assertionPasses(
+    invariantBlockSdtManifest,
+    invariantBlockSdtDir,
+    blockSdtOutput.replace('\n  mc:Ignorable="ext"', ''),
+    2
+  )
+);
+const siblingBlockIgnorable = blockSdtOutput
+  .replace('\n  mc:Ignorable="ext"', '')
+  .replace('<w:p>\n      <w:r><w:t>Edit target:', '<w:p mc:Ignorable="ext">\n      <w:r><w:t>Edit target:');
+check(
+  'out-of-scope block sibling mc:Ignorable declaration is rejected',
+  !assertionPasses(
+    invariantBlockSdtManifest,
+    invariantBlockSdtDir,
+    siblingBlockIgnorable,
+    2
+  )
+);
+
+const blockSentinelMutations: Array<{
+  label: string;
+  manifest: ScenarioManifest;
+  scenarioDir: string;
+  assertionIndex: number;
+  mutate: (xml: string) => string;
+}> = [
+  { label: 'edited text', manifest: normativeBlockSdtManifest, scenarioDir: normativeBlockSdtDir, assertionIndex: 0, mutate: (xml) => xml.replace('sixty', 'thirty') },
+  { label: 'SDT alias', manifest: normativeBlockSdtManifest, scenarioDir: normativeBlockSdtDir, assertionIndex: 4, mutate: (xml) => xml.replace('Opaque block control', 'Changed alias') },
+  { label: 'SDT id', manifest: normativeBlockSdtManifest, scenarioDir: normativeBlockSdtDir, assertionIndex: 2, mutate: (xml) => xml.replace('w:val="56"', 'w:val="57"') },
+  { label: 'SDT tag', manifest: normativeBlockSdtManifest, scenarioDir: normativeBlockSdtDir, assertionIndex: 2, mutate: (xml) => xml.replace('dpt-block-sdt', 'changed-block-sdt') },
+  { label: 'first controlled paragraph', manifest: normativeBlockSdtManifest, scenarioDir: normativeBlockSdtDir, assertionIndex: 6, mutate: (xml) => xml.replace('Controlled first paragraph sentinel', 'Changed first paragraph') },
+  { label: 'second controlled paragraph', manifest: normativeBlockSdtManifest, scenarioDir: normativeBlockSdtDir, assertionIndex: 7, mutate: (xml) => xml.replace('Controlled second paragraph sentinel', 'Changed second paragraph') },
+  { label: 'body tail', manifest: normativeBlockSdtManifest, scenarioDir: normativeBlockSdtDir, assertionIndex: 8, mutate: (xml) => xml.replace('Body tail sentinel.', 'Changed body tail.') },
+  { label: 'opaque attribute', manifest: invariantBlockSdtManifest, scenarioDir: invariantBlockSdtDir, assertionIndex: 3, mutate: (xml) => xml.replace('block-opaque-attribute-sentinel', 'changed') },
+  { label: 'extension child', manifest: invariantBlockSdtManifest, scenarioDir: invariantBlockSdtDir, assertionIndex: 4, mutate: (xml) => xml.replace('block-extension-child-sentinel', 'changed') },
+  { label: 'nested payload attribute', manifest: invariantBlockSdtManifest, scenarioDir: invariantBlockSdtDir, assertionIndex: 5, mutate: (xml) => xml.replace('block-nested-payload-sentinel', 'changed') },
+  { label: 'nested payload text', manifest: invariantBlockSdtManifest, scenarioDir: invariantBlockSdtDir, assertionIndex: 5, mutate: (xml) => xml.replace('block opaque payload sentinel', 'changed payload') },
+  { label: 'first extension child', manifest: invariantBlockSdtManifest, scenarioDir: invariantBlockSdtDir, assertionIndex: 6, mutate: (xml) => xml.replace('block-first-child-sentinel', 'changed') },
+  { label: 'last extension child', manifest: invariantBlockSdtManifest, scenarioDir: invariantBlockSdtDir, assertionIndex: 6, mutate: (xml) => xml.replace('block-last-child-sentinel', 'changed') },
+];
+for (const mutation of blockSentinelMutations) {
+  const mutated = mutation.mutate(blockSdtOutput);
+  check(
+    `block SDT assertion rejects changed ${mutation.label} sentinel`,
+    mutated !== blockSdtOutput &&
+      !assertionPasses(
+        mutation.manifest,
+        mutation.scenarioDir,
+        mutated,
+        mutation.assertionIndex
+      )
+  );
+}
+
+const blockMceProcessed = preprocessIgnorableMarkupForSchema(blockSdtOutput);
+const localBlockMceProcessed = preprocessIgnorableMarkupForSchema(
+  locallyDeclaredBlockIgnorable
+);
+check(
+  'MCE preprocessing removes root and target-local block extension markup',
+  !blockMceProcessed.includes('opaqueAttribute') &&
+    !blockMceProcessed.includes('opaqueExtension') &&
+    !localBlockMceProcessed.includes('opaqueAttribute') &&
+    !localBlockMceProcessed.includes('opaqueExtension') &&
+    blockMceProcessed.includes('Controlled first paragraph sentinel') &&
+    blockMceProcessed.includes('Controlled second paragraph sentinel')
+);
+
 // --- DSL 1.3: multi-part assertion machinery ---
 
 const STYLES_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles';
