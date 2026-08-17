@@ -1,12 +1,12 @@
 {
   "schemaVersion": 3,
-  "runTimestamp": "2026-08-10T08:05:45.149Z",
+  "runTimestamp": "2026-08-17T07:17:00.812Z",
   "dslVersion": "1.8",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.19.1+git.8035dce1cab5"
+      "adapterVersion": "0.19.1+git.bfdca9b00496"
     },
     {
       "adapterName": "python-docx",
