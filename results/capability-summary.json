@@ -3,12 +3,12 @@
   "registryVersion": 1,
   "sourceResults": {
     "schemaVersion": 3,
-    "runTimestamp": "2026-08-31T13:50:07.688Z",
+    "runTimestamp": "2026-09-07T12:34:03.801Z",
     "scenarioCount": 44,
     "implementations": [
       {
         "adapterName": "safe-docx",
-        "adapterVersion": "0.20.1+git.482b0df5c879"
+        "adapterVersion": "0.20.1+git.2aafaed15428"
       },
       {
         "adapterName": "python-docx",
