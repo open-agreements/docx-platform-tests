@@ -1,12 +1,12 @@
 {
   "schemaVersion": 3,
-  "runTimestamp": "2026-09-14T12:47:01.039Z",
+  "runTimestamp": "2026-09-21T12:48:36.519Z",
   "dslVersion": "1.8",
   "protocolVersion": 1,
   "implementations": [
     {
       "adapterName": "safe-docx",
-      "adapterVersion": "0.20.1+git.31b1d8fd2e9f"
+      "adapterVersion": "0.20.1+git.4c7f6466c51c"
     },
     {
       "adapterName": "python-docx",
@@ -123,8 +123,44 @@
       },
       "outcomes": {
         "safe-docx": {
-          "status": "unsupported",
-          "reason": "safe-docx adapter does not implement accepting deleted table-row revisions"
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tr matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:trPr/w:del matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc//w:t[normalize-space(.)='Kept row'] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'Deleted row')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": true,
+              "detail": "canonical forms are identical"
+            }
+          ]
         },
         "python-docx": {
           "status": "unsupported",
@@ -2249,8 +2285,39 @@
       },
       "outcomes": {
         "safe-docx": {
-          "status": "unsupported",
-          "reason": "safe-docx adapter does not implement rejecting inserted table-row revisions"
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tr matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:trPr/w:ins matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc//w:t[normalize-space(.)='Kept row'] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'Inserted row')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": true,
+              "detail": "canonical forms are identical"
+            }
+          ]
         },
         "python-docx": {
           "status": "unsupported",
