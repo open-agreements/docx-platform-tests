@@ -3,12 +3,12 @@
   "registryVersion": 1,
   "sourceResults": {
     "schemaVersion": 3,
-    "runTimestamp": "2026-10-26T13:02:09.892Z",
+    "runTimestamp": "2026-11-02T15:51:16.983Z",
     "scenarioCount": 44,
     "implementations": [
       {
         "adapterName": "safe-docx",
-        "adapterVersion": "0.25.0+git.8ecc724811b7"
+        "adapterVersion": "0.25.0+git.dc665af88bd4"
       },
       {
         "adapterName": "python-docx",
@@ -16,7 +16,7 @@
       },
       {
         "adapterName": "libreoffice",
-        "adapterVersion": "LibreOffice 24.2.7.2 420(Build:2)"
+        "adapterVersion": "LibreOffice 26.2.6.3 620(Build:3)"
       },
       {
         "adapterName": "openxml-sdk",

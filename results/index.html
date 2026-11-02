@@ -37,7 +37,7 @@ serialization's canonical XML — typically an implementation materializing form
 save. That is legal WordprocessingML serialization freedom, not a conformance failure; the
 per-assertion breakdown in <a href="./latest.json">latest.json</a> carries the detail.</p>
 <table>
-<thead><tr><th scope="col">Scenario</th><th scope="col">safe-docx<br><small>0.25.0+git.8ecc724811b7</small></th><th scope="col">python-docx<br><small>1.2.0</small></th><th scope="col">libreoffice<br><small>LibreOffice 24.2.7.2 420(Build:2)</small></th><th scope="col">openxml-sdk<br><small>DocumentFormat.OpenXml 3.5.1</small></th><th scope="col">dolanmiu-docx<br><small>9.7.1</small></th><th scope="col">superdoc-sdk<br><small>1.16.1</small></th><th scope="col">docx-rs<br><small>docx-rs 0.4.20</small></th></tr></thead>
+<thead><tr><th scope="col">Scenario</th><th scope="col">safe-docx<br><small>0.25.0+git.dc665af88bd4</small></th><th scope="col">python-docx<br><small>1.2.0</small></th><th scope="col">libreoffice<br><small>LibreOffice 26.2.6.3 620(Build:3)</small></th><th scope="col">openxml-sdk<br><small>DocumentFormat.OpenXml 3.5.1</small></th><th scope="col">dolanmiu-docx<br><small>9.7.1</small></th><th scope="col">superdoc-sdk<br><small>1.16.1</small></th><th scope="col">docx-rs<br><small>docx-rs 0.4.20</small></th></tr></thead>
 <tbody>
 <tr class="group-row"><th scope="rowgroup" colspan="8">tracked-changes<br><small><strong>ECMA conformance:</strong> safe-docx 15/15 · python-docx 0/15 · libreoffice 14/15 · openxml-sdk 0/15 · dolanmiu-docx 0/15 · superdoc-sdk 8/15 · docx-rs 0/15</small></th></tr>
 <tr>
@@ -191,11 +191,11 @@ Node.js v20.20.2</small></td><td class="cell-unsupported">Unsupported<br><small>
       <th scope="row"><code>setDefaultFooterTextAddsFooterReference</code><br><small>Setting default footer text adds a default footer reference and footer part</small><br><small>ECMA conformance</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.10.2 (footerReference (Footer Reference))</small></th><td class="cell-unsupported">Unsupported<br><small>safe-docx adapter does not implement operation 'setDefaultFooterText'</small></td><td class="cell-error">Error<br><small>exit 1: Traceback (most recent call last):
   File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/run_adapter.py&quot;, line 258, in &lt;module&gt;
     sys.exit(main())
-             ^^^^^^
+             ~~~~^^
   File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/run_adapter.py&quot;, line 249, in main
     document.sections[0].footer.paragraphs[0].text = operation[&quot;footerText&quot;]
     ~~~~~~~~~~~~~~~~~^^^
-  File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.12/site-packages/docx/section.py&quot;, line 279, in __getitem__
+  File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.14/site-packages/docx/section.py&quot;, line 279, in __getitem__
     return Section(self._document_elm.sectPr_lst[key], self._document_part)
                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
 IndexError: list index out of range</small></td><td class="cell-unsupported">Unsupported<br><small>libreoffice adapter does not implement operation 'setDefaultFooterText'</small></td><td class="cell-unsupported">Unsupported<br><small>openxml-sdk adapter does not implement operation 'setDefaultFooterText'</small></td><td class="cell-unsupported">Unsupported<br><small>dolanmiu-docx adapter does not implement operation 'setDefaultFooterText'</small></td><td class="cell-unsupported">Unsupported<br><small>superdoc-sdk adapter does not implement operation 'setDefaultFooterText'</small></td><td class="cell-unsupported">Unsupported<br><small>docx-rs adapter does not implement operation 'setDefaultFooterText'</small></td></tr>
@@ -204,21 +204,24 @@ IndexError: list index out of range</small></td><td class="cell-unsupported">Uns
       <th scope="row"><code>setTableCellTextReplacesCellContentOnly</code><br><small>Setting table cell text replaces only the addressed cell content</small><br><small>ECMA conformance</small><br><small class="citation">ECMA-376 edition 5, Part 1 § 17.4.66 (tc (Table Cell))</small></th><td class="cell-unsupported">Unsupported<br><small>safe-docx adapter does not implement operation 'setTableCellText'</small></td><td class="cell-error">Error<br><small>exit 1: Traceback (most recent call last):
   File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/run_adapter.py&quot;, line 258, in &lt;module&gt;
     sys.exit(main())
-             ^^^^^^
+             ~~~~^^
   File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/run_adapter.py&quot;, line 178, in main
     cell = document.tables[int(operation[&quot;tableIndex&quot;])].cell(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.12/site-packages/docx/table.py&quot;, line 90, in cell
+        int(operation[&quot;rowIndex&quot;]), int(operation[&quot;columnIndex&quot;])
+    )
+  File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.14/site-packages/docx/table.py&quot;, line 90, in cell
     cell_idx = col_idx + (row_idx * self._column_count)
                                     ^^^^^^^^^^^^^^^^^^
-  File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.12/site-packages/docx/table.py&quot;, line 185, in _column_count
+  File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.14/site-packages/docx/table.py&quot;, line 185, in _column_count
     return self._tbl.col_count
            ^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.12/site-packages/docx/oxml/table.py&quot;, line 178, in col_count
+  File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.14/site-packages/docx/oxml/table.py&quot;, line 178, in col_count
     return len(self.tblGrid.gridCol_lst)
                ^^^^^^^^^^^^
-  File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.12/site-packages/docx/oxml/xmlchemy.py&quot;, line 502, in get_child_element
+  File &quot;/home/runner/work/docx-platform-tests/docx-platform-tests/adapters/python-docx/.venv/lib/python3.14/site-packages/docx/oxml/xmlchemy.py&quot;, line 502, in get_child_element
     raise InvalidXmlError(
+        &quot;required ``&lt;%s&gt;`` child element not present&quot; % self._nsptagname
+    )
 docx.oxml.exceptions.InvalidXmlError: required ``&lt;w:tblGrid&gt;`` child element not present</small></td><td class="cell-unsupported">Unsupported<br><small>libreoffice adapter does not implement operation 'setTableCellText'</small></td><td class="cell-unsupported">Unsupported<br><small>openxml-sdk adapter does not implement operation 'setTableCellText'</small></td><td class="cell-unsupported">Unsupported<br><small>dolanmiu-docx adapter does not implement operation 'setTableCellText'</small></td><td class="cell-unsupported">Unsupported<br><small>superdoc-sdk adapter does not implement operation 'setTableCellText'</small></td><td class="cell-unsupported">Unsupported<br><small>docx-rs adapter does not implement operation 'setTableCellText'</small></td></tr>
 <tr class="group-row"><th scope="rowgroup" colspan="8">content-controls<br><small><strong>ECMA conformance:</strong> safe-docx 2/2 · python-docx 2/2 · libreoffice 1/2 · openxml-sdk 2/2 · dolanmiu-docx 0/2 · superdoc-sdk 0/2 · docx-rs 0/2</small><br><small><strong>Metamorphic invariants:</strong> safe-docx 2/2 · python-docx 2/2 · libreoffice 0/2 · openxml-sdk 2/2 · dolanmiu-docx 0/2 · superdoc-sdk 0/2 · docx-rs 0/2</small></th></tr>
 <tr>
@@ -236,7 +239,7 @@ docx.oxml.exceptions.InvalidXmlError: required ``&lt;w:tblGrid&gt;`` child eleme
 <a href="./capability-summary.json">Capability-axis aggregation</a> · Suite, scenario DSL, and adapter protocol:
 <a href="https://github.com/open-agreements/docx-platform-tests">open-agreements/docx-platform-tests</a> (Apache-2.0)
 · Canonical live matrix: <a href="https://open-agreements.github.io/docx-platform-tests/results/">open-agreements.github.io</a></p>
-<footer>Run 2026-10-26T13:02:09.892Z · results schema v3 · DSL 1.8 · adapter protocol v1.
+<footer>Run 2026-11-02T15:51:16.983Z · results schema v3 · DSL 1.8 · adapter protocol v1.
 To add an implementation, see <a href="https://github.com/open-agreements/docx-platform-tests/blob/main/docs/adapter-protocol.md">docs/adapter-protocol.md</a>.</footer>
 </body>
 </html>
