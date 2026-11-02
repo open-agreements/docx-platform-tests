@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "runTimestamp": "2026-11-02T15:51:16.983Z",
+  "runTimestamp": "2026-11-02T15:53:47.767Z",
   "dslVersion": "1.8",
   "protocolVersion": 1,
   "implementations": [
@@ -31,6 +31,10 @@
     {
       "adapterName": "docx-rs",
       "adapterVersion": "docx-rs 0.4.20"
+    },
+    {
+      "adapterName": "officeagent",
+      "adapterVersion": "OfficeAgent.NET 1.2.0"
     }
   ],
   "results": [
@@ -106,6 +110,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:pPr/w:rPr/w:del matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'First half second half' found at offset 0"
+            }
+          ]
         }
       }
     },
@@ -221,6 +245,46 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tr matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:trPr/w:del matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc//w:t[normalize-space(.)='Kept row'] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'Deleted row')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tbl\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblW\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n           \"auto\"\n          ],\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblGrid\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gridCol\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"5000\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tc\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcPr\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcW\",\n             \"attributes\": [\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n               \"dxa\"\n              ],\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n               \"5000\"\n              ]\n             ],\n             \"children\": []\n            }\n           ]\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n             \"attributes\": [],\n             \"children\": [\n              {\n               \"kind\": \"element\",\n               \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n               \"attributes\": [],\n               \"children\": [\n                {\n                 \"kind\": \"text\",\n                 \"text\": \"Kept row\"\n                }\n               ]\n              }\n             ]\n            }\n           ]\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": []\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tbl\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblW\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n           \"auto\"\n          ],\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblGrid\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gridCol\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"5000\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tc\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcPr\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcW\",\n             \"attributes\": [\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n               \"dxa\"\n              ],\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n               \"5000\"\n              ]\n             ],\n             \"children\": []\n            }\n           ]\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n           \"attributes\": [\n            [\n             \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n             \"75920201\"\n            ]\n           ],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n             \"attributes\": [],\n             \"children\": [\n              {\n               \"kind\": \"element\",\n               \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n               \"attributes\": [],\n               \"children\": [\n                {\n                 \"kind\": \"text\",\n                 \"text\": \"Kept row\"\n                }\n               ]\n              }\n             ]\n            }\n           ]\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"3ABBF338\"\n      ]\n     ],\n     \"children\": []\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -327,6 +391,31 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"555F87F6\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -448,6 +537,36 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:rPrChange matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:b matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:i matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Styled text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}b\",\n           \"attributes\": [],\n           \"children\": []\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"24D093DD\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}b\",\n           \"attributes\": [],\n           \"children\": []\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -539,6 +658,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text Inserted text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Inserted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"333B0432\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Inserted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -675,6 +814,41 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:moveFrom matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:moveTo matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:moveFromRangeStart | //w:moveFromRangeEnd | //w:moveToRangeStart | //w:moveToRangeEnd matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Before ' found at offset 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'moved clause' found at offset 14"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Before \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"After moved clause\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"2D9C81DD\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Before \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"16C11860\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"After moved clause\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -826,6 +1000,46 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'remove-me')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Anchor Start end' found at offset 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Start end' found at offset 7"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'end' found at offset 13"
+            }
+          ]
         }
       }
     },
@@ -890,6 +1104,31 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:commentRangeStart matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:commentRangeEnd matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:commentReference matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "commentExistsWithTextAndAnchor",
+              "passed": true,
+              "detail": "comment 'Comment on anchor phrase' is referenced by matching anchors around 'anchor phrase'"
+            }
+          ]
         }
       }
     },
@@ -944,6 +1183,21 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p[.//w:t] matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Appended closing paragraph\"; expected \"Appended closing paragraph\""
+            }
+          ]
         }
       }
     },
@@ -993,6 +1247,16 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'appendParagraphWithText'"
+        },
+        "officeagent": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Existing opening paragraph\"; expected \"Existing opening paragraph\""
+            }
+          ]
         }
       }
     },
@@ -1057,6 +1321,31 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'appendTableRow'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr[2]/w:tc matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr[2]/w:tc[1]//w:t[contains(., 'B1')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr[2]/w:tc[2]//w:t[contains(., 'B2')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
         }
       }
     },
@@ -1111,6 +1400,21 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'applyParagraphStyleToAnchor'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:p[.//w:t[contains(., 'Style this heading')]]/w:pPr/w:pStyle[@w:val='Heading1'] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:style[@w:type='paragraph' and @w:styleId='Heading1'] matched 1 node(s) in word/styles.xml; expected at least 1"
+            }
+          ]
         }
       }
     },
@@ -1165,6 +1469,10 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'applyNumberingToAnchorParagraph'"
+        },
+        "officeagent": {
+          "status": "unsupported",
+          "reason": "OfficeAgent numbers a paragraph by list style and creates the numbering definition itself; it has no verb that attaches an existing w:num instance by id"
         }
       }
     },
@@ -1219,6 +1527,21 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'addCommentOnFirstTextOccurrence'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "commentExistsWithTextAndAnchor",
+              "passed": true,
+              "detail": "comment 'Check the defined term.' is referenced by matching anchors around 'exact statement'"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:comment[@w:initials='CR'][.//w:t[contains(., 'Check the defined term.')]] matched 1 node(s) in word/comments.xml; expected at least 1"
+            }
+          ]
         }
       }
     },
@@ -1302,6 +1625,10 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'composeDocumentWithCompatibilityMode'"
+        },
+        "officeagent": {
+          "status": "unsupported",
+          "reason": "OfficeAgent plans have no verb that sets w:compat settings"
         }
       }
     },
@@ -1377,6 +1704,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'composeDocumentWithParagraphs'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:b matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:i matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r[.//w:t[contains(., 'Styled generated text')]]/w:rPr/w:sz[@w:val='28'] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
         }
       }
     },
@@ -1452,6 +1799,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'composeDocumentWithHeaderText'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:sectPr/w:headerReference[@w:type='default'] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:hdr//w:t[contains(., 'Generated header')] matched 1 node(s) in word/header1.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p//w:t[contains(., 'Generated body')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
         }
       }
     },
@@ -1506,6 +1873,10 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'composeDocumentWithHyperlink'"
+        },
+        "officeagent": {
+          "status": "unsupported",
+          "reason": "OfficeAgent plans have no verb that creates a hyperlink"
         }
       }
     },
@@ -1581,6 +1952,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'composeDocumentWithNumberedList'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p[.//w:t[contains(., 'numbered item')]] matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "paragraphNumberingResolvesToFormat",
+              "passed": true,
+              "detail": "paragraph 'First numbered item' resolves to numbering format decimal"
+            },
+            {
+              "assertionKind": "paragraphNumberingResolvesToFormat",
+              "passed": true,
+              "detail": "paragraph 'Second numbered item' resolves to numbering format decimal"
+            }
+          ]
         }
       }
     },
@@ -1656,6 +2047,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'composeDocumentWithParagraphs'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p[.//w:t[contains(., 'generated paragraph')]] matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[1]//w:t[contains(., 'First generated paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[2]//w:t[contains(., 'Second generated paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
         }
       }
     },
@@ -1741,6 +2152,31 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'composeDocumentWithTable'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc matched 4 node(s) in word/document.xml; expected 4"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr[2]/w:tc[2]//w:t[contains(., 'B2')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
         }
       }
     },
@@ -1784,6 +2220,31 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'deleteTableRowAtIndex'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc//w:t[contains(., 'Delete this row text')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr[1]/w:tc//w:t[contains(., 'Keep A1')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr[2]/w:tc//w:t[contains(., 'Keep C1')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
         }
       }
     },
@@ -1838,6 +2299,21 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'formatFirstTextOccurrence'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r[.//w:t[contains(., 'these words')]]/w:rPr/w:b matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:style[@w:styleId='BodyText']//w:b matched 0 node(s) in word/styles.xml; expected 0"
+            }
+          ]
         }
       }
     },
@@ -1902,6 +2378,10 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'mergeTableCellsInRow'"
+        },
+        "officeagent": {
+          "status": "unsupported",
+          "reason": "OfficeAgent plans have no verb that merges table cells"
         }
       }
     },
@@ -1966,6 +2446,31 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'insertParagraphAfterAnchorText'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p[.//w:t] matched 3 node(s) in word/document.xml; expected 3"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[1]//w:t[contains(., 'Anchor paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[2]//w:t[contains(., 'Inserted middle paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p[3]//w:t[contains(., 'Following paragraph')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
         }
       }
     },
@@ -2072,6 +2577,31 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text Deleted text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Deleted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"42338200\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text Deleted text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -2193,6 +2723,36 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:rPrChange matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:b matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:r/w:rPr/w:i matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Styled text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"16579A2F\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}i\",\n           \"attributes\": [],\n           \"children\": []\n          }\n         ]\n        },\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Styled text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -2268,6 +2828,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:pPr/w:rPr/w:ins matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'First half second half' found at offset 0"
+            }
+          ]
         }
       }
     },
@@ -2373,6 +2953,41 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tr matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:trPr/w:ins matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc//w:t[normalize-space(.)='Kept row'] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'Inserted row')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tbl\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblW\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n           \"auto\"\n          ],\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblGrid\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gridCol\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"5000\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tc\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcPr\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcW\",\n             \"attributes\": [\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n               \"dxa\"\n              ],\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n               \"5000\"\n              ]\n             ],\n             \"children\": []\n            }\n           ]\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n             \"attributes\": [],\n             \"children\": [\n              {\n               \"kind\": \"element\",\n               \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n               \"attributes\": [],\n               \"children\": [\n                {\n                 \"kind\": \"text\",\n                 \"text\": \"Kept row\"\n                }\n               ]\n              }\n             ]\n            }\n           ]\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": []\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tbl\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblPr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblW\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n           \"auto\"\n          ],\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"0\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tblGrid\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gridCol\",\n         \"attributes\": [\n          [\n           \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n           \"5000\"\n          ]\n         ],\n         \"children\": []\n        }\n       ]\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tr\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tc\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcPr\",\n           \"attributes\": [],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}tcW\",\n             \"attributes\": [\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type\",\n               \"dxa\"\n              ],\n              [\n               \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w\",\n               \"5000\"\n              ]\n             ],\n             \"children\": []\n            }\n           ]\n          },\n          {\n           \"kind\": \"element\",\n           \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n           \"attributes\": [\n            [\n             \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n             \"2DA4D265\"\n            ]\n           ],\n           \"children\": [\n            {\n             \"kind\": \"element\",\n             \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n             \"attributes\": [],\n             \"children\": [\n              {\n               \"kind\": \"element\",\n               \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n               \"attributes\": [],\n               \"children\": [\n                {\n                 \"kind\": \"text\",\n                 \"text\": \"Kept row\"\n                }\n               ]\n              }\n             ]\n            }\n           ]\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"4183CCD8\"\n      ]\n     ],\n     \"children\": []\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -2479,6 +3094,31 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(text(), 'Inserted text')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Kept text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"56661818\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Kept text \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -2615,6 +3255,41 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:moveFrom matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:moveTo matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:moveFromRangeStart | //w:moveFromRangeEnd | //w:moveToRangeStart | //w:moveToRangeEnd matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Before moved clause' found at offset 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'moved clause' found at offset 7"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Before moved clause\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"After \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"517238A8\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Before moved clause\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    },\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"611B8F01\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"After \"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -2766,6 +3441,46 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:ins matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:del matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:delText matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'Start')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'remove-me')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'end')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Anchor ' found at offset 0"
+            }
+          ]
         }
       }
     },
@@ -2872,6 +3587,31 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs can generate revision markup but exposes no API to accept or reject existing tracked changes"
+        },
+        "officeagent": {
+          "status": "pass-divergent",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:pPrChange matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:pPr/w:jc matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Paragraph text' found at offset 0"
+            },
+            {
+              "assertionKind": "canonicalXmlEquals",
+              "passed": false,
+              "detail": "canonical forms differ.\n--- expected\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pPr\",\n       \"attributes\": [],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Paragraph text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}\n--- actual\n{\n \"kind\": \"element\",\n \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}document\",\n \"attributes\": [],\n \"children\": [\n  {\n   \"kind\": \"element\",\n   \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}body\",\n   \"attributes\": [],\n   \"children\": [\n    {\n     \"kind\": \"element\",\n     \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p\",\n     \"attributes\": [\n      [\n       \"{http://schemas.microsoft.com/office/word/2010/wordml}paraId\",\n       \"73162EEC\"\n      ]\n     ],\n     \"children\": [\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pPr\",\n       \"attributes\": [],\n       \"children\": []\n      },\n      {\n       \"kind\": \"element\",\n       \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}r\",\n       \"attributes\": [],\n       \"children\": [\n        {\n         \"kind\": \"element\",\n         \"name\": \"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t\",\n         \"attributes\": [],\n         \"children\": [\n          {\n           \"kind\": \"text\",\n           \"text\": \"Paragraph text\"\n          }\n         ]\n        }\n       ]\n      }\n     ]\n    }\n   ]\n  }\n ]\n}"
+            }
+          ]
         }
       }
     },
@@ -2915,6 +3655,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'removeAllComments'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p//w:t[contains(., 'Keep the commented sentence intact.')] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:commentRangeStart | //w:commentRangeEnd | //w:commentReference matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(., 'Remove this comment only.')] matched 0 node(s) in word/document.xml; expected 0"
+            }
+          ]
         }
       }
     },
@@ -3038,6 +3798,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'sixty' found at offset 15"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:t[contains(text(), 'thirty')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Payment due in sixty days' found at offset 0"
+            }
+          ]
         }
       }
     },
@@ -3129,6 +3909,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'clause' found at offset 6"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:p[contains(., 'target')] matched 0 node(s) in word/document.xml; expected 0"
+            },
+            {
+              "assertionKind": "documentTextContainsAtOffset",
+              "passed": true,
+              "detail": "'Alpha-clause-tail' found at offset 0"
+            }
+          ]
         }
       }
     },
@@ -3236,6 +4036,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        },
+        "officeagent": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:tbl/w:tr/w:tc matched 2 node(s) in word/document.xml; expected 2"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Neighbor cell remains\"; expected \"Neighbor cell remains\""
+            }
+          ]
         }
       }
     },
@@ -3323,6 +4143,21 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Invoice total sixty dollars\"; expected \"Invoice total sixty dollars\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:t[contains(., 'Invoice total thirty dollars')] matched 0 node(s) in word/document.xml; expected 0"
+            }
+          ]
         }
       }
     },
@@ -3366,6 +4201,26 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'setDefaultFooterText'"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:sectPr/w:footerReference[@w:type='default'] matched 1 node(s) in word/document.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:ftr//w:t[contains(., 'Generated footer text')] matched 1 node(s) in word/footer1.xml; expected at least 1"
+            },
+            {
+              "assertionKind": "xpathQueryExists",
+              "passed": true,
+              "detail": "//w:body/w:p//w:t[contains(., 'Body before footer')] matched 1 node(s) in word/document.xml; expected at least 1"
+            }
+          ]
         }
       }
     },
@@ -3409,6 +4264,10 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs adapter does not implement operation 'setTableCellText'"
+        },
+        "officeagent": {
+          "status": "unsupported",
+          "reason": "OfficeAgent edits text by paragraph anchor; inspection names the table a paragraph is in but not its cell, and no plan verb takes cell coordinates for text"
         }
       }
     },
@@ -3682,6 +4541,56 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days.\"; expected \"Edit target: sixty days.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:tag)=1 and count(w:id)=1]/w:alias[@w:val='Opaque block control'][following-sibling::w:tag[1][@w:val='dpt-block-sdt' and following-sibling::w:id[1][@w:val='56']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtContent[count(*)=2 and count(w:p)=2 and *[1][self::w:p] and *[2][self::w:p]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled first paragraph sentinel\"; expected \"Controlled first paragraph sentinel\""
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled second paragraph sentinel\"; expected \"Controlled second paragraph sentinel\""
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Body tail sentinel.\"; expected \"Body tail sentinel.\""
+            }
+          ]
         }
       }
     },
@@ -3880,6 +4789,41 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        },
+        "officeagent": {
+          "status": "pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][count(*)=2 and *[1][self::w:sdtPr] and *[2][self::w:sdtContent]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr[count(w:alias)=1 and count(w:id)=1 and count(w:tag)=1]/w:alias[@w:val='Opaque inline control'][following-sibling::w:tag[1][@w:val='dpt-inline-sdt' and following-sibling::w:id[1][@w:val='54']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Controlled text sentinel\"; expected \"Controlled text sentinel\""
+            }
+          ]
         }
       }
     },
@@ -4103,6 +5047,46 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        },
+        "officeagent": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": true,
+              "detail": "target or ancestor mc:Ignorable resolves urn:open-agreements:docx-platform-tests:block-content-control"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-opaque-attribute-sentinel']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-block-sdt']]][following-sibling::*[1][self::w:id[@w:val='56']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-nested-payload-sentinel'] and normalize-space(.)='block opaque payload sentinel'] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "/w:document/w:body/w:sdt[w:sdtPr/w:id[@w:val='56'] and w:sdtPr/w:tag[@w:val='dpt-block-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:block-content-control' and .='block-last-child-sentinel']]] matched 1 node(s) in word/document.xml; expected 1"
+            }
+          ]
         }
       }
     },
@@ -4351,6 +5335,51 @@
         "docx-rs": {
           "status": "unsupported",
           "reason": "docx-rs exposes no public existing-document text replacement API; implementing this would require adapter-side XML surgery"
+        },
+        "officeagent": {
+          "status": "invariant-pass",
+          "assertionResults": [
+            {
+              "assertionKind": "xpathElementTextEquals",
+              "passed": true,
+              "detail": "visible descendant w:t text \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\"; expected \"Edit target: sixty days. Controlled text sentinel Paragraph tail.\""
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body//w:sdt matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "ignorableNamespaceDeclared",
+              "passed": true,
+              "detail": "target or ancestor mc:Ignorable resolves urn:open-agreements:docx-platform-tests:inline-content-control"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']][@*[local-name()='opaqueAttribute' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='opaque-attribute-sentinel']] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='extension-child-sentinel']][preceding-sibling::*[1][self::w:tag[@w:val='dpt-inline-sdt']]][following-sibling::*[1][self::w:id[@w:val='54']]] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[local-name()='nested' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='nested-payload-sentinel'] and normalize-space(.)='opaque payload sentinel'] matched 1 node(s) in word/document.xml; expected 1"
+            },
+            {
+              "assertionKind": "xpathQueryCount",
+              "passed": true,
+              "detail": "//w:body/w:p/w:sdt[w:sdtPr/w:id[@w:val='54'] and w:sdtPr/w:tag[@w:val='dpt-inline-sdt']]/w:sdtPr/*[local-name()='opaqueExtension' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']/*[1][local-name()='before' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='first-child-sentinel']][following-sibling::*[1][local-name()='payload' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control']][following-sibling::*[2][local-name()='after' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and @*[local-name()='sentinel' and namespace-uri()='urn:open-agreements:docx-platform-tests:inline-content-control' and .='last-child-sentinel']]] matched 1 node(s) in word/document.xml; expected 1"
+            }
+          ]
         }
       }
     }

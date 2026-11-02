@@ -3,7 +3,7 @@
   "registryVersion": 1,
   "sourceResults": {
     "schemaVersion": 3,
-    "runTimestamp": "2026-11-02T15:51:16.983Z",
+    "runTimestamp": "2026-11-02T15:53:47.767Z",
     "scenarioCount": 44,
     "implementations": [
       {
@@ -33,6 +33,10 @@
       {
         "adapterName": "docx-rs",
         "adapterVersion": "docx-rs 0.4.20"
+      },
+      {
+        "adapterName": "officeagent",
+        "adapterVersion": "OfficeAgent.NET 1.2.0"
       }
     ]
   },
@@ -94,6 +98,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -153,6 +164,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -212,6 +230,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -270,6 +295,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
           }
         }
       }
@@ -330,6 +362,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -389,6 +428,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -447,6 +493,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
           }
         }
       }
@@ -507,6 +560,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
         }
       }
     },
@@ -565,6 +625,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
           }
         }
       }
@@ -625,6 +692,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
         }
       }
     },
@@ -683,6 +757,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
           }
         }
       }
@@ -743,6 +824,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
         }
       }
     },
@@ -802,6 +890,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -860,6 +955,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
           }
         }
       }
@@ -919,6 +1021,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
           }
         }
       }
@@ -979,6 +1088,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -1037,6 +1153,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
           }
         }
       }
@@ -1097,6 +1220,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -1156,6 +1286,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
         }
       }
     },
@@ -1210,6 +1347,13 @@
           }
         },
         "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "officeagent": {
           "denominator": 1,
           "passLike": 0,
           "counts": {
@@ -1276,6 +1420,14 @@
           "counts": {
             "unsupported": 2
           }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 1,
+          "counts": {
+            "pass": 1,
+            "unsupported": 1
+          }
         }
       }
     },
@@ -1330,6 +1482,13 @@
           }
         },
         "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "officeagent": {
           "denominator": 1,
           "passLike": 0,
           "counts": {
@@ -1394,6 +1553,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -1456,6 +1622,13 @@
           "counts": {
             "unsupported": 3
           }
+        },
+        "officeagent": {
+          "denominator": 3,
+          "passLike": 3,
+          "counts": {
+            "pass": 3
+          }
         }
       }
     },
@@ -1515,6 +1688,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
         }
       }
     },
@@ -1573,6 +1753,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
           }
         }
       }
@@ -1635,6 +1822,13 @@
           "counts": {
             "unsupported": 2
           }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
         }
       }
     },
@@ -1694,6 +1888,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
         }
       }
     },
@@ -1763,6 +1964,14 @@
           "counts": {
             "unsupported": 8
           }
+        },
+        "officeagent": {
+          "denominator": 8,
+          "passLike": 8,
+          "counts": {
+            "pass": 2,
+            "pass-divergent": 6
+          }
         }
       }
     },
@@ -1832,6 +2041,14 @@
           "counts": {
             "unsupported": 8
           }
+        },
+        "officeagent": {
+          "denominator": 8,
+          "passLike": 8,
+          "counts": {
+            "pass": 2,
+            "pass-divergent": 6
+          }
         }
       }
     },
@@ -1892,6 +2109,13 @@
           "counts": {
             "unsupported": 2
           }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
+          }
         }
       }
     },
@@ -1951,6 +2175,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 2
+          }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
           }
         }
       }
@@ -2012,6 +2243,13 @@
           "counts": {
             "unsupported": 2
           }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
         }
       }
     },
@@ -2072,6 +2310,13 @@
           "counts": {
             "unsupported": 2
           }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
         }
       }
     },
@@ -2131,6 +2376,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass-divergent": 1
+          }
         }
       }
     },
@@ -2189,6 +2441,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass-divergent": 1
           }
         }
       }
@@ -2250,6 +2509,13 @@
           "counts": {
             "unsupported": 2
           }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
+          }
         }
       }
     },
@@ -2309,6 +2575,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 2
+          }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
           }
         }
       }
@@ -2370,6 +2643,13 @@
           "counts": {
             "unsupported": 2
           }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
+          }
         }
       }
     },
@@ -2429,6 +2709,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 2
+          }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass-divergent": 2
           }
         }
       }
@@ -2491,6 +2778,13 @@
           "counts": {
             "unsupported": 2
           }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
         }
       }
     },
@@ -2549,6 +2843,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
           }
         }
       }
@@ -2609,6 +2910,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -2663,6 +2971,13 @@
           }
         },
         "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "officeagent": {
           "denominator": 1,
           "passLike": 0,
           "counts": {
@@ -2727,6 +3042,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
         }
       }
     },
@@ -2785,6 +3107,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
           }
         }
       }
@@ -2845,6 +3174,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -2899,6 +3235,13 @@
           }
         },
         "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "officeagent": {
           "denominator": 1,
           "passLike": 0,
           "counts": {
@@ -2963,6 +3306,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
         }
       }
     },
@@ -3017,6 +3367,13 @@
           }
         },
         "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "officeagent": {
           "denominator": 1,
           "passLike": 0,
           "counts": {
@@ -3081,6 +3438,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "invariant-pass": 1
+          }
         }
       }
     },
@@ -3140,6 +3504,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
         }
       }
     },
@@ -3194,6 +3565,13 @@
           }
         },
         "docx-rs": {
+          "denominator": 1,
+          "passLike": 0,
+          "counts": {
+            "unsupported": 1
+          }
+        },
+        "officeagent": {
           "denominator": 1,
           "passLike": 0,
           "counts": {
@@ -3260,6 +3638,13 @@
           "counts": {
             "unsupported": 2
           }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
+          }
         }
       }
     },
@@ -3320,6 +3705,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 2
+          }
+        },
+        "officeagent": {
+          "denominator": 2,
+          "passLike": 2,
+          "counts": {
+            "pass": 2
           }
         }
       }
@@ -3379,6 +3771,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 1
+          }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
           }
         }
       }
@@ -3439,6 +3838,13 @@
           "counts": {
             "unsupported": 1
           }
+        },
+        "officeagent": {
+          "denominator": 1,
+          "passLike": 1,
+          "counts": {
+            "pass": 1
+          }
         }
       }
     },
@@ -3507,6 +3913,13 @@
           "counts": {
             "unsupported": 5
           }
+        },
+        "officeagent": {
+          "denominator": 5,
+          "passLike": 5,
+          "counts": {
+            "pass": 5
+          }
         }
       }
     },
@@ -3574,6 +3987,13 @@
           "passLike": 0,
           "counts": {
             "unsupported": 5
+          }
+        },
+        "officeagent": {
+          "denominator": 5,
+          "passLike": 5,
+          "counts": {
+            "pass": 5
           }
         }
       }
