@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <!-- Runs on whichever .NET the runner has, .NET 8 or later. -->
+    <RollForward>LatestMajor</RollForward>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>OfficeAgentAdapter</AssemblyName>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Floating minor: the weekly CI cron re-tests against the latest 1.x
+         release, matching the suite's staleness policy for the other adapters. -->
+    <PackageReference Include="OfficeAgent.Core" Version="1.*" />
+    <PackageReference Include="OfficeAgent.Word" Version="1.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.*" />
+  </ItemGroup>
+
+</Project>

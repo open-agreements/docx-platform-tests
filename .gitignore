@@ -11,3 +11,7 @@ adapters/openxml-sdk/.dotnet/
 adapters/openxml-sdk/build/
 adapters/openxml-sdk/src/bin/
 adapters/openxml-sdk/src/obj/
+adapters/officeagent/.dotnet/
+adapters/officeagent/build/
+adapters/officeagent/src/bin/
+adapters/officeagent/src/obj/

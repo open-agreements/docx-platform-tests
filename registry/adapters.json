@@ -35,6 +35,11 @@
       "adapterName": "docx-rs",
       "adapterCommand": ["bash", "adapters/docx-rs/run-adapter.sh"],
       "adapterVersionCommand": ["bash", "adapters/docx-rs/run-adapter.sh", "--print-library-version"]
+    },
+    {
+      "adapterName": "officeagent",
+      "adapterCommand": ["bash", "adapters/officeagent/run-adapter.sh"],
+      "adapterVersionCommand": ["bash", "adapters/officeagent/run-adapter.sh", "--print-library-version"]
     }
   ]
 }
