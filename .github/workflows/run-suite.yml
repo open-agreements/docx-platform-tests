@@ -9,14 +9,22 @@ on:
     - cron: '17 6 * * 1'
   workflow_dispatch:
 
+# Least privilege by default. The suite job builds and runs third-party
+# adapter dependencies (floating PyPI/npm/NuGet/crates and upstream clones), so
+# it gets a read-only token that checkout does not persist. Only the publish
+# job, which runs no adapter code, can write to gh-pages.
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   suite:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@v4
         with:
@@ -76,8 +84,26 @@ jobs:
             results/capability-summary.json
             registry/scenario-coverage.json
 
-      - name: Publish results to gh-pages
+      - name: Upload rendered results site
         if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-site
+          path: results/
+
+  publish:
+    needs: suite
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: results-site
+          path: results
+
+      - name: Publish results to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
